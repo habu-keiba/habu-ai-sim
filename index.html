@@ -149,8 +149,8 @@
 
   <div class="panel" id="horseListPanel"></div>
 
-  <div class="cta-banner" style="margin-bottom:0;"><b>AIの予測実績</b>（期待値1.3以上の単勝／検証できる記録）→ <a href="record.html" style="color:var(--amber);">実績ページを見る</a></div>
-  <div class="cta-banner"><b>全頭のAI勝率・期待値と妙味馬</b>はnoteで公開中 →（リンクをここに設定）</div>
+  <div class="cta-banner" style="margin-bottom:0;"><b>AIの予測実績</b>（AI勝率1位かつ期待値1.3以上の単勝／検証できる記録）→ <a href="record.html" style="color:var(--amber);">実績ページを見る</a></div>
+  <div class="cta-banner" id="noteCta"><b>全頭のAI勝率・期待値と妙味馬</b>はnoteで公開中 →（リンクをここに設定）</div>
 
   <footer>
     枠色・枠番の割り当て・回り向き・直線の長さはJRAのコースに準拠しています。<br>
@@ -1270,7 +1270,7 @@ function showRaces(races){
    ============================================================ */
 $('runBtn').addEventListener('click',()=>runRace());
 $('recBtn').addEventListener('click',recordRace);
-if(NOTE_URL){const b=document.querySelector('.cta-banner');b.innerHTML=`<b>全頭のAI勝率・期待値と妙味馬</b>はnoteで公開中 → <a href="${NOTE_URL}" target="_blank" rel="noopener" style="color:var(--amber);">noteを見る</a>`;}
+if(NOTE_URL){const b=document.getElementById('noteCta');b.innerHTML=`<b>全頭のAI勝率・期待値と妙味馬</b>はnoteで公開中 → <a href="${NOTE_URL}" target="_blank" rel="noopener" style="color:var(--amber);">noteを見る</a>`;}
 $('fileBtn').addEventListener('click',()=>{if(!raceRunning)$('fileInput').click();});
 $('fileInput').addEventListener('change',e=>{
   const f=e.target.files[0];if(!f)return;
