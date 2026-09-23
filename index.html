@@ -227,7 +227,8 @@ const sk=y=>(y-Y_LANE0)*SKEW;
 const BRAND='羽生AI';
 const NOTE_URL='https://note.com/habu_keiba';   // ページのリンクとXの投稿文に使う
 const SITE_URL='https://habu-keiba.github.io/habu-ai-sim/';   // 公開したページのURL（入れるとXの投稿文に載る）
-const PUBLIC_DATA='race_public.json';   // ページと同じ場所にこのファイルがあれば、開いた時点で読み込む
+const PUBLIC_DATA='race_public.dat';    // ページと同じ場所にこのファイルがあれば、開いた時点で読み込む
+const DATA_KEY='habu-ai-sim';           // 公開データの読みにくさ用（暗号ではなく、そのままでは読めなくするだけ）
 const PUBLIC_ORDERS=50;                 // 公開用データに入れておく抽選済み着順の数
 const HOLD_AFTER_FINISH=3.2;   // 動画の最後に掲示板を映しておく秒数
 
@@ -305,7 +306,8 @@ function renderPanels(){
   });
   $('formation').innerHTML=html+'<div class="f-end">▶後方</div>';
 
-  const panel=$('horseListPanel');panel.innerHTML='<p class="panel-title">出走馬</p>';
+  const panel=$('horseListPanel');
+  panel.innerHTML='<p class="panel-title">出走馬'+(race.provisional?' <span class="baba-badge baba-不良">枠順未確定・仮の馬番</span>':'')+'</p>';
   [...horses].sort((a,b)=>a.number-b.number).forEach(h=>{
     const row=document.createElement('div');row.className='horse-row';
     row.innerHTML=`${capHtml(h)}<div class="h-name">${escapeHtml(h.name)}</div><div class="jockey">${escapeHtml(h.jockey||'')}</div>`;
@@ -854,6 +856,14 @@ function drawTelopBase(text,sub,pop=0,hot=false){
   }
 }
 function drawWatermark(){scaled(REF_W-12,REF_H-6,uiScale(),drawWatermarkBase);}
+function drawProvisionalTag(){
+  if(!race||!race.provisional)return;
+  const t='※ 枠順未確定・仮の馬番';
+  ctx.font="bold 12px Noto Sans JP,sans-serif";ctx.textAlign='left';ctx.textBaseline='alphabetic';
+  const w=ctx.measureText(t).width+16;
+  ctx.fillStyle='rgba(215,38,61,.85)';ctx.fillRect(12,REF_H-58,w,20);
+  ctx.fillStyle='#fff';ctx.fillText(t,20,REF_H-44);
+}
 function drawWatermarkBase(){
   ctx.textAlign='right';ctx.textBaseline='alphabetic';
   ctx.font="bold 15px 'RocknRoll One',sans-serif";
@@ -1041,6 +1051,7 @@ function runRace(opts={}){
     const since=S.doneAt==null?-1:realT-S.doneAt;
     if(since<0.6)drawMinimap(P,runners);   // 掲示板を出したらミニマップは消す
     drawWatermark();
+    scaled(12,REF_H-58,uiScale(),drawProvisionalTag);
     const fl=1-(realT-S.flashAt)/0.3;   // ゴールの瞬間のフラッシュ（実時間で0.3秒）
     if(fl>0){ctx.fillStyle=`rgba(255,255,255,${0.55*fl})`;ctx.fillRect(0,0,REF_W,REF_H);}
 
@@ -1128,6 +1139,7 @@ function drawStatic(){
   drawTelop('発走前',`${course().label} 芝${race.dist}m　馬場：${race.baba||'良'}`);
   drawMinimap(geo,runners);
   drawWatermark();
+  scaled(12,REF_H-58,uiScale(),drawProvisionalTag);
 }
 
 /* ============================================================
@@ -1162,12 +1174,15 @@ function parseCSV(text){
   const races={};
   for(let li=1;li<lines.length;li++){
     const c=splitCSVLine(lines[li]);
-    const number=parseInt(get(c,idx.umaban),10);if(isNaN(number))continue;
     const key=[get(c,idx.date),get(c,idx.place),get(c,idx.r)].join('|');
+    let number=parseInt(get(c,idx.umaban),10);
+    const provisional=isNaN(number);   // 枠順確定前のCSVは馬番が空
+    if(provisional)number=(races[key]?races[key].horses.length:0)+1;
+    if(!get(c,idx.name))continue;
     if(!races[key]){
       const dist=parseInt(get(c,idx.dist).replace(/\D/g,''),10)||2000,place=get(c,idx.place);
       races[key]={date:get(c,idx.date),place,r:get(c,idx.r),name:get(c,idx.rname),dist,
-        cls:get(c,idx.cls),baba:normalizeBaba(get(c,idx.baba)),courseKey:pickCourse(place,dist,get(c,idx.cls)),pace:get(c,idx.pace)||null,horses:[]};
+        cls:get(c,idx.cls),baba:normalizeBaba(get(c,idx.baba)),courseKey:pickCourse(place,dist,get(c,idx.cls)),pace:get(c,idx.pace)||null,provisional:false,horses:[]};
     }
     races[key].horses.push({
       number,name:get(c,idx.name).replace(/^\*/,'').trim(),jockey:get(c,idx.jockey),winProb:parsePct(get(c,idx.prob)),
@@ -1176,6 +1191,7 @@ function parseCSV(text){
       kyaku:STYLE_FROM_JP[get(c,idx.style)]||null,
       early:numOrNull(get(c,idx.early)),corner:numOrNull(get(c,idx.corner)),push:numOrNull(get(c,idx.push)),
       kick:numOrNull(get(c,idx.kick)),bure:numOrNull(get(c,idx.bure)),order:numOrNull(get(c,idx.order))});
+    if(provisional)races[key].provisional=true;
   }
   Object.values(races).forEach(R=>{
     fillProfiles(R.horses);
@@ -1200,14 +1216,27 @@ function loadText(raw){
 /* 公開用データ（勝率・オッズ・期待値・推奨は含まない）を作る */
 function buildPublicData(){
   const races=Object.values(parsedRaces).map(R=>({
-    date:R.date,place:R.place,r:R.r,name:R.name,cls:R.cls||'',dist:R.dist,baba:R.baba||'良',pace:R.pace,courseKey:R.courseKey,
+    date:R.date,place:R.place,r:R.r,name:R.name,cls:R.cls||'',dist:R.dist,baba:R.baba||'良',pace:R.pace,courseKey:R.courseKey,provisional:!!R.provisional,
     horses:R.horses.map(h=>({number:h.number,waku:h.waku,name:h.name,jockey:h.jockey||'',coatName:h.coatName||null,
       kyaku:h.kyaku,early:h.early,corner:h.corner,push:h.push,kick:h.kick,bure:h.bure,order:h.order??null})),
     orders:Array.from({length:PUBLIC_ORDERS},()=>sampleFinishOrder(R.horses).map(h=>h.number))}));
   return {format:'habu-ai-sim/1',created:new Date().toISOString(),races};
 }
+/* 公開データの符号化。鍵はページ内にあるので暗号ではなく、URLを開いただけでは中身が読めないようにするだけ */
+function encodeData(text){
+  const b=new TextEncoder().encode(text);
+  let bin='';
+  for(let i=0;i<b.length;i++)bin+=String.fromCharCode(b[i]^DATA_KEY.charCodeAt(i%DATA_KEY.length));
+  return btoa(bin);
+}
+function decodeData(text){
+  const bin=atob(text.trim());
+  const b=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++)b[i]=bin.charCodeAt(i)^DATA_KEY.charCodeAt(i%DATA_KEY.length);
+  return new TextDecoder().decode(b);
+}
 function exportPublicData(){
-  const blob=new Blob([JSON.stringify(buildPublicData())],{type:'application/json'});
+  const blob=new Blob([encodeData(JSON.stringify(buildPublicData()))],{type:'text/plain'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=PUBLIC_DATA;a.click();
   setTimeout(()=>URL.revokeObjectURL(a.href),5000);
 }
@@ -1268,7 +1297,11 @@ $('raceSub').textContent='デモ表示中：「CSVファイルを開く」で当
 resizeCanvas();
 $('exportBtn').addEventListener('click',exportPublicData);
 if(location.protocol.startsWith('http')){
-  fetch(PUBLIC_DATA,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(d&&!raceRunning)loadPublicData(d);}).catch(()=>{});
+  fetch(PUBLIC_DATA,{cache:'no-store'}).then(r=>r.ok?r.text():null).then(t=>{
+    if(!t||raceRunning)return;
+    const d=JSON.parse(t.trim().startsWith('{')?t:decodeData(t));   // 古い形式（そのままのJSON）も読める
+    loadPublicData(d);
+  }).catch(()=>{});
 }
 </script>
 </body>
