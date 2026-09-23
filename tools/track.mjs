@@ -1,13 +1,16 @@
 /**
  * 羽生AI 実績記録ツール
  *
- *   node tools/track.mjs commit "<予測CSV>"     レース前：予測の指紋(ハッシュ)だけを公開用に記録する
- *   node tools/track.mjs reveal <日付>          レース後：予測の中身を公開する（指紋と一致することを確認できる）
+ *   node tools/track.mjs commit "<予測CSV>"     レース前：予測の指紋(ハッシュ)だけを記録する（1日に何度でも可）
+ *   node tools/track.mjs reveal <日付>          レース後：その日の全ての版の中身を公開する
  *   node tools/track.mjs results "<結果CSV>"    結果を取り込み、的中率と回収率を集計する
  *   node tools/track.mjs verify                 公開済みの予測が、記録した指紋と一致するか確かめる
  *
+ * オッズで期待値が変わるため、1日に何度でも記録できる。すべての版が時刻付きで公開される。
+ * 成績に数えるのは「各レースの発走時刻より前に記録された、最後の版」だけ。
+ * レースが終わってから出した予想は自動的に成績から外れるので、後から良い版を選ぶことはできない。
+ *
  * 予測の中身は data/private/ に置き、GitHubには上げない（.gitignore 済み）。
- * 公開されるのは data/record.json だけで、レース前は指紋のみ、レース後に中身が入る。
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -20,14 +23,25 @@ const RECORD = path.join(ROOT, 'data', 'record.json');
 const EV_MIN = 1.3;            // 推奨とみなす期待値の下限
 const STAKE = 100;             // 1点あたりの購入額（円）
 
-const jstNow = () => new Date(Date.now() + 9 * 3600 * 1000).toISOString().replace('T', ' ').slice(0, 19) + ' JST';
+const jstDate = () => new Date(Date.now() + 9 * 3600 * 1000);
+const jstStamp = () => jstDate().toISOString().replace('T', ' ').slice(0, 19) + ' JST';
 const sha256 = (s) => crypto.createHash('sha256').update(s, 'utf8').digest('hex');
+// TARGETの着順は全角数字（１〜９）で入ることがあるので半角に直してから読む
+const toHalf = (v) => String(v ?? '').replace(/[０-９．：]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0));
+const num = (v) => { const n = parseFloat(toHalf(v).replace(/[^\d.\-]/g, '')); return Number.isFinite(n) ? n : null; };
+const pct = (v) => { const n = num(v); return n === null ? null : n / 100; };
+/** "15:45" → 945（その日の0時からの分数）。取れなければ null */
+const toMinutes = (v) => {
+  const m = toHalf(v).match(/(\d{1,2})\s*[:時]\s*(\d{2})/);
+  return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+};
+const loadRecord = () => (fs.existsSync(RECORD) ? JSON.parse(fs.readFileSync(RECORD, 'utf8')) : { format: 'habu-ai/track/2', days: [] });
+const saveRecord = (r) => { fs.mkdirSync(path.dirname(RECORD), { recursive: true }); fs.writeFileSync(RECORD, JSON.stringify(r, null, 2)); };
 
 function readCsv(file) {
-  let text = fs.readFileSync(file);
-  // BOM付きUTF-8 / cp932 のどちらでも読めるようにする
-  let s = text.toString('utf8');
-  if (s.includes('�')) s = new TextDecoder('shift_jis').decode(text);
+  const buf = fs.readFileSync(file);
+  let s = buf.toString('utf8');
+  if (s.includes('�')) s = new TextDecoder('shift_jis').decode(buf);   // TARGETのCSVはShift_JIS
   s = s.replace(/^﻿/, '');
   const lines = s.split(/\r?\n/).filter((l) => l.trim());
   const split = (line) => {
@@ -44,19 +58,12 @@ function readCsv(file) {
   const header = split(lines[0]).map((h) => h.trim());
   return lines.slice(1).map((l) => {
     const cells = split(l), row = {};
-    header.forEach((h, i) => (row[h] = (cells[i] ?? '').trim()));
+    header.forEach((h, i) => { if (row[h] === undefined || row[h] === '') row[h] = (cells[i] ?? '').trim(); });
     return row;
   });
 }
 
-// TARGETの着順は全角数字（１〜９）で入ることがあるので半角に直してから読む
-const toHalf = (v) => String(v ?? '').replace(/[０-９．]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0));
-const num = (v) => { const n = parseFloat(toHalf(v).replace(/[^\d.\-]/g, '')); return Number.isFinite(n) ? n : null; };
-const pct = (v) => { const n = num(v); return n === null ? null : n / 100; };
-const loadRecord = () => (fs.existsSync(RECORD) ? JSON.parse(fs.readFileSync(RECORD, 'utf8')) : { format: 'habu-ai/track/1', days: [] });
-const saveRecord = (r) => { fs.mkdirSync(path.dirname(RECORD), { recursive: true }); fs.writeFileSync(RECORD, JSON.stringify(r, null, 2)); };
-
-/** 予測CSV → その日の推奨馬（EV1.3以上）を取り出す */
+/** 予測CSV → その日の推奨馬（EV下限以上）を取り出す */
 function extractPicks(rows) {
   const picks = [];
   for (const r of rows) {
@@ -64,6 +71,7 @@ function extractPicks(rows) {
     if (ev === null || ev < EV_MIN) continue;
     picks.push({
       date: r['日付'], place: r['場所'], race: r['Ｒ'] || r['R'], raceName: r['レース名'],
+      postTime: r['発走時刻'] || null,
       number: num(r['馬番']), name: (r['馬名'] || '').replace(/^\*/, '').trim(),
       winProb: pct(r['予測勝率']), ev, oddsAtPredict: num(r['単勝オッズ']),
       aiRank: num(r['AI勝率順位']), mark: r['推奨買い目'] || '',
@@ -75,46 +83,76 @@ function extractPicks(rows) {
 function cmdCommit(csvPath) {
   const rows = readCsv(csvPath);
   const picks = extractPicks(rows);
-  if (!picks.length) throw new Error(`期待値${EV_MIN}以上の推奨馬が1頭もありません`);
+  if (!picks.length) throw new Error(`期待値${EV_MIN}以上の推奨馬が1頭もありません（オッズが入っていないCSVの可能性があります）`);
   const date = picks[0].date;
-  const payload = { date, evMin: EV_MIN, picks };
-  const body = JSON.stringify(payload);
+  const key = date.replace(/\./g, '-');
+  const now = jstDate();
+  const body = JSON.stringify({ date, evMin: EV_MIN, picks });
   const hash = sha256(body);
 
-  fs.mkdirSync(PRIVATE_DIR, { recursive: true });
-  fs.writeFileSync(path.join(PRIVATE_DIR, `${date.replace(/\./g, '-')}.json`), body);
-
   const rec = loadRecord();
-  const key = date.replace(/\./g, '-');
-  if (rec.days.some((d) => d.date === key && d.revealed)) throw new Error(`${key} はすでに公開済みです`);
-  rec.days = rec.days.filter((d) => d.date !== key);
-  rec.days.push({ date: key, committedAt: jstNow(), hash, evMin: EV_MIN, pickCount: picks.length, revealed: false, picks: null, result: null });
-  rec.days.sort((a, b) => a.date.localeCompare(b.date));
+  let day = rec.days.find((d) => d.date === key);
+  if (!day) { day = { date: key, versions: [], result: null }; rec.days.push(day); rec.days.sort((a, b) => a.date.localeCompare(b.date)); }
+  if (day.versions.some((v) => v.hash === hash)) { console.log('前回と同じ内容だったので、記録しませんでした'); return; }
+
+  const v = day.versions.length + 1;
+  fs.mkdirSync(PRIVATE_DIR, { recursive: true });
+  fs.writeFileSync(path.join(PRIVATE_DIR, `${key}_v${v}.json`), body);
+  day.versions.push({
+    v, committedAt: jstStamp(), committedMin: now.getUTCHours() * 60 + now.getUTCMinutes(),
+    hash, evMin: EV_MIN, pickCount: picks.length, revealed: false, picks: null,
+  });
   saveRecord(rec);
 
-  console.log(`${key}: 推奨 ${picks.length} 点の指紋を記録しました`);
+  const noPost = picks.filter((p) => !p.postTime).length;
+  console.log(`${key} 第${v}版: 推奨 ${picks.length} 点の指紋を記録しました（${jstStamp()}）`);
   console.log(`  ハッシュ: ${hash}`);
-  console.log(`  内訳: ${picks.map((p) => `${p.place}${p.race}R ${p.number}番`).join(' / ')}`);
-  console.log('  → GitHubに送ると、この時刻で公開記録に残ります（中身はまだ出ません）');
+  console.log(`  内訳: ${picks.map((p) => `${p.place}${p.race}R ${p.number}番${p.postTime ? `(${p.postTime}発走)` : ''}`).join(' / ')}`);
+  if (noPost) console.log(`  ※ 発走時刻が入っていない点が ${noPost} 件あります。Python側の出力に「発走時刻」列を追加してください`);
+  console.log('  → git add -A && git commit && git push で、この時刻が公開記録に残ります（中身はまだ出ません）');
 }
 
-function cmdReveal(date) {
-  const key = String(date).replace(/[./]/g, '-');
-  const file = path.join(PRIVATE_DIR, `${key}.json`);
-  if (!fs.existsSync(file)) throw new Error(`${file} がありません`);
-  const body = fs.readFileSync(file, 'utf8');
+function cmdReveal(dateArg) {
+  const key = String(dateArg).replace(/[./]/g, '-');
   const rec = loadRecord();
   const day = rec.days.find((d) => d.date === key);
   if (!day) throw new Error(`${key} の記録がありません。先に commit してください`);
-  if (sha256(body) !== day.hash) throw new Error('指紋が一致しません（予測ファイルが書き換わっています）');
-  day.picks = JSON.parse(body).picks;
-  day.revealed = true;
-  day.revealedAt = jstNow();
+  let n = 0;
+  for (const v of day.versions) {
+    const file = path.join(PRIVATE_DIR, `${key}_v${v.v}.json`);
+    if (!fs.existsSync(file)) { console.log(`  ! 第${v.v}版のファイルがありません: ${file}`); continue; }
+    const body = fs.readFileSync(file, 'utf8');
+    if (sha256(body) !== v.hash) throw new Error(`第${v.v}版の指紋が一致しません（ファイルが書き換わっています）`);
+    v.picks = JSON.parse(body).picks;
+    v.revealed = true;
+    v.revealedAt = jstStamp();
+    n++;
+  }
   saveRecord(rec);
-  console.log(`${key}: 推奨 ${day.picks.length} 点を公開しました（指紋は一致）`);
+  console.log(`${key}: ${n}版を公開しました（指紋はすべて一致）`);
 }
 
-/** 結果CSV（日付・場所・Ｒ・馬番・着順・単勝払戻 を含むもの）を取り込んで集計する */
+/**
+ * 成績に数える点を選ぶ。
+ * 各レースについて「発走時刻より前に記録された最後の版」を採用する。
+ * 発走時刻が不明な場合は、その日の最後の版を使う（記録には unknownPostTime として残す）。
+ */
+function selectOfficialPicks(day) {
+  const chosen = new Map();   // "場所|R|馬番" → {pick, v}
+  let unknownPostTime = 0;
+  const lastV = Math.max(...day.versions.map((v) => v.v));
+  for (const v of day.versions) {
+    if (!v.picks) continue;
+    for (const p of v.picks) {
+      const post = toMinutes(p.postTime);
+      if (post === null) { if (v.v !== lastV) continue; unknownPostTime++; }
+      else if (v.committedMin != null && v.committedMin >= post) continue;   // 発走後に出した版は数えない
+      chosen.set(`${p.place}|${p.race}|${p.number}`, { ...p, fromVersion: v.v });
+    }
+  }
+  return { picks: [...chosen.values()], unknownPostTime };
+}
+
 function cmdResults(csvPath) {
   const rows = readCsv(csvPath);
   const col = (r, ...names) => { for (const n of names) if (r[n] !== undefined && r[n] !== '') return r[n]; return ''; };
@@ -137,19 +175,19 @@ function cmdResults(csvPath) {
   const rec = loadRecord();
   let matched = 0, missing = 0;
   for (const day of rec.days) {
-    if (!day.revealed || !day.picks) continue;
+    if (!day.versions.some((v) => v.revealed)) continue;
+    const { picks, unknownPostTime } = selectOfficialPicks(day);
     let bets = 0, hits = 0, ret = 0, unknown = 0;
-    for (const p of day.picks) {
-      const key = [day.date, p.place, p.race, p.number].join('|');
-      const r = table.get(key);
-      if (!r || r.finish === null) { unknown++; p.finish = null; continue; }
+    for (const p of picks) {
+      const r = table.get([day.date, p.place, p.race, p.number].join('|'));
+      if (!r || r.finish === null) { unknown++; p.finish = null; missing++; continue; }
       p.finish = r.finish;
       const payout = r.payout !== null ? r.payout : r.finalOdds !== null ? r.finalOdds * STAKE : null;
       p.payout = r.finish === 1 ? payout : 0;
       bets++; if (r.finish === 1) { hits++; ret += payout ?? 0; }
       matched++;
     }
-    missing += unknown;
+    day.official = { picks, unknownPostTime };
     day.result = bets ? { bets, hits, hitRate: hits / bets, stake: bets * STAKE, ret, roi: ret / (bets * STAKE), unknown } : null;
   }
 
@@ -161,7 +199,7 @@ function cmdResults(csvPath) {
   rec.summary = total.bets ? {
     days: done.length, bets: total.bets, hits: total.hits,
     hitRate: total.hits / total.bets, roi: total.ret / total.stake,
-    stake: total.stake, ret: total.ret, evMin: EV_MIN, stakePerBet: STAKE, updatedAt: jstNow(),
+    stake: total.stake, ret: total.ret, evMin: EV_MIN, stakePerBet: STAKE, updatedAt: jstStamp(),
   } : null;
   saveRecord(rec);
 
@@ -174,13 +212,16 @@ function cmdResults(csvPath) {
 
 function cmdVerify() {
   const rec = loadRecord();
-  let ok = 0, ng = 0;
+  let ok = 0, ng = 0, wait = 0;
   for (const day of rec.days) {
-    if (!day.revealed || !day.picks) continue;
-    const body = JSON.stringify({ date: day.date.replace(/-/g, '.'), evMin: day.evMin ?? EV_MIN, picks: day.picks.map(({ finish, payout, ...p }) => p) });
-    if (sha256(body) === day.hash) { ok++; } else { ng++; console.log(`  × ${day.date}: 指紋が一致しません`); }
+    for (const v of day.versions) {
+      if (!v.revealed || !v.picks) { wait++; continue; }
+      const body = JSON.stringify({ date: day.date.replace(/-/g, '.'), evMin: v.evMin ?? EV_MIN, picks: v.picks.map(({ finish, payout, fromVersion, ...p }) => p) });
+      if (sha256(body) === v.hash) ok++;
+      else { ng++; console.log(`  × ${day.date} 第${v.v}版: 指紋が一致しません`); }
+    }
   }
-  console.log(`指紋の照合: 一致 ${ok}日 / 不一致 ${ng}日`);
+  console.log(`指紋の照合: 一致 ${ok}版 / 不一致 ${ng}版 / 未公開 ${wait}版`);
   if (ng) process.exitCode = 1;
 }
 
@@ -192,7 +233,7 @@ try {
   else if (cmd === 'verify') cmdVerify();
   else {
     console.log('使い方:');
-    console.log('  node tools/track.mjs commit "<予測CSV>"    レース前：指紋だけ記録');
+    console.log('  node tools/track.mjs commit "<予測CSV>"    レース前：指紋だけ記録（1日に何度でも）');
     console.log('  node tools/track.mjs reveal <日付>         レース後：中身を公開');
     console.log('  node tools/track.mjs results "<結果CSV>"   結果を取り込んで集計');
     console.log('  node tools/track.mjs verify                指紋の照合');

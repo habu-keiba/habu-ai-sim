@@ -64,7 +64,7 @@
       GitHubには送信時刻が公開で残るため、<b>レース前に確定していたこと</b>が後から確認できます。<br>
       レースが終わったら中身を公開します。下の「指紋を照合する」を押すと、
       公開された中身から指紋を計算し直し、レース前に記録した指紋と一致するかをあなたのブラウザで確かめられます。
-      一致すれば、<b>後から都合よく書き換えていない</b>ことの証明になります。
+      一致すれば、<b>後から都合よく書き換えていない</b>ことの証明になります。<br>オッズで期待値が変わるため、予想は1日に何度も出し直します。すべての版を時刻つきで残し、<b>成績に数えるのは各レースの発走時刻より前に記録した最後の版だけ</b>です。レース後に出した予想は自動的に成績から外れます。
     </p>
     <p class="verify"><button id="verifyBtn">指紋を照合する</button> <span id="verifyResult"></span></p>
   </div>
@@ -101,16 +101,17 @@ function renderStats(r){
 function renderDays(r){
   if(!r.days||!r.days.length){$('days').textContent='まだ記録がありません。';return;}
   $('days').innerHTML=[...r.days].reverse().map(d=>{
-    const head=`<tr><th style="width:96px">${d.date}</th><td>`
-      +(d.revealed?'<span class="tag open">公開済み</span>':'<span class="tag wait">レース前・指紋のみ</span>')
-      +` <span style="font-size:12px;color:var(--cream-dim)">推奨 ${d.pickCount} 点`
-      +(d.result?` ／ 的中 ${d.result.hits} 点 ／ 回収率 ${pct(d.result.roi)}`:'')+`</span>`
-      +`<div class="hash">記録時刻: ${d.committedAt}<br>指紋: ${d.hash}</div>`;
-    const picks=d.picks?`<details><summary>推奨馬を見る（${d.picks.length}点）</summary><table><tr><th>レース</th><th>馬番</th><th>馬名</th><th class="num">単勝</th><th class="num">着順</th><th class="num">払戻</th></tr>`
-      +d.picks.map(p=>`<tr><td>${p.place}${p.race}R</td><td class="num">${p.number}</td><td>${p.name}</td><td class="num">${p.oddsAtPredict??'—'}</td>`
-        +`<td class="num ${p.finish===1?'hit':'miss'}">${p.finish??'—'}</td><td class="num">${p.payout?yen(p.payout):'—'}</td></tr>`).join('')
+    const off=d.official?d.official.picks:null;
+    const head='<div style="margin-bottom:6px"><b style="color:var(--amber)">'+d.date+'</b> '
+      +(d.result?'<span class="tag open">確定</span> <span style="font-size:12px;color:var(--cream-dim)">購入 '+d.result.bets+'点 ／ 的中 '+d.result.hits+'点 ／ 回収率 '+pct(d.result.roi)+'</span>'
+               :'<span class="tag wait">レース前・指紋のみ</span>')+'</div>';
+    const vers='<table><tr><th style="width:52px">版</th><th style="width:180px">記録した時刻</th><th>指紋（SHA-256）</th><th class="num">点数</th></tr>'
+      +d.versions.map(v=>'<tr><td>第'+v.v+'版</td><td>'+v.committedAt+'</td><td class="hash">'+v.hash+'</td><td class="num">'+v.pickCount+'</td></tr>').join('')+'</table>';
+    const picks=off?'<details><summary>成績に数えた推奨馬（'+off.length+'点／各レースの発走前・最終版）</summary><table><tr><th>レース</th><th>発走</th><th>馬番</th><th>馬名</th><th class="num">単勝</th><th class="num">着順</th><th class="num">払戻</th><th>採用版</th></tr>'
+      +off.map(p=>'<tr><td>'+p.place+p.race+'R</td><td>'+(p.postTime||'—')+'</td><td class="num">'+p.number+'</td><td>'+p.name+'</td><td class="num">'+(p.oddsAtPredict??'—')+'</td>'
+        +'<td class="num '+(p.finish===1?'hit':'miss')+'">'+(p.finish??'—')+'</td><td class="num">'+(p.payout?yen(p.payout):'—')+'</td><td>第'+p.fromVersion+'版</td></tr>').join('')
       +'</table></details>':'';
-    return `<table><tbody>${head}${picks}</td></tr></tbody></table>`;
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--line)">'+head+vers+picks+'</div>';
   }).join('');
 }
 
@@ -122,14 +123,16 @@ async function verifyAll(){
   if(!record){$('verifyResult').textContent='データがありません';return;}
   let ok=0,ng=0,skip=0;
   for(const d of record.days){
-    if(!d.revealed||!d.picks){skip++;continue;}
-    const picks=d.picks.map(p=>{const{finish,payout,...rest}=p;return rest;});
-    const body=JSON.stringify({date:d.date.replace(/-/g,'.'),evMin:d.evMin??1.3,picks});
-    (await sha256(body))===d.hash?ok++:ng++;
+    for(const v of d.versions||[]){
+      if(!v.revealed||!v.picks){skip++;continue;}
+      const picks=v.picks.map(p=>{const{finish,payout,fromVersion,...rest}=p;return rest;});
+      const body=JSON.stringify({date:d.date.replace(/-/g,'.'),evMin:v.evMin??1.3,picks});
+      (await sha256(body))===v.hash?ok++:ng++;
+    }
   }
   $('verifyResult').innerHTML=ng
-    ? `<span style="color:var(--alert)">一致 ${ok}日 / <b>不一致 ${ng}日</b></span>`
-    : `<span style="color:var(--ok)">すべて一致しました（${ok}日）${skip?` ／ レース前のため未照合 ${skip}日`:''}</span>`;
+    ? `<span style="color:var(--alert)">一致 ${ok}版 / <b>不一致 ${ng}版</b></span>`
+    : `<span style="color:var(--ok)">すべて一致しました（${ok}版）${skip?` ／ レース前のため未照合 ${skip}版`:''}</span>`;
 }
 
 fetch('data/record.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(r=>{
