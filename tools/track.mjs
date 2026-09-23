@@ -49,7 +49,9 @@ function readCsv(file) {
   });
 }
 
-const num = (v) => { const n = parseFloat(String(v ?? '').replace(/[^\d.\-]/g, '')); return Number.isFinite(n) ? n : null; };
+// TARGETの着順は全角数字（１〜９）で入ることがあるので半角に直してから読む
+const toHalf = (v) => String(v ?? '').replace(/[０-９．]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0));
+const num = (v) => { const n = parseFloat(toHalf(v).replace(/[^\d.\-]/g, '')); return Number.isFinite(n) ? n : null; };
 const pct = (v) => { const n = num(v); return n === null ? null : n / 100; };
 const loadRecord = () => (fs.existsSync(RECORD) ? JSON.parse(fs.readFileSync(RECORD, 'utf8')) : { format: 'habu-ai/track/1', days: [] });
 const saveRecord = (r) => { fs.mkdirSync(path.dirname(RECORD), { recursive: true }); fs.writeFileSync(RECORD, JSON.stringify(r, null, 2)); };
@@ -118,12 +120,17 @@ function cmdResults(csvPath) {
   const col = (r, ...names) => { for (const n of names) if (r[n] !== undefined && r[n] !== '') return r[n]; return ''; };
   const table = new Map();
   for (const r of rows) {
-    const date = String(col(r, '日付', '日付(yyyy.mm.dd)')).replace(/\./g, '-');
-    const key = [date, col(r, '場所'), num(col(r, 'Ｒ', 'R')), num(col(r, '馬番'))].join('|');
+    // 日付は「日付」列か、TARGETの「レースID(新)」の先頭8桁（例: 20260920…）から取る
+    let date = String(col(r, '日付', '日付(yyyy.mm.dd)')).replace(/\./g, '-');
+    if (!date) {
+      const id = String(col(r, 'レースID(新)', 'レースID'));
+      if (/^\d{8}/.test(id)) date = `${id.slice(0, 4)}-${id.slice(4, 6)}-${id.slice(6, 8)}`;
+    }
+    const key = [date, col(r, '場所'), num(col(r, 'Ｒ', 'R')), num(col(r, '馬番', '馬番号'))].join('|');
     table.set(key, {
-      finish: num(col(r, '確定着順', '着順')),
-      payout: num(col(r, '単勝払戻', '単勝配当', '払戻')),
-      finalOdds: num(col(r, '単勝オッズ')),
+      finish: num(col(r, '確定着順', '着順', '着')),
+      payout: num(col(r, '単勝払戻', '単勝配当', '払戻', '単勝')),
+      finalOdds: num(col(r, '単勝オッズ', '単オッズ')),
     });
   }
 
