@@ -108,7 +108,7 @@ function cmdCommit(csvPath) {
   console.log(`${key} 第${v}版: 推奨 ${picks.length} 点の指紋を記録しました（${jstStamp()}）`);
   console.log(`  ハッシュ: ${hash}`);
   console.log(`  内訳: ${picks.map((p) => `${p.place}${p.race}R ${p.number}番${p.postTime ? `(${p.postTime}発走)` : ''}`).join(' / ')}`);
-  if (noPost) console.log(`  ※ 発走時刻が入っていない点が ${noPost} 件あります。Python側の出力に「発走時刻」列を追加してください`);
+  if (noPost) console.log(`  ※ 発走時刻の列が無い点が ${noPost} 件あります（結果CSVの発走時刻で判定するので、このままで問題ありません）`);
   console.log('  → git add -A && git commit && git push で、この時刻が公開記録に残ります（中身はまだ出ません）');
 }
 
@@ -137,17 +137,19 @@ function cmdReveal(dateArg) {
  * 各レースについて「発走時刻より前に記録された最後の版」を採用する。
  * 発走時刻が不明な場合は、その日の最後の版を使う（記録には unknownPostTime として残す）。
  */
-function selectOfficialPicks(day) {
+function selectOfficialPicks(day, postTimes = new Map()) {
   const chosen = new Map();   // "場所|R|馬番" → {pick, v}
   let unknownPostTime = 0;
   const lastV = Math.max(...day.versions.map((v) => v.v));
   for (const v of day.versions) {
     if (!v.picks) continue;
     for (const p of v.picks) {
-      const post = toMinutes(p.postTime);
+      // 発走時刻は予測CSVの列か、結果CSV（TARGET）から取る。公開済みの予測そのものは書き換えない
+      const postTime = p.postTime || postTimes.get(`${p.place}|${p.race}`) || null;
+      const post = toMinutes(postTime);
       if (post === null) { if (v.v !== lastV) continue; unknownPostTime++; }
       else if (v.committedMin != null && v.committedMin >= post) continue;   // 発走後に出した版は数えない
-      chosen.set(`${p.place}|${p.race}|${p.number}`, { ...p, fromVersion: v.v });
+      chosen.set(`${p.place}|${p.race}|${p.number}`, { ...p, postTime, fromVersion: v.v });
     }
   }
   return { picks: [...chosen.values()], unknownPostTime };
@@ -157,6 +159,7 @@ function cmdResults(csvPath) {
   const rows = readCsv(csvPath);
   const col = (r, ...names) => { for (const n of names) if (r[n] !== undefined && r[n] !== '') return r[n]; return ''; };
   const table = new Map();
+  const postTimes = new Map();   // "日付|場所|R" → 発走時刻（結果CSVから拾う）
   for (const r of rows) {
     // 日付は「日付」列か、TARGETの「レースID(新)」の先頭8桁（例: 20260920…）から取る
     let date = String(col(r, '日付', '日付(yyyy.mm.dd)')).replace(/\./g, '-');
@@ -164,6 +167,8 @@ function cmdResults(csvPath) {
       const id = String(col(r, 'レースID(新)', 'レースID'));
       if (/^\d{8}/.test(id)) date = `${id.slice(0, 4)}-${id.slice(4, 6)}-${id.slice(6, 8)}`;
     }
+    const post = col(r, '発走時刻', '発走');
+    if (post) postTimes.set([date, col(r, '場所'), num(col(r, 'Ｒ', 'R'))].join('|'), post);
     const key = [date, col(r, '場所'), num(col(r, 'Ｒ', 'R')), num(col(r, '馬番', '馬番号'))].join('|');
     table.set(key, {
       finish: num(col(r, '確定着順', '着順', '着')),
@@ -176,7 +181,9 @@ function cmdResults(csvPath) {
   let matched = 0, missing = 0;
   for (const day of rec.days) {
     if (!day.versions.some((v) => v.revealed)) continue;
-    const { picks, unknownPostTime } = selectOfficialPicks(day);
+    const dayPost = new Map();
+    for (const [k, v] of postTimes) { const [d, place, race] = k.split('|'); if (d === day.date) dayPost.set(`${place}|${race}`, v); }
+    const { picks, unknownPostTime } = selectOfficialPicks(day, dayPost);
     let bets = 0, hits = 0, ret = 0, unknown = 0;
     for (const p of picks) {
       const r = table.get([day.date, p.place, p.race, p.number].join('|'));
