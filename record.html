@@ -46,7 +46,7 @@
   <p class="brand">🏇 羽生AI</p>
   <h1>予測実績（検証できる記録）</h1>
   <p class="sub">
-    期待値1.3以上と判定した馬の単勝を、1点100円で買った場合の記録です。
+    AI勝率1位かつ期待値1.3以上と判定した馬の単勝を、1点100円で買った場合の記録です。新馬・未勝利を除いた「1勝クラス以上」と、全クラスの2通りで集計しています。
     <a href="./">シミュレーターに戻る</a> ／ <a href="https://note.com/habu_keiba" target="_blank" rel="noopener">note</a>
   </p>
 
@@ -86,29 +86,34 @@ const pct=v=>v==null?'—':(v*100).toFixed(1)+'%';
 const yen=v=>v==null?'—':Math.round(v).toLocaleString()+'円';
 let record=null;
 
+function statCards(s,title,note){
+  if(!s)return '<div class="stat"><div class="v">—</div><div class="l">'+title+'<br>結果の取り込み待ち</div></div>';
+  return '<div class="panel" style="background:rgba(14,22,38,.4);margin:0"><p class="panel-title"><b style="color:var(--cream)">'+title+'</b>　'+note+'</p><div class="stats">'
+    +[['回収率',pct(s.roi),s.bets+'点購入'],['的中率',pct(s.hitRate),s.hits+'点的中'],['収支',(s.ret-s.stake>=0?'+':'')+yen(s.ret-s.stake),'投資'+yen(s.stake)+'／払戻'+yen(s.ret)],['開催',s.days+'日','']]
+      .map(function(x){return '<div class="stat"><div class="v">'+x[1]+'</div><div class="l">'+x[0]+(x[2]?'<br>'+x[2]:'')+'</div></div>';}).join('')
+    +'</div></div>';
+}
 function renderStats(r){
   const s=r.summary;
-  if(!s){$('stats').innerHTML='<div class="stat"><div class="v">—</div><div class="l">結果の取り込み待ちです</div></div>';return;}
-  $('stats').innerHTML=[
-    ['回収率',pct(s.roi),'期待値'+s.evMin+'以上の単勝・1点'+s.stakePerBet+'円'],
-    ['的中率',pct(s.hitRate),s.hits+'点 / '+s.bets+'点'],
-    ['購入',s.bets+'点',s.days+'開催日ぶん'],
-    ['収支',(s.ret-s.stake>=0?'+':'')+yen(s.ret-s.stake),'投資'+yen(s.stake)+' / 払戻'+yen(s.ret)],
-  ].map(([l,v,sub])=>`<div class="stat"><div class="v">${v}</div><div class="l">${l}<br>${sub}</div></div>`).join('');
-  $('updated').textContent='最終更新: '+(s.updatedAt||'');
+  if(!s){$('stats').innerHTML=statCards(null,'全クラス','');return;}
+  $('stats').style.display='block';
+  $('stats').innerHTML=statCards(s.adv,'1勝クラス以上','新馬・未勝利を除く')+'<div style="height:10px"></div>'+statCards(s.all,'全クラス','新馬・未勝利を含む');
+  $('updated').textContent='買い目: AI勝率'+(s.aiRank||1)+'位かつ期待値'+(s.evMin||1.3)+'以上の単勝を1点'+(s.stakePerBet||100)+'円 ／ 最終更新: '+(s.updatedAt||'');
 }
 
 function renderDays(r){
   if(!r.days||!r.days.length){$('days').textContent='まだ記録がありません。';return;}
   $('days').innerHTML=[...r.days].reverse().map(d=>{
     const off=d.official?d.official.picks:null;
+    const res=d.result&&d.result.all?d.result.all:null, resAdv=d.result&&d.result.adv?d.result.adv:null;
     const head='<div style="margin-bottom:6px"><b style="color:var(--amber)">'+d.date+'</b> '
-      +(d.result?'<span class="tag open">確定</span> <span style="font-size:12px;color:var(--cream-dim)">購入 '+d.result.bets+'点 ／ 的中 '+d.result.hits+'点 ／ 回収率 '+pct(d.result.roi)+'</span>'
-               :'<span class="tag wait">レース前・指紋のみ</span>')+'</div>';
+      +(res?'<span class="tag open">確定</span> <span style="font-size:12px;color:var(--cream-dim)">全クラス '+res.bets+'点・的中'+res.hits+'点・回収率'+pct(res.roi)
+            +(resAdv?'　／　1勝クラス以上 '+resAdv.bets+'点・的中'+resAdv.hits+'点・回収率'+pct(resAdv.roi):'')+'</span>'
+           :'<span class="tag wait">レース前・指紋のみ</span>')+'</div>';
     const vers='<table><tr><th style="width:52px">版</th><th style="width:180px">記録した時刻</th><th>指紋（SHA-256）</th><th class="num">点数</th></tr>'
       +d.versions.map(v=>'<tr><td>第'+v.v+'版</td><td>'+v.committedAt+'</td><td class="hash">'+v.hash+'</td><td class="num">'+v.pickCount+'</td></tr>').join('')+'</table>';
-    const picks=off?'<details><summary>成績に数えた推奨馬（'+off.length+'点／各レースの発走前・最終版）</summary><table><tr><th>レース</th><th>発走</th><th>馬番</th><th>馬名</th><th class="num">単勝</th><th class="num">着順</th><th class="num">払戻</th><th>採用版</th></tr>'
-      +off.map(p=>'<tr><td>'+p.place+p.race+'R</td><td>'+(p.postTime||'—')+'</td><td class="num">'+p.number+'</td><td>'+p.name+'</td><td class="num">'+(p.oddsAtPredict??'—')+'</td>'
+    const picks=off?'<details><summary>成績に数えた推奨馬（'+off.length+'点／各レースの発走前・最終版）</summary><table><tr><th>レース</th><th>クラス</th><th>発走</th><th>馬番</th><th>馬名</th><th class="num">単勝</th><th class="num">着順</th><th class="num">払戻</th><th>採用版</th></tr>'
+      +off.map(p=>'<tr><td>'+p.place+p.race+'R</td><td>'+(p.cls||'—')+'</td><td>'+(p.postTime||'—')+'</td><td class="num">'+p.number+'</td><td>'+p.name+'</td><td class="num">'+(p.oddsAtPredict??'—')+'</td>'
         +'<td class="num '+(p.finish===1?'hit':'miss')+'">'+(p.finish??'—')+'</td><td class="num">'+(p.payout?yen(p.payout):'—')+'</td><td>第'+p.fromVersion+'版</td></tr>').join('')
       +'</table></details>':'';
     return '<div style="padding:10px 0;border-bottom:1px solid var(--line)">'+head+vers+picks+'</div>';

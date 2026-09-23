@@ -20,7 +20,9 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PRIVATE_DIR = path.join(ROOT, 'data', 'private');
 const RECORD = path.join(ROOT, 'data', 'record.json');
-const EV_MIN = 1.3;            // 推奨とみなす期待値の下限
+// 買い目の条件：AI勝率1位 かつ 期待値1.3以上の馬の単勝
+const EV_MIN = 1.3;            // 期待値の下限
+const AI_RANK = 1;             // AI勝率順位（1位のみ）
 const STAKE = 100;             // 1点あたりの購入額（円）
 
 const jstDate = () => new Date(Date.now() + 9 * 3600 * 1000);
@@ -68,10 +70,12 @@ function extractPicks(rows) {
   const picks = [];
   for (const r of rows) {
     const ev = num(r['期待値(EV)']);
+    const rank = num(r['AI勝率順位']);
     if (ev === null || ev < EV_MIN) continue;
+    if (rank !== AI_RANK) continue;              // AI勝率1位の馬だけを買う
     picks.push({
       date: r['日付'], place: r['場所'], race: r['Ｒ'] || r['R'], raceName: r['レース名'],
-      postTime: r['発走時刻'] || null,
+      cls: r['クラス名'] || '', postTime: r['発走時刻'] || null,
       number: num(r['馬番']), name: (r['馬名'] || '').replace(/^\*/, '').trim(),
       winProb: pct(r['予測勝率']), ev, oddsAtPredict: num(r['単勝オッズ']),
       aiRank: num(r['AI勝率順位']), mark: r['推奨買い目'] || '',
@@ -83,7 +87,7 @@ function extractPicks(rows) {
 function cmdCommit(csvPath) {
   const rows = readCsv(csvPath);
   const picks = extractPicks(rows);
-  if (!picks.length) throw new Error(`期待値${EV_MIN}以上の推奨馬が1頭もありません（オッズが入っていないCSVの可能性があります）`);
+  if (!picks.length) throw new Error(`AI勝率1位かつ期待値${EV_MIN}以上の馬が1頭もありません（オッズが入っていないCSVの可能性があります）`);
   const date = picks[0].date;
   const key = date.replace(/\./g, '-');
   const now = jstDate();
@@ -155,6 +159,18 @@ function selectOfficialPicks(day, postTimes = new Map()) {
   return { picks: [...chosen.values()], unknownPostTime };
 }
 
+/** 新馬・未勝利を除いたものが「1勝クラス以上」 */
+const isAdvanced = (p) => !/新馬|未勝利/.test(String(p.cls || p.raceName || ''));
+/** 買った点の集計（着順が取れた点だけを数える） */
+function tally(picks) {
+  const done = picks.filter((p) => p.finish != null);
+  if (!done.length) return null;
+  const hits = done.filter((p) => p.finish === 1);
+  const ret = hits.reduce((a, p) => a + (p.payout ?? 0), 0);
+  const stake = done.length * STAKE;
+  return { bets: done.length, hits: hits.length, hitRate: hits.length / done.length, stake, ret, roi: ret / stake };
+}
+
 function cmdResults(csvPath) {
   const rows = readCsv(csvPath);
   const col = (r, ...names) => { for (const n of names) if (r[n] !== undefined && r[n] !== '') return r[n]; return ''; };
@@ -184,36 +200,34 @@ function cmdResults(csvPath) {
     const dayPost = new Map();
     for (const [k, v] of postTimes) { const [d, place, race] = k.split('|'); if (d === day.date) dayPost.set(`${place}|${race}`, v); }
     const { picks, unknownPostTime } = selectOfficialPicks(day, dayPost);
-    let bets = 0, hits = 0, ret = 0, unknown = 0;
+    let unknown = 0;
     for (const p of picks) {
       const r = table.get([day.date, p.place, p.race, p.number].join('|'));
       if (!r || r.finish === null) { unknown++; p.finish = null; missing++; continue; }
       p.finish = r.finish;
       const payout = r.payout !== null ? r.payout : r.finalOdds !== null ? r.finalOdds * STAKE : null;
       p.payout = r.finish === 1 ? payout : 0;
-      bets++; if (r.finish === 1) { hits++; ret += payout ?? 0; }
       matched++;
     }
     day.official = { picks, unknownPostTime };
-    day.result = bets ? { bets, hits, hitRate: hits / bets, stake: bets * STAKE, ret, roi: ret / (bets * STAKE), unknown } : null;
+    day.result = { all: tally(picks), adv: tally(picks.filter(isAdvanced)), unknown };
   }
 
-  const done = rec.days.filter((d) => d.result);
-  const total = done.reduce((a, d) => ({
-    bets: a.bets + d.result.bets, hits: a.hits + d.result.hits,
-    stake: a.stake + d.result.stake, ret: a.ret + d.result.ret,
-  }), { bets: 0, hits: 0, stake: 0, ret: 0 });
-  rec.summary = total.bets ? {
-    days: done.length, bets: total.bets, hits: total.hits,
-    hitRate: total.hits / total.bets, roi: total.ret / total.stake,
-    stake: total.stake, ret: total.ret, evMin: EV_MIN, stakePerBet: STAKE, updatedAt: jstStamp(),
-  } : null;
+  const sum = (key) => {
+    const done = rec.days.filter((d) => d.result && d.result[key]);
+    const t = done.reduce((a, d) => ({
+      bets: a.bets + d.result[key].bets, hits: a.hits + d.result[key].hits,
+      stake: a.stake + d.result[key].stake, ret: a.ret + d.result[key].ret,
+    }), { bets: 0, hits: 0, stake: 0, ret: 0 });
+    return t.bets ? { days: done.length, ...t, hitRate: t.hits / t.bets, roi: t.ret / t.stake } : null;
+  };
+  rec.summary = { all: sum('all'), adv: sum('adv'), evMin: EV_MIN, aiRank: AI_RANK, stakePerBet: STAKE, updatedAt: jstStamp() };
   saveRecord(rec);
 
   console.log(`結果を取り込みました: ${matched}点 一致 / ${missing}点 見つからず`);
-  if (rec.summary) {
-    const s = rec.summary;
-    console.log(`  通算 ${s.days}日 ${s.bets}点  的中 ${s.hits}点 (${(s.hitRate * 100).toFixed(1)}%)  回収率 ${(s.roi * 100).toFixed(1)}%`);
+  for (const [key, label] of [['all', '全クラス    '], ['adv', '1勝クラス以上']]) {
+    const s = rec.summary[key];
+    if (s) console.log(`  ${label} 通算 ${s.days}日 ${s.bets}点  的中 ${s.hits}点 (${(s.hitRate * 100).toFixed(1)}%)  回収率 ${(s.roi * 100).toFixed(1)}%`);
   }
 }
 
