@@ -1,4 +1,21 @@
 {
   "format": "habu-ai/track/2",
-  "days": []
+  "days": [
+    {
+      "date": "2026-09-26",
+      "versions": [
+        {
+          "v": 1,
+          "committedAt": "2026-09-26 11:43:13 JST",
+          "committedMin": 703,
+          "hash": "fe871308c9f13e89c5aa0bf4c92d8ed805b2f2b2f513f395133adb08a16af96b",
+          "evMin": 1.3,
+          "pickCount": 4,
+          "revealed": false,
+          "picks": null
+        }
+      ],
+      "result": null
+    }
+  ]
 }
