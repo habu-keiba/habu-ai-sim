@@ -1186,7 +1186,7 @@ function parseCSV(text){
         cls:get(c,idx.cls),baba:normalizeBaba(get(c,idx.baba)),courseKey:pickCourse(place,dist,get(c,idx.cls)),pace:get(c,idx.pace)||null,provisional:false,horses:[]};
     }
     races[key].horses.push({
-      number,name:get(c,idx.name).replace(/^\*/,'').trim(),jockey:get(c,idx.jockey),winProb:parsePct(get(c,idx.prob)),
+      number,name:get(c,idx.name).replace(/^[*$＊＄]+/,'').trim(),jockey:get(c,idx.jockey),winProb:parsePct(get(c,idx.prob)),
       waku:parseInt(get(c,idx.waku),10)||null,coatName:normalizeCoat(get(c,idx.coat)),
       isNige:/逃|★/.test(get(c,idx.nige)),
       kyaku:STYLE_FROM_JP[get(c,idx.style)]||null,
