@@ -47,6 +47,7 @@
   <h1>予測実績（検証できる記録）</h1>
   <p class="sub">
     AI勝率1位かつ期待値1.3以上と判定した馬の単勝を、1点100円で買った場合の記録です。新馬・未勝利を除いた「1勝クラス以上」と、全クラスの2通りで集計しています。障害競走は平地用のモデルのため対象外で、記録には理由つきで残したうえで集計から外しています。
+    レース前に自分の判断で見送った点がある日は、「AI通り（ルール通りに全部買った場合）」と「裁量あり（見送った点を除いた場合）」を並べて出します。見送りもレース前に指紋へ含めて記録するので、後から都合よく外すことはできません。
     <a href="./">シミュレーターに戻る</a> ／ <a href="https://note.com/habu_keiba" target="_blank" rel="noopener">note</a>
   </p>
 
@@ -99,7 +100,15 @@ function renderStats(r){
   if(!s){$('stats').innerHTML=statCards(null,'全クラス','');return;}
   STAKE_PER_BET=s.stakePerBet||100;
   $('stats').style.display='block';
-  $('stats').innerHTML=statCards(s.adv,'1勝クラス以上','新馬・未勝利を除く')+'<div style="height:10px"></div>'+statCards(s.all,'全クラス','新馬・未勝利を含む');
+  const g=(a,b)=>statCards(a,b[0],b[1]);
+  let html=g(s.adv,['AI通り｜1勝クラス以上','ルール通りに全部買った場合／新馬・未勝利を除く'])
+    +'<div style="height:10px"></div>'+g(s.all,['AI通り｜全クラス','ルール通りに全部買った場合／新馬・未勝利を含む']);
+  if(s.skipped){
+    html+='<div style="height:16px"></div>'
+      +g(s.myAdv,['裁量あり｜1勝クラス以上','レース前に見送ると決めた点を除く／新馬・未勝利を除く'])
+      +'<div style="height:10px"></div>'+g(s.myAll,['裁量あり｜全クラス','レース前に見送ると決めた点を除く／新馬・未勝利を含む']);
+  }
+  $('stats').innerHTML=html;
   $('updated').textContent='買い目: AI勝率'+(s.aiRank||1)+'位かつ期待値'+(s.evMin||1.3)+'以上の単勝を1点'+(s.stakePerBet||100)+'円 ／ 最終更新: '+(s.updatedAt||'');
 }
 
@@ -118,7 +127,7 @@ function renderDays(r){
       +d.versions.map(v=>'<tr><td>第'+v.v+'版</td><td>'+v.committedAt+'</td><td class="hash">'+v.hash+'</td><td class="num">'+v.pickCount+'</td></tr>').join('')+'</table>';
     const nEx=off?off.filter(p=>p.excluded).length:0;
     const picks=off?'<details><summary>成績に数えた推奨馬（'+(off.length-nEx)+'点／各レースの発走前・最終版'+(nEx?'　※対象外 '+nEx+'点を含めて表示':'')+'）</summary><table><tr><th>レース</th><th>クラス</th><th>発走</th><th>馬番</th><th>馬名</th><th class="num">単勝</th><th class="num">着順</th><th class="num">払戻</th><th>採用版</th></tr>'
-      +off.map(p=>'<tr'+(p.excluded?' style="opacity:.5"':'')+'><td>'+p.place+p.race+'R</td><td>'+(p.cls||'—')+'</td><td>'+(p.postTime||'—')+'</td><td class="num">'+p.number+'</td><td>'+p.name+(p.excluded?' <span class="tag wait">対象外・'+p.excluded+'</span>':'')+'</td><td class="num">'+(p.oddsAtPredict??'—')+'</td>'
+      +off.map(p=>'<tr'+(p.excluded||p.skip?' style="opacity:.5"':'')+'><td>'+p.place+p.race+'R</td><td>'+(p.cls||'—')+'</td><td>'+(p.postTime||'—')+'</td><td class="num">'+p.number+'</td><td>'+p.name+(p.excluded?' <span class="tag wait">対象外・'+p.excluded+'</span>':'')+(p.skip?' <span class="tag wait">レース前に見送り・'+p.skip+'</span>':'')+'</td><td class="num">'+(p.oddsAtPredict??'—')+'</td>'
         +'<td class="num '+(p.finish===1&&!p.excluded?'hit':'miss')+'">'+(p.finish??'—')+'</td><td class="num">'+(p.payout?yen(p.payout):'—')+'</td><td>第'+p.fromVersion+'版</td></tr>').join('')
       +'</table></details>':'';
     return '<div style="padding:10px 0;border-bottom:1px solid var(--line)">'+head+vers+picks+'</div>';
