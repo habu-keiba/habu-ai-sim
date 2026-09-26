@@ -6,6 +6,8 @@
  *   node tools/track.mjs results "<結果CSV>"    結果を取り込み、的中率と回収率を集計する
  *   node tools/track.mjs verify                 公開済みの予測が、記録した指紋と一致するか確かめる
  *
+ * 買い目は「AI勝率1位 かつ 期待値1.3以上の単勝」。障害競走は平地用モデルの対象外として除く。
+ *
  * オッズで期待値が変わるため、1日に何度でも記録できる。すべての版が時刻付きで公開される。
  * 成績に数えるのは「各レースの発走時刻より前に記録された、最後の版」だけ。
  * レースが終わってから出した予想は自動的に成績から外れるので、後から良い版を選ぶことはできない。
@@ -37,6 +39,26 @@ const toMinutes = (v) => {
   const m = toHalf(v).match(/(\d{1,2})\s*[:時]\s*(\d{2})/);
   return m ? Number(m[1]) * 60 + Number(m[2]) : null;
 };
+/**
+ * 障害競走かどうか。平地用のモデルなので買い目から外す。
+ * JRAの平地は最長3600mで、距離はすべて100mの倍数。
+ * 障害は3210・3350・3570mのような半端な距離か、3600m超になる（3300m・2900mも障害だけにある）。
+ * 距離が取れない古い記録のために、レース名でも判定する（ジャパンＣを巻き込まないよう「ジャパ」は除く）。
+ */
+function isJumpRace(p) {
+  const d = num(p.dist);
+  if (d !== null) {
+    if (d % 100 !== 0 || d > 3600 || d === 3300 || d === 2900) return true;
+  }
+  const name = String(p.raceName || '') + String(p.cls || '');
+  return /障害|ハードル|ジャンプ|ジャ(?!パ)/.test(name);
+}
+/** その点を成績から外す理由（障害競走、または手動の除外リスト）。対象外でなければ null */
+function excludedReason(rec, date, p) {
+  if (isJumpRace(p)) return '障害競走';
+  const hit = (rec.excluded || []).find((e) => e.date === date && e.place === p.place && String(e.race) === String(p.race));
+  return hit ? hit.reason : null;
+}
 const loadRecord = () => (fs.existsSync(RECORD) ? JSON.parse(fs.readFileSync(RECORD, 'utf8')) : { format: 'habu-ai/track/2', days: [] });
 const saveRecord = (r) => { fs.mkdirSync(path.dirname(RECORD), { recursive: true }); fs.writeFileSync(RECORD, JSON.stringify(r, null, 2)); };
 
@@ -65,28 +87,32 @@ function readCsv(file) {
   });
 }
 
-/** 予測CSV → その日の推奨馬（EV下限以上）を取り出す */
+/** 予測CSV → その日の推奨馬（EV下限以上）を取り出す。障害競走は平地用モデルの対象外なので除く */
 function extractPicks(rows) {
   const picks = [];
+  const jumps = [];
   for (const r of rows) {
     const ev = num(r['期待値(EV)']);
     const rank = num(r['AI勝率順位']);
     if (ev === null || ev < EV_MIN) continue;
     if (rank !== AI_RANK) continue;              // AI勝率1位の馬だけを買う
-    picks.push({
+    const p = {
       date: r['日付'], place: r['場所'], race: r['Ｒ'] || r['R'], raceName: r['レース名'],
-      cls: r['クラス名'] || '', postTime: r['発走時刻'] || null,
+      cls: r['クラス名'] || '', dist: r['距離'] || '', postTime: r['発走時刻'] || null,
       number: num(r['馬番']), name: (r['馬名'] || '').replace(/^\*/, '').trim(),
       winProb: pct(r['予測勝率']), ev, oddsAtPredict: num(r['単勝オッズ']),
       aiRank: num(r['AI勝率順位']), mark: r['推奨買い目'] || '',
-    });
+    };
+    if (isJumpRace(p)) { jumps.push(p); continue; }
+    picks.push(p);
   }
-  return picks.sort((a, b) => String(a.place).localeCompare(String(b.place), 'ja') || (a.race - b.race) || (b.ev - a.ev));
+  picks.sort((a, b) => String(a.place).localeCompare(String(b.place), 'ja') || (a.race - b.race) || (b.ev - a.ev));
+  return { picks, jumps };
 }
 
 function cmdCommit(csvPath) {
   const rows = readCsv(csvPath);
-  const picks = extractPicks(rows);
+  const { picks, jumps } = extractPicks(rows);
   if (!picks.length) throw new Error(`AI勝率1位かつ期待値${EV_MIN}以上の馬が1頭もありません（オッズが入っていないCSVの可能性があります）`);
   const date = picks[0].date;
   const key = date.replace(/\./g, '-');
@@ -112,6 +138,7 @@ function cmdCommit(csvPath) {
   console.log(`${key} 第${v}版: 推奨 ${picks.length} 点の指紋を記録しました（${jstStamp()}）`);
   console.log(`  ハッシュ: ${hash}`);
   console.log(`  内訳: ${picks.map((p) => `${p.place}${p.race}R ${p.number}番${p.postTime ? `(${p.postTime}発走)` : ''}`).join(' / ')}`);
+  if (jumps.length) console.log(`  ※ 障害競走 ${jumps.length} 件を除きました（${jumps.map((p) => `${p.place}${p.race}R ${p.raceName}`).join(' / ')}）`);
   if (noPost) console.log(`  ※ 発走時刻の列が無い点が ${noPost} 件あります（結果CSVの発走時刻で判定するので、このままで問題ありません）`);
   console.log('  → git add -A && git commit && git push で、この時刻が公開記録に残ります（中身はまだ出ません）');
 }
@@ -200,8 +227,11 @@ function cmdResults(csvPath) {
     const dayPost = new Map();
     for (const [k, v] of postTimes) { const [d, place, race] = k.split('|'); if (d === day.date) dayPost.set(`${place}|${race}`, v); }
     const { picks, unknownPostTime } = selectOfficialPicks(day, dayPost);
+    // 障害競走など対象外の点は、記録には理由つきで残したまま集計から外す
+    for (const p of picks) { const why = excludedReason(rec, day.date, p); if (why) p.excluded = why; }
     let unknown = 0;
     for (const p of picks) {
+      if (p.excluded) continue;
       const r = table.get([day.date, p.place, p.race, p.number].join('|'));
       if (!r || r.finish === null) { unknown++; p.finish = null; missing++; continue; }
       p.finish = r.finish;
@@ -209,8 +239,9 @@ function cmdResults(csvPath) {
       p.payout = r.finish === 1 ? payout : 0;
       matched++;
     }
+    const counted = picks.filter((p) => !p.excluded);
     day.official = { picks, unknownPostTime };
-    day.result = { all: tally(picks), adv: tally(picks.filter(isAdvanced)), unknown };
+    day.result = { all: tally(counted), adv: tally(counted.filter(isAdvanced)), unknown };
   }
 
   const sum = (key) => {
@@ -231,6 +262,21 @@ function cmdResults(csvPath) {
   }
 }
 
+/** 特定のレースを成績の対象外にする（理由は公開ページに表示される） */
+function cmdExclude(dateArg, place, race, reason) {
+  if (!dateArg || !place || !race) throw new Error('使い方: node tools/track.mjs exclude <日付> <場所> <R> [理由]');
+  const date = String(dateArg).replace(/[./]/g, '-');
+  const rec = loadRecord();
+  rec.excluded = rec.excluded || [];
+  const why = reason || '対象外';
+  const i = rec.excluded.findIndex((e) => e.date === date && e.place === place && String(e.race) === String(race));
+  if (i >= 0) rec.excluded[i].reason = why;
+  else rec.excluded.push({ date, place, race: String(race), reason: why });
+  saveRecord(rec);
+  console.log(`${date} ${place}${race}R を成績の対象外にしました（理由: ${why}）`);
+  console.log('  → results を実行し直すと集計に反映されます（買い目の記録自体は理由つきで残ります）');
+}
+
 function cmdVerify() {
   const rec = loadRecord();
   let ok = 0, ng = 0, wait = 0;
@@ -246,17 +292,19 @@ function cmdVerify() {
   if (ng) process.exitCode = 1;
 }
 
-const [cmd, arg] = process.argv.slice(2);
+const [cmd, arg, ...rest] = process.argv.slice(2);
 try {
   if (cmd === 'commit') cmdCommit(arg);
   else if (cmd === 'reveal') cmdReveal(arg);
   else if (cmd === 'results') cmdResults(arg);
+  else if (cmd === 'exclude') cmdExclude(arg, rest[0], rest[1], rest.slice(2).join(' '));
   else if (cmd === 'verify') cmdVerify();
   else {
     console.log('使い方:');
     console.log('  node tools/track.mjs commit "<予測CSV>"    レース前：指紋だけ記録（1日に何度でも）');
     console.log('  node tools/track.mjs reveal <日付>         レース後：中身を公開');
     console.log('  node tools/track.mjs results "<結果CSV>"   結果を取り込んで集計');
+    console.log('  node tools/track.mjs exclude <日付> <場所> <R> [理由]   そのレースを成績の対象外にする');
     console.log('  node tools/track.mjs verify                指紋の照合');
   }
 } catch (e) {

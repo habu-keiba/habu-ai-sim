@@ -46,7 +46,7 @@
   <p class="brand">🏇 羽生AI</p>
   <h1>予測実績（検証できる記録）</h1>
   <p class="sub">
-    AI勝率1位かつ期待値1.3以上と判定した馬の単勝を、1点100円で買った場合の記録です。新馬・未勝利を除いた「1勝クラス以上」と、全クラスの2通りで集計しています。
+    AI勝率1位かつ期待値1.3以上と判定した馬の単勝を、1点100円で買った場合の記録です。新馬・未勝利を除いた「1勝クラス以上」と、全クラスの2通りで集計しています。障害競走は平地用のモデルのため対象外で、記録には理由つきで残したうえで集計から外しています。
     <a href="./">シミュレーターに戻る</a> ／ <a href="https://note.com/habu_keiba" target="_blank" rel="noopener">note</a>
   </p>
 
@@ -112,9 +112,10 @@ function renderDays(r){
            :'<span class="tag wait">レース前・指紋のみ</span>')+'</div>';
     const vers='<table><tr><th style="width:52px">版</th><th style="width:180px">記録した時刻</th><th>指紋（SHA-256）</th><th class="num">点数</th></tr>'
       +d.versions.map(v=>'<tr><td>第'+v.v+'版</td><td>'+v.committedAt+'</td><td class="hash">'+v.hash+'</td><td class="num">'+v.pickCount+'</td></tr>').join('')+'</table>';
-    const picks=off?'<details><summary>成績に数えた推奨馬（'+off.length+'点／各レースの発走前・最終版）</summary><table><tr><th>レース</th><th>クラス</th><th>発走</th><th>馬番</th><th>馬名</th><th class="num">単勝</th><th class="num">着順</th><th class="num">払戻</th><th>採用版</th></tr>'
-      +off.map(p=>'<tr><td>'+p.place+p.race+'R</td><td>'+(p.cls||'—')+'</td><td>'+(p.postTime||'—')+'</td><td class="num">'+p.number+'</td><td>'+p.name+'</td><td class="num">'+(p.oddsAtPredict??'—')+'</td>'
-        +'<td class="num '+(p.finish===1?'hit':'miss')+'">'+(p.finish??'—')+'</td><td class="num">'+(p.payout?yen(p.payout):'—')+'</td><td>第'+p.fromVersion+'版</td></tr>').join('')
+    const nEx=off?off.filter(p=>p.excluded).length:0;
+    const picks=off?'<details><summary>成績に数えた推奨馬（'+(off.length-nEx)+'点／各レースの発走前・最終版'+(nEx?'　※対象外 '+nEx+'点を含めて表示':'')+'）</summary><table><tr><th>レース</th><th>クラス</th><th>発走</th><th>馬番</th><th>馬名</th><th class="num">単勝</th><th class="num">着順</th><th class="num">払戻</th><th>採用版</th></tr>'
+      +off.map(p=>'<tr'+(p.excluded?' style="opacity:.5"':'')+'><td>'+p.place+p.race+'R</td><td>'+(p.cls||'—')+'</td><td>'+(p.postTime||'—')+'</td><td class="num">'+p.number+'</td><td>'+p.name+(p.excluded?' <span class="tag wait">対象外・'+p.excluded+'</span>':'')+'</td><td class="num">'+(p.oddsAtPredict??'—')+'</td>'
+        +'<td class="num '+(p.finish===1&&!p.excluded?'hit':'miss')+'">'+(p.finish??'—')+'</td><td class="num">'+(p.payout?yen(p.payout):'—')+'</td><td>第'+p.fromVersion+'版</td></tr>').join('')
       +'</table></details>':'';
     return '<div style="padding:10px 0;border-bottom:1px solid var(--line)">'+head+vers+picks+'</div>';
   }).join('');
