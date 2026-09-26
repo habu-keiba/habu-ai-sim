@@ -11,11 +11,124 @@
           "hash": "fe871308c9f13e89c5aa0bf4c92d8ed805b2f2b2f513f395133adb08a16af96b",
           "evMin": 1.3,
           "pickCount": 4,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.09.26",
+              "place": "阪神",
+              "race": "4",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "postTime": null,
+              "number": 9,
+              "name": "ポエジア",
+              "winProb": 0.23199999999999998,
+              "ev": 1.598,
+              "oddsAtPredict": 8.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.09.26",
+              "place": "中山",
+              "race": "4",
+              "raceName": "清秋ジャ",
+              "cls": "OP",
+              "postTime": null,
+              "number": 2,
+              "name": "メイショウソムリエ",
+              "winProb": 0.5557,
+              "ev": 1.579,
+              "oddsAtPredict": 3.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.09.26",
+              "place": "中山",
+              "race": "9",
+              "raceName": "芙蓉Ｓ",
+              "cls": "OP",
+              "postTime": null,
+              "number": 8,
+              "name": "スタースポット",
+              "winProb": 0.27449999999999997,
+              "ev": 1.351,
+              "oddsAtPredict": 6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.09.26",
+              "place": "中山",
+              "race": "10",
+              "raceName": "勝浦特別･2勝",
+              "cls": "2勝",
+              "postTime": null,
+              "number": 11,
+              "name": "ビービーエフォート",
+              "winProb": 0.15259999999999999,
+              "ev": 2.493,
+              "oddsAtPredict": 20.1,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-09-26 16:38:58 JST"
         }
       ],
-      "result": null
+      "result": {
+        "all": null,
+        "adv": null,
+        "unknown": 2
+      },
+      "official": {
+        "picks": [
+          {
+            "date": "2026.09.26",
+            "place": "中山",
+            "race": "9",
+            "raceName": "芙蓉Ｓ",
+            "cls": "OP",
+            "postTime": "14:10",
+            "number": 8,
+            "name": "スタースポット",
+            "winProb": 0.27449999999999997,
+            "ev": 1.351,
+            "oddsAtPredict": 6,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 1,
+            "finish": null
+          },
+          {
+            "date": "2026.09.26",
+            "place": "中山",
+            "race": "10",
+            "raceName": "勝浦特別･2勝",
+            "cls": "2勝",
+            "postTime": "14:50",
+            "number": 11,
+            "name": "ビービーエフォート",
+            "winProb": 0.15259999999999999,
+            "ev": 2.493,
+            "oddsAtPredict": 20.1,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 1,
+            "finish": null
+          }
+        ],
+        "unknownPostTime": 0
+      }
     }
-  ]
+  ],
+  "summary": {
+    "all": null,
+    "adv": null,
+    "evMin": 1.3,
+    "aiRank": 1,
+    "stakePerBet": 100,
+    "updatedAt": "2026-09-26 16:38:59 JST"
+  }
 }
