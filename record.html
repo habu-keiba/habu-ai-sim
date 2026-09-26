@@ -85,17 +85,19 @@ const $=id=>document.getElementById(id);
 const pct=v=>v==null?'—':(v*100).toFixed(1)+'%';
 const yen=v=>v==null?'—':Math.round(v).toLocaleString()+'円';
 let record=null;
+let STAKE_PER_BET=100;
 
 function statCards(s,title,note){
   if(!s)return '<div class="stat"><div class="v">—</div><div class="l">'+title+'<br>結果の取り込み待ち</div></div>';
   return '<div class="panel" style="background:rgba(14,22,38,.4);margin:0"><p class="panel-title"><b style="color:var(--cream)">'+title+'</b>　'+note+'</p><div class="stats">'
-    +[['回収率',pct(s.roi),s.bets+'点購入'],['的中率',pct(s.hitRate),s.hits+'点的中'],['収支',(s.ret-s.stake>=0?'+':'')+yen(s.ret-s.stake),'投資'+yen(s.stake)+'／払戻'+yen(s.ret)],['開催',s.days+'日','']]
+    +[['回収率',pct(s.roi),'投資'+yen(s.stake)+'／払戻'+yen(s.ret)],['的中率',pct(s.hitRate),s.hits+'点的中'],['購入',s.bets+'点','1点'+yen(STAKE_PER_BET)],['開催',s.days+'日','']]
       .map(function(x){return '<div class="stat"><div class="v">'+x[1]+'</div><div class="l">'+x[0]+(x[2]?'<br>'+x[2]:'')+'</div></div>';}).join('')
     +'</div></div>';
 }
 function renderStats(r){
   const s=r.summary;
   if(!s){$('stats').innerHTML=statCards(null,'全クラス','');return;}
+  STAKE_PER_BET=s.stakePerBet||100;
   $('stats').style.display='block';
   $('stats').innerHTML=statCards(s.adv,'1勝クラス以上','新馬・未勝利を除く')+'<div style="height:10px"></div>'+statCards(s.all,'全クラス','新馬・未勝利を含む');
   $('updated').textContent='買い目: AI勝率'+(s.aiRank||1)+'位かつ期待値'+(s.evMin||1.3)+'以上の単勝を1点'+(s.stakePerBet||100)+'円 ／ 最終更新: '+(s.updatedAt||'');
