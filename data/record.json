@@ -78,9 +78,23 @@
         }
       ],
       "result": {
-        "all": null,
-        "adv": null,
-        "unknown": 2
+        "all": {
+          "bets": 2,
+          "hits": 1,
+          "hitRate": 0.5,
+          "stake": 200,
+          "ret": 390,
+          "roi": 1.95
+        },
+        "adv": {
+          "bets": 2,
+          "hits": 1,
+          "hitRate": 0.5,
+          "stake": 200,
+          "ret": 390,
+          "roi": 1.95
+        },
+        "unknown": 0
       },
       "official": {
         "picks": [
@@ -99,7 +113,8 @@
             "aiRank": 1,
             "mark": "★推奨 [AI1位 EV1.2超]",
             "fromVersion": 1,
-            "finish": null
+            "finish": 1,
+            "payout": 390
           },
           {
             "date": "2026.09.26",
@@ -116,7 +131,8 @@
             "aiRank": 1,
             "mark": "★推奨 [AI1位 EV1.2超]",
             "fromVersion": 1,
-            "finish": null
+            "finish": 14,
+            "payout": 0
           }
         ],
         "unknownPostTime": 0
@@ -124,11 +140,27 @@
     }
   ],
   "summary": {
-    "all": null,
-    "adv": null,
+    "all": {
+      "days": 1,
+      "bets": 2,
+      "hits": 1,
+      "stake": 200,
+      "ret": 390,
+      "hitRate": 0.5,
+      "roi": 1.95
+    },
+    "adv": {
+      "days": 1,
+      "bets": 2,
+      "hits": 1,
+      "stake": 200,
+      "ret": 390,
+      "hitRate": 0.5,
+      "roi": 1.95
+    },
     "evMin": 1.3,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-09-26 16:38:59 JST"
+    "updatedAt": "2026-09-26 21:16:53 JST"
   }
 }
