@@ -105,8 +105,7 @@ function renderStats(r){
     +'<div style="height:10px"></div>'+g(s.all,['AI通り｜全クラス','ルール通りに全部買った場合／新馬・未勝利を含む']);
   if(s.skipped){
     html+='<div style="height:16px"></div>'
-      +g(s.myAdv,['裁量あり｜1勝クラス以上','レース前に見送ると決めた点を除く／新馬・未勝利を除く'])
-      +'<div style="height:10px"></div>'+g(s.myAll,['裁量あり｜全クラス','レース前に見送ると決めた点を除く／新馬・未勝利を含む']);
+      +g(s.myAll,['裁量あり｜全クラス','レース前に見送ると決めた点を除く／新馬・未勝利を含む']);
   }
   $('stats').innerHTML=html;
   $('updated').textContent='買い目: AI勝率'+(s.aiRank||1)+'位かつ期待値'+(s.evMin||1.3)+'以上の単勝を1点'+(s.stakePerBet||100)+'円 ／ 最終更新: '+(s.updatedAt||'');

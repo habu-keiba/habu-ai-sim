@@ -292,7 +292,7 @@ function cmdResults(csvPath) {
 
   console.log(`結果を取り込みました: ${matched}点 一致 / ${missing}点 見つからず`);
   const rows2 = [['all', 'AI通り  全クラス    '], ['adv', 'AI通り  1勝クラス以上']];
-  if (skipped) rows2.push(['myAll', '裁量あり 全クラス    '], ['myAdv', '裁量あり 1勝クラス以上']);
+  if (skipped) rows2.push(['myAll', '裁量あり 全クラス    ']);
   for (const [key, label] of rows2) {
     const s = rec.summary[key];
     if (s) console.log(`  ${label} 通算 ${s.days}日 ${s.bets}点  的中 ${s.hits}点 (${(s.hitRate * 100).toFixed(1)}%)  回収率 ${(s.roi * 100).toFixed(1)}%`);
