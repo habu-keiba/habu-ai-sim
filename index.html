@@ -1262,7 +1262,12 @@ function showRaces(races){
   keys.forEach(k=>{const R=races[k];const o=document.createElement('option');o.value=k;o.textContent=`${R.place}${R.r}R ${R.name}（芝${R.dist}m）`;sel.appendChild(o);});
   sel.onchange=()=>{if(!raceRunning)loadRace(races[sel.value]);};
   $('raceRow').style.display='flex';
-  loadRace(races[keys[0]]);
+  // 最初に出すのはその日の一番格上のレース（重賞→オープン→条件戦の順、同格なら後のR）
+  const CLASS_RANK={'G1':9,'GI':9,'G2':8,'GII':8,'G3':7,'GIII':7,'L':6,'OP':6,'3勝':5,'2勝':4,'1勝':3,'未勝利':2,'新馬':1};
+  const rank=k=>{const R=races[k];return (CLASS_RANK[String(R.cls).trim()]||0)*100+parseInt(R.r,10);};
+  const first=[...keys].sort((a,b)=>rank(b)-rank(a))[0];
+  sel.value=first;
+  loadRace(races[first]);
 }
 
 /* ============================================================
