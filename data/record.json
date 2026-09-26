@@ -94,6 +94,23 @@
           "ret": 390,
           "roi": 1.95
         },
+        "myAll": {
+          "bets": 2,
+          "hits": 1,
+          "hitRate": 0.5,
+          "stake": 200,
+          "ret": 390,
+          "roi": 1.95
+        },
+        "myAdv": {
+          "bets": 2,
+          "hits": 1,
+          "hitRate": 0.5,
+          "stake": 200,
+          "ret": 390,
+          "roi": 1.95
+        },
+        "skipped": 0,
         "unknown": 0
       },
       "official": {
@@ -158,9 +175,28 @@
       "hitRate": 0.5,
       "roi": 1.95
     },
+    "myAll": {
+      "days": 1,
+      "bets": 2,
+      "hits": 1,
+      "stake": 200,
+      "ret": 390,
+      "hitRate": 0.5,
+      "roi": 1.95
+    },
+    "myAdv": {
+      "days": 1,
+      "bets": 2,
+      "hits": 1,
+      "stake": 200,
+      "ret": 390,
+      "hitRate": 0.5,
+      "roi": 1.95
+    },
+    "skipped": 0,
     "evMin": 1.3,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-09-26 21:16:53 JST"
+    "updatedAt": "2026-09-26 21:32:25 JST"
   }
 }
