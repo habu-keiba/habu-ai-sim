@@ -246,10 +246,15 @@ function cmdResults(csvPath) {
     });
   }
 
+  // 結果CSVに入っている日付だけを更新する。
+  // 全部の日を作り直すと、1日分のCSVを入れたときに他の日の成績が消えてしまう
+  const datesInCsv = new Set([...table.keys()].map((k) => k.split('|')[0]));
+
   const rec = loadRecord();
-  let matched = 0, missing = 0;
+  let matched = 0, missing = 0, kept = 0;
   for (const day of rec.days) {
     if (!day.versions.some((v) => v.revealed)) continue;
+    if (!datesInCsv.has(day.date)) { if (day.result) kept++; continue; }
     const dayPost = new Map();
     for (const [k, v] of postTimes) { const [d, place, race] = k.split('|'); if (d === day.date) dayPost.set(`${place}|${race}`, v); }
     const { picks, unknownPostTime } = selectOfficialPicks(day, dayPost);
@@ -290,7 +295,8 @@ function cmdResults(csvPath) {
   };
   saveRecord(rec);
 
-  console.log(`結果を取り込みました: ${matched}点 一致 / ${missing}点 見つからず`);
+  console.log(`結果を取り込みました: ${matched}点 一致 / ${missing}点 見つからず`
+    + (kept ? ` （このCSVに無い ${kept}日分は、前回の集計をそのまま残しました）` : ''));
   const rows2 = [['all', 'AI通り  全クラス    '], ['adv', 'AI通り  1勝クラス以上']];
   if (skipped) rows2.push(['myAll', '裁量あり 全クラス    ']);
   for (const [key, label] of rows2) {
