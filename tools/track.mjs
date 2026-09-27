@@ -123,7 +123,7 @@ function parseSkips(args) {
     const [target, ...why] = spec.split(':');
     const m = toHalf(target).match(/^(.+?)\s*(\d{1,2})\s*R?(?:\s*[-‐ｰ]\s*(\d{1,2}))?$/);
     if (!m) throw new Error(`--skip の書き方が違います: ${spec}（例: --skip 中山5R、--skip 中山5R-7:距離が長い）`);
-    out.push({ place: m[1].trim(), race: m[2], number: m[3] ? Number(m[3]) : null, reason: why.join(':').trim() || '裁量で見送り' });
+    out.push({ place: m[1].trim(), race: m[2], number: m[3] ? Number(m[3]) : null, reason: why.join(':').trim() || '羽生の判断で見送り' });
   }
   return out;
 }
@@ -163,7 +163,7 @@ function cmdCommit(csvPath, args = []) {
   console.log(`${key} 第${v}版: 推奨 ${picks.length} 点の指紋を記録しました（${jstStamp()}）`);
   console.log(`  ハッシュ: ${hash}`);
   console.log(`  内訳: ${picks.map((p) => `${p.place}${p.race}R ${p.number}番${p.skip ? '【見送り】' : ''}${p.postTime ? `(${p.postTime}発走)` : ''}`).join(' / ')}`);
-  if (skips.length) console.log(`  ※ 裁量で見送り ${picks.filter((p) => p.skip).length} 点（${picks.filter((p) => p.skip).map((p) => `${p.place}${p.race}R ${p.number}番: ${p.skip}`).join(' / ')}）`);
+  if (skips.length) console.log(`  ※ 羽生の判断で見送り ${picks.filter((p) => p.skip).length} 点（${picks.filter((p) => p.skip).map((p) => `${p.place}${p.race}R ${p.number}番: ${p.skip}`).join(' / ')}）`);
   if (jumps.length) console.log(`  ※ 障害競走 ${jumps.length} 件を除きました（${jumps.map((p) => `${p.place}${p.race}R ${p.raceName}`).join(' / ')}）`);
   if (noPost) console.log(`  ※ 発走時刻の列が無い点が ${noPost} 件あります（結果CSVの発走時刻で判定するので、このままで問題ありません）`);
   console.log('  → git add -A && git commit && git push で、この時刻が公開記録に残ります（中身はまだ出ません）');
@@ -271,7 +271,7 @@ function cmdResults(csvPath) {
       matched++;
     }
     const counted = picks.filter((p) => !p.excluded);        // AI通り（ルール通りに全部買った場合）
-    const mine = counted.filter((p) => !p.skip);             // 裁量あり（レース前に見送ると決めた点を除く）
+    const mine = counted.filter((p) => !p.skip);             // AI＋羽生の判断（レース前に見送ると決めた点を除く）
     day.official = { picks, unknownPostTime };
     day.result = {
       all: tally(counted), adv: tally(counted.filter(isAdvanced)),
@@ -297,13 +297,13 @@ function cmdResults(csvPath) {
 
   console.log(`結果を取り込みました: ${matched}点 一致 / ${missing}点 見つからず`
     + (kept ? ` （このCSVに無い ${kept}日分は、前回の集計をそのまま残しました）` : ''));
-  const rows2 = [['all', 'AI通り  全クラス    '], ['adv', 'AI通り  1勝クラス以上']];
-  if (skipped) rows2.push(['myAll', '裁量あり 全クラス    ']);
+  const rows2 = [['all', 'AIのみ   全クラス    '], ['adv', 'AIのみ   1勝クラス以上']];
+  if (skipped) rows2.push(['myAll', 'AI＋羽生 全クラス    ']);
   for (const [key, label] of rows2) {
     const s = rec.summary[key];
     if (s) console.log(`  ${label} 通算 ${s.days}日 ${s.bets}点  的中 ${s.hits}点 (${(s.hitRate * 100).toFixed(1)}%)  回収率 ${(s.roi * 100).toFixed(1)}%`);
   }
-  if (skipped) console.log(`  （レース前に裁量で見送った点: 通算 ${skipped} 点）`);
+  if (skipped) console.log(`  （レース前に羽生が見送った点: 通算 ${skipped} 点）`);
 }
 
 /** 特定のレースを成績の対象外にする（理由は公開ページに表示される） */
@@ -347,7 +347,7 @@ try {
     console.log('使い方:');
     console.log('  node tools/track.mjs commit "<予測CSV>" [--skip 中山5R[-7][:理由]]');
     console.log('                                            レース前：指紋だけ記録（1日に何度でも）');
-    console.log('                                            --skip はレース前に裁量で見送る点。指紋に含めて記録する');
+    console.log('                                            --skip はレース前に羽生が見送る点（理由も書ける）。指紋に含めて記録する');
     console.log('  node tools/track.mjs reveal <日付>         レース後：中身を公開');
     console.log('  node tools/track.mjs results "<結果CSV>"   結果を取り込んで集計');
     console.log('  node tools/track.mjs exclude <日付> <場所> <R> [理由]   そのレースを成績の対象外にする');
