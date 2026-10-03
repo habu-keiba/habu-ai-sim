@@ -417,54 +417,253 @@
           "hash": "9e1c0a369f4a47f9829d2b74274a00b8f7a739f05b88e3c04e6b002c6d73e27a",
           "evMin": 1.3,
           "pickCount": 5,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.10.03",
+              "place": "京都",
+              "race": "2",
+              "raceName": "未勝利*",
+              "cls": "未勝利",
+              "dist": "芝1800",
+              "postTime": "10:30",
+              "number": 8,
+              "name": "ルーメンルーナエ",
+              "winProb": 0.45039999999999997,
+              "ev": 1.426,
+              "oddsAtPredict": 3.9,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]",
+              "skip": "2番手評価の馬のほうが強いと判断"
+            },
+            {
+              "date": "2026.10.03",
+              "place": "京都",
+              "race": "5",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "dist": "芝1600",
+              "postTime": "12:10",
+              "number": 4,
+              "name": "パンプルネル",
+              "winProb": 0.3378,
+              "ev": 2.732,
+              "oddsAtPredict": 10.9,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.10.03",
+              "place": "京都",
+              "race": "6",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝2000",
+              "postTime": "12:40",
+              "number": 1,
+              "name": "ノンブルドール",
+              "winProb": 0.2419,
+              "ev": 1.666,
+              "oddsAtPredict": 8.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.10.03",
+              "place": "京都",
+              "race": "8",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝2000",
+              "postTime": "13:40",
+              "number": 4,
+              "name": "サトノアイボリー",
+              "winProb": 0.3906,
+              "ev": 1.729,
+              "oddsAtPredict": 5.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.10.03",
+              "place": "京都",
+              "race": "11",
+              "raceName": "オパーＨ(L)",
+              "cls": "OP",
+              "dist": "芝1200",
+              "postTime": "15:30",
+              "number": 18,
+              "name": "ディアナザール",
+              "winProb": 0.2732,
+              "ev": 1.814,
+              "oddsAtPredict": 8.1,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-10-03 17:15:48 JST"
         }
       ],
-      "result": null
+      "result": {
+        "all": {
+          "bets": 4,
+          "hits": 0,
+          "hitRate": 0,
+          "stake": 400,
+          "ret": 0,
+          "roi": 0
+        },
+        "adv": {
+          "bets": 3,
+          "hits": 0,
+          "hitRate": 0,
+          "stake": 300,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAll": {
+          "bets": 4,
+          "hits": 0,
+          "hitRate": 0,
+          "stake": 400,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAdv": {
+          "bets": 3,
+          "hits": 0,
+          "hitRate": 0,
+          "stake": 300,
+          "ret": 0,
+          "roi": 0
+        },
+        "skipped": 0,
+        "unknown": 0
+      },
+      "official": {
+        "picks": [
+          {
+            "date": "2026.10.03",
+            "place": "京都",
+            "race": "5",
+            "raceName": "新馬",
+            "cls": "新馬",
+            "dist": "芝1600",
+            "postTime": "12:10",
+            "number": 4,
+            "name": "パンプルネル",
+            "winProb": 0.3378,
+            "ev": 2.732,
+            "oddsAtPredict": 10.9,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 1,
+            "finish": 9,
+            "payout": 0
+          },
+          {
+            "date": "2026.10.03",
+            "place": "京都",
+            "race": "6",
+            "raceName": "１勝ｸﾗｽ",
+            "cls": "1勝",
+            "dist": "芝2000",
+            "postTime": "12:40",
+            "number": 1,
+            "name": "ノンブルドール",
+            "winProb": 0.2419,
+            "ev": 1.666,
+            "oddsAtPredict": 8.4,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 1,
+            "finish": 2,
+            "payout": 0
+          },
+          {
+            "date": "2026.10.03",
+            "place": "京都",
+            "race": "8",
+            "raceName": "２勝ｸﾗｽ",
+            "cls": "2勝",
+            "dist": "芝2000",
+            "postTime": "13:40",
+            "number": 4,
+            "name": "サトノアイボリー",
+            "winProb": 0.3906,
+            "ev": 1.729,
+            "oddsAtPredict": 5.4,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 1,
+            "finish": 3,
+            "payout": 0
+          },
+          {
+            "date": "2026.10.03",
+            "place": "京都",
+            "race": "11",
+            "raceName": "オパーＨ(L)",
+            "cls": "OP",
+            "dist": "芝1200",
+            "postTime": "15:30",
+            "number": 18,
+            "name": "ディアナザール",
+            "winProb": 0.2732,
+            "ev": 1.814,
+            "oddsAtPredict": 8.1,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 1,
+            "finish": 2,
+            "payout": 0
+          }
+        ],
+        "unknownPostTime": 0
+      }
     }
   ],
   "summary": {
     "all": {
-      "days": 2,
-      "bets": 7,
+      "days": 3,
+      "bets": 11,
       "hits": 3,
-      "stake": 700,
+      "stake": 1100,
       "ret": 1250,
-      "hitRate": 0.42857142857142855,
-      "roi": 1.7857142857142858
+      "hitRate": 0.2727272727272727,
+      "roi": 1.1363636363636365
     },
     "adv": {
-      "days": 2,
-      "bets": 5,
+      "days": 3,
+      "bets": 8,
       "hits": 2,
-      "stake": 500,
+      "stake": 800,
       "ret": 700,
-      "hitRate": 0.4,
-      "roi": 1.4
+      "hitRate": 0.25,
+      "roi": 0.875
     },
     "myAll": {
-      "days": 2,
-      "bets": 6,
+      "days": 3,
+      "bets": 10,
       "hits": 3,
-      "stake": 600,
+      "stake": 1000,
       "ret": 1250,
-      "hitRate": 0.5,
-      "roi": 2.0833333333333335
+      "hitRate": 0.3,
+      "roi": 1.25
     },
     "myAdv": {
-      "days": 2,
-      "bets": 4,
+      "days": 3,
+      "bets": 7,
       "hits": 2,
-      "stake": 400,
+      "stake": 700,
       "ret": 700,
-      "hitRate": 0.5,
-      "roi": 1.75
+      "hitRate": 0.2857142857142857,
+      "roi": 1
     },
     "skipped": 1,
     "evMin": 1.3,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-09-27 16:02:48 JST"
+    "updatedAt": "2026-10-03 17:15:48 JST"
   }
 }
