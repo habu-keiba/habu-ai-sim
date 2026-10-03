@@ -219,9 +219,14 @@ function tally(picks) {
   const done = picks.filter((p) => p.finish != null);
   if (!done.length) return null;
   const hits = done.filter((p) => p.finish === 1);
+  const top3 = done.filter((p) => p.finish <= 3);          // 買ったのは単勝だが、どれだけ惜しかったかの目安
   const ret = hits.reduce((a, p) => a + (p.payout ?? 0), 0);
   const stake = done.length * STAKE;
-  return { bets: done.length, hits: hits.length, hitRate: hits.length / done.length, stake, ret, roi: ret / stake };
+  return {
+    bets: done.length, hits: hits.length, hitRate: hits.length / done.length,
+    top3: top3.length, top3Rate: top3.length / done.length,
+    stake, ret, roi: ret / stake,
+  };
 }
 
 function cmdResults(csvPath) {
@@ -280,28 +285,67 @@ function cmdResults(csvPath) {
     };
   }
 
+  const skipped = rebuildSummary(rec);
+  saveRecord(rec);
+
+  console.log(`結果を取り込みました: ${matched}点 一致 / ${missing}点 見つからず`
+    + (kept ? ` （このCSVに無い ${kept}日分は、前回の集計をそのまま残しました）` : ''));
+  printSummary(rec, skipped);
+}
+
+/** 保存済みの着順から、日ごとの集計と通算を作り直す（集計の定義を変えたときに使う） */
+function rebuildDays(rec) {
+  for (const day of rec.days) {
+    if (!day.official || !day.official.picks) continue;
+    const picks = day.official.picks;
+    for (const p of picks) { const why = excludedReason(rec, day.date, p); if (why) p.excluded = why; else delete p.excluded; }
+    const counted = picks.filter((p) => !p.excluded);
+    const mine = counted.filter((p) => !p.skip);
+    day.result = {
+      all: tally(counted), adv: tally(counted.filter(isAdvanced)),
+      myAll: tally(mine), myAdv: tally(mine.filter(isAdvanced)),
+      skipped: counted.length - mine.length,
+      unknown: counted.filter((p) => p.finish == null).length,
+    };
+  }
+}
+
+function rebuildSummary(rec) {
   const sum = (key) => {
     const done = rec.days.filter((d) => d.result && d.result[key]);
     const t = done.reduce((a, d) => ({
       bets: a.bets + d.result[key].bets, hits: a.hits + d.result[key].hits,
+      top3: a.top3 + (d.result[key].top3 || 0),
       stake: a.stake + d.result[key].stake, ret: a.ret + d.result[key].ret,
-    }), { bets: 0, hits: 0, stake: 0, ret: 0 });
-    return t.bets ? { days: done.length, ...t, hitRate: t.hits / t.bets, roi: t.ret / t.stake } : null;
+    }), { bets: 0, hits: 0, top3: 0, stake: 0, ret: 0 });
+    return t.bets
+      ? { days: done.length, ...t, hitRate: t.hits / t.bets, top3Rate: t.top3 / t.bets, roi: t.ret / t.stake }
+      : null;
   };
   const skipped = rec.days.reduce((a, d) => a + ((d.result && d.result.skipped) || 0), 0);
   rec.summary = {
     all: sum('all'), adv: sum('adv'), myAll: sum('myAll'), myAdv: sum('myAdv'),
     skipped, evMin: EV_MIN, aiRank: AI_RANK, stakePerBet: STAKE, updatedAt: jstStamp(),
   };
-  saveRecord(rec);
+  return skipped;
+}
 
-  console.log(`結果を取り込みました: ${matched}点 一致 / ${missing}点 見つからず`
-    + (kept ? ` （このCSVに無い ${kept}日分は、前回の集計をそのまま残しました）` : ''));
+function cmdRecalc() {
+  const rec = loadRecord();
+  rebuildDays(rec);
+  const skipped = rebuildSummary(rec);
+  saveRecord(rec);
+  console.log('保存済みの着順から集計を作り直しました（結果CSVは不要）');
+  printSummary(rec, skipped);
+}
+
+function printSummary(rec, skipped) {
   const rows2 = [['all', 'AIのみ   全クラス    '], ['adv', 'AIのみ   1勝クラス以上']];
   if (skipped) rows2.push(['myAll', 'AI＋羽生 全クラス    ']);
   for (const [key, label] of rows2) {
     const s = rec.summary[key];
-    if (s) console.log(`  ${label} 通算 ${s.days}日 ${s.bets}点  的中 ${s.hits}点 (${(s.hitRate * 100).toFixed(1)}%)  回収率 ${(s.roi * 100).toFixed(1)}%`);
+    if (s) console.log(`  ${label} 通算 ${s.days}日 ${s.bets}点  的中 ${s.hits}点 (${(s.hitRate * 100).toFixed(1)}%)`
+      + `  3着内 ${s.top3}点 (${(s.top3Rate * 100).toFixed(1)}%)  回収率 ${(s.roi * 100).toFixed(1)}%`);
   }
   if (skipped) console.log(`  （レース前に羽生が見送った点: 通算 ${skipped} 点）`);
 }
@@ -341,6 +385,7 @@ try {
   if (cmd === 'commit') cmdCommit(arg, rest);
   else if (cmd === 'reveal') cmdReveal(arg);
   else if (cmd === 'results') cmdResults(arg);
+  else if (cmd === 'recalc') cmdRecalc();
   else if (cmd === 'exclude') cmdExclude(arg, rest[0], rest[1], rest.slice(2).join(' '));
   else if (cmd === 'verify') cmdVerify();
   else {
@@ -351,6 +396,7 @@ try {
     console.log('  node tools/track.mjs reveal <日付>         レース後：中身を公開');
     console.log('  node tools/track.mjs results "<結果CSV>"   結果を取り込んで集計');
     console.log('  node tools/track.mjs exclude <日付> <場所> <R> [理由]   そのレースを成績の対象外にする');
+    console.log('  node tools/track.mjs recalc                保存済みの着順から集計を作り直す');
     console.log('  node tools/track.mjs verify                指紋の照合');
   }
 } catch (e) {

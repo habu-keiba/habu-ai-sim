@@ -111,7 +111,11 @@ let STAKE_PER_BET=100;
 function statCards(s,title,note){
   if(!s)return '<div class="stat"><div class="v">—</div><div class="l">'+title+'<br>結果の取り込み待ち</div></div>';
   return '<div class="panel" style="background:rgba(14,22,38,.4);margin:0"><p class="panel-title"><b style="color:var(--cream)">'+title+'</b>　'+note+'</p><div class="stats">'
-    +[['回収率',pct(s.roi),'投資'+yen(s.stake)+'／払戻'+yen(s.ret)],['的中率',pct(s.hitRate),s.hits+'点的中'],['購入',s.bets+'点','1点'+yen(STAKE_PER_BET)],['開催',s.days+'日','']]
+    +[['回収率',pct(s.roi),'投資'+yen(s.stake)+'／払戻'+yen(s.ret)],
+      ['的中率',pct(s.hitRate),s.hits+'点的中'],
+      ['3着内率',s.top3Rate==null?'—':pct(s.top3Rate),(s.top3??0)+'点が3着以内'],
+      ['購入',s.bets+'点','1点'+yen(STAKE_PER_BET)],
+      ['開催',s.days+'日','']]
       .map(function(x){return '<div class="stat"><div class="v">'+x[1]+'</div><div class="l">'+x[0]+(x[2]?'<br>'+x[2]:'')+'</div></div>';}).join('')
     +'</div></div>';
 }
@@ -138,7 +142,7 @@ function renderDays(r){
     const res=d.result&&d.result.all?d.result.all:null, resAdv=d.result&&d.result.adv?d.result.adv:null;
     const revealed=(d.versions||[]).some(v=>v.revealed);
     const head='<div style="margin-bottom:6px"><b style="color:var(--amber)">'+d.date+'</b> '
-      +(res?'<span class="tag open">確定</span> <span style="font-size:12px;color:var(--cream-dim)">全クラス '+res.bets+'点・的中'+res.hits+'点・回収率'+pct(res.roi)
+      +(res?'<span class="tag open">確定</span> <span style="font-size:12px;color:var(--cream-dim)">全クラス '+res.bets+'点・的中'+res.hits+'点・3着内'+(res.top3??0)+'点・回収率'+pct(res.roi)
             +(resAdv?'　／　1勝クラス以上 '+resAdv.bets+'点・的中'+resAdv.hits+'点・回収率'+pct(resAdv.roi):'')+'</span>'
            :revealed?'<span class="tag open">予想を公開済み</span> <span style="font-size:12px;color:var(--cream-dim)">結果の取り込み待ち</span>'
            :'<span class="tag wait">レース前・指紋のみ</span>')+'</div>';

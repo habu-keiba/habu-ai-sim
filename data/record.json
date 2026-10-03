@@ -82,6 +82,8 @@
           "bets": 2,
           "hits": 1,
           "hitRate": 0.5,
+          "top3": 1,
+          "top3Rate": 0.5,
           "stake": 200,
           "ret": 390,
           "roi": 1.95
@@ -90,6 +92,8 @@
           "bets": 2,
           "hits": 1,
           "hitRate": 0.5,
+          "top3": 1,
+          "top3Rate": 0.5,
           "stake": 200,
           "ret": 390,
           "roi": 1.95
@@ -98,6 +102,8 @@
           "bets": 2,
           "hits": 1,
           "hitRate": 0.5,
+          "top3": 1,
+          "top3Rate": 0.5,
           "stake": 200,
           "ret": 390,
           "roi": 1.95
@@ -106,6 +112,8 @@
           "bets": 2,
           "hits": 1,
           "hitRate": 0.5,
+          "top3": 1,
+          "top3Rate": 0.5,
           "stake": 200,
           "ret": 390,
           "roi": 1.95
@@ -274,6 +282,8 @@
           "bets": 5,
           "hits": 2,
           "hitRate": 0.4,
+          "top3": 2,
+          "top3Rate": 0.4,
           "stake": 500,
           "ret": 860,
           "roi": 1.72
@@ -282,6 +292,8 @@
           "bets": 3,
           "hits": 1,
           "hitRate": 0.3333333333333333,
+          "top3": 1,
+          "top3Rate": 0.3333333333333333,
           "stake": 300,
           "ret": 310,
           "roi": 1.0333333333333334
@@ -290,6 +302,8 @@
           "bets": 4,
           "hits": 2,
           "hitRate": 0.5,
+          "top3": 2,
+          "top3Rate": 0.5,
           "stake": 400,
           "ret": 860,
           "roi": 2.15
@@ -298,6 +312,8 @@
           "bets": 2,
           "hits": 1,
           "hitRate": 0.5,
+          "top3": 1,
+          "top3Rate": 0.5,
           "stake": 200,
           "ret": 310,
           "roi": 1.55
@@ -509,6 +525,8 @@
           "bets": 4,
           "hits": 0,
           "hitRate": 0,
+          "top3": 3,
+          "top3Rate": 0.75,
           "stake": 400,
           "ret": 0,
           "roi": 0
@@ -517,6 +535,8 @@
           "bets": 3,
           "hits": 0,
           "hitRate": 0,
+          "top3": 3,
+          "top3Rate": 1,
           "stake": 300,
           "ret": 0,
           "roi": 0
@@ -525,6 +545,8 @@
           "bets": 4,
           "hits": 0,
           "hitRate": 0,
+          "top3": 3,
+          "top3Rate": 0.75,
           "stake": 400,
           "ret": 0,
           "roi": 0
@@ -533,6 +555,8 @@
           "bets": 3,
           "hits": 0,
           "hitRate": 0,
+          "top3": 3,
+          "top3Rate": 1,
           "stake": 300,
           "ret": 0,
           "roi": 0
@@ -628,42 +652,50 @@
       "days": 3,
       "bets": 11,
       "hits": 3,
+      "top3": 6,
       "stake": 1100,
       "ret": 1250,
       "hitRate": 0.2727272727272727,
+      "top3Rate": 0.5454545454545454,
       "roi": 1.1363636363636365
     },
     "adv": {
       "days": 3,
       "bets": 8,
       "hits": 2,
+      "top3": 5,
       "stake": 800,
       "ret": 700,
       "hitRate": 0.25,
+      "top3Rate": 0.625,
       "roi": 0.875
     },
     "myAll": {
       "days": 3,
       "bets": 10,
       "hits": 3,
+      "top3": 6,
       "stake": 1000,
       "ret": 1250,
       "hitRate": 0.3,
+      "top3Rate": 0.6,
       "roi": 1.25
     },
     "myAdv": {
       "days": 3,
       "bets": 7,
       "hits": 2,
+      "top3": 5,
       "stake": 700,
       "ret": 700,
       "hitRate": 0.2857142857142857,
+      "top3Rate": 0.7142857142857143,
       "roi": 1
     },
     "skipped": 1,
     "evMin": 1.3,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-10-03 17:15:48 JST"
+    "updatedAt": "2026-10-03 17:31:30 JST"
   }
 }
