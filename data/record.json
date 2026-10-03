@@ -645,6 +645,22 @@
         ],
         "unknownPostTime": 0
       }
+    },
+    {
+      "date": "2026-10-04",
+      "versions": [
+        {
+          "v": 1,
+          "committedAt": "2026-10-04 01:54:12 JST",
+          "committedMin": 114,
+          "hash": "fd36795f650ef48482267f59b4ff6f6471f6c75144ef2d7629cd19304c238b9b",
+          "evMin": 1.3,
+          "pickCount": 5,
+          "revealed": false,
+          "picks": null
+        }
+      ],
+      "result": null
     }
   ],
   "summary": {
