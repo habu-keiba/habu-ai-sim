@@ -30,7 +30,10 @@
   .tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 8px;border-radius:999px;}
   .tag.wait{background:rgba(245,166,35,.16);color:var(--amber);}
   .tag.open{background:rgba(90,200,120,.18);color:var(--ok);}
-  .hit{color:var(--ok);font-weight:700;}
+  /* 着順の強調：1着を一番目立たせ、2・3着もひと目で分かるようにする */
+  td.r1{color:var(--ok);font-weight:900;font-size:19px;}
+  td.r2{color:var(--amber);font-weight:700;font-size:15px;}
+  td.r3{color:#9fd2e8;font-weight:700;font-size:15px;}
   .miss{color:var(--cream-dim);}
   details{margin-top:8px;}
   summary{cursor:pointer;color:var(--amber);font-size:13px;font-weight:700;display:inline-block;
@@ -111,7 +114,7 @@ let STAKE_PER_BET=100;
 function statCards(s,title,note){
   if(!s)return '<div class="stat"><div class="v">—</div><div class="l">'+title+'<br>結果の取り込み待ち</div></div>';
   return '<div class="panel" style="background:rgba(14,22,38,.4);margin:0"><p class="panel-title"><b style="color:var(--cream)">'+title+'</b>　'+note+'</p><div class="stats">'
-    +[['回収率',pct(s.roi),'投資'+yen(s.stake)+'／払戻'+yen(s.ret)],
+    +[['単勝回収率',pct(s.roi),'投資'+yen(s.stake)+'／払戻'+yen(s.ret)],
       ['的中率',pct(s.hitRate),s.hits+'点的中'],
       ['3着内率',s.top3Rate==null?'—':pct(s.top3Rate),(s.top3??0)+'点が3着以内'],
       ['購入',s.bets+'点','1点'+yen(STAKE_PER_BET)],
@@ -151,7 +154,7 @@ function renderDays(r){
     const nEx=off?off.filter(p=>p.excluded).length:0;
     const picks=off?'<details><summary>▼ 羽生が実際に買った馬を見る（'+(off.length-nEx)+'点／各レースの発走前・最終版'+(nEx?'　※対象外 '+nEx+'点を含む':'')+'）</summary><table><tr><th>レース</th><th>クラス</th><th>発走</th><th>馬番</th><th>馬名</th><th class="num">単勝</th><th class="num">着順</th><th class="num">払戻</th><th>採用版</th></tr>'
       +off.map(p=>'<tr'+(p.excluded||p.skip?' style="opacity:.5"':'')+'><td>'+p.place+p.race+'R</td><td>'+(p.cls||'—')+'</td><td>'+(p.postTime||'—')+'</td><td class="num">'+p.number+'</td><td>'+p.name+(p.excluded?' <span class="tag wait">対象外・'+p.excluded+'</span>':'')+(p.skip?' <span class="tag wait">羽生が見送り'+(/^(裁量で見送り|羽生の判断で見送り)$/.test(p.skip)?'':'・'+p.skip)+'</span>':'')+'</td><td class="num">'+(p.oddsAtPredict??'—')+'</td>'
-        +'<td class="num '+(p.finish===1&&!p.excluded?'hit':'miss')+'">'+(p.finish??'—')+'</td><td class="num">'+(p.payout?yen(p.payout):'—')+'</td><td>第'+p.fromVersion+'版</td></tr>').join('')
+        +'<td class="num '+(p.excluded?'miss':p.finish===1?'r1':p.finish===2?'r2':p.finish===3?'r3':'miss')+'">'+(p.finish??'—')+'</td><td class="num">'+(p.payout?yen(p.payout):'—')+'</td><td>第'+p.fromVersion+'版</td></tr>').join('')
       +'</table></details>':'';
     return '<div style="padding:10px 0;border-bottom:1px solid var(--line)">'+head+vers+picks+'</div>';
   }).join('');
