@@ -989,24 +989,126 @@
           "hash": "d86945887b75a0c808d447995e9784f6b8baecf57d3ef5d39910d60582139211",
           "evMin": 1.3,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.10.10",
+              "place": "京都",
+              "race": "3",
+              "raceName": "未勝利*",
+              "cls": "未勝利",
+              "dist": "芝1800",
+              "postTime": "10:50",
+              "number": 8,
+              "name": "プレシャスタイム",
+              "winProb": 0.48619999999999997,
+              "ev": 1.5,
+              "oddsAtPredict": 3.8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.10.10",
+              "place": "東京",
+              "race": "6",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "dist": "芝1600",
+              "postTime": "12:55",
+              "number": 13,
+              "name": "ランギヌイ",
+              "winProb": 0.4517,
+              "ev": 1.394,
+              "oddsAtPredict": 3.8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-10-10 17:08:36 JST"
         }
       ],
-      "result": null
+      "result": {
+        "all": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 1,
+          "top3Rate": 0.5,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "adv": null,
+        "myAll": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 1,
+          "top3Rate": 0.5,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAdv": null,
+        "skipped": 0,
+        "unknown": 0
+      },
+      "official": {
+        "picks": [
+          {
+            "date": "2026.10.10",
+            "place": "京都",
+            "race": "3",
+            "raceName": "未勝利*",
+            "cls": "未勝利",
+            "dist": "芝1800",
+            "postTime": "10:50",
+            "number": 8,
+            "name": "プレシャスタイム",
+            "winProb": 0.48619999999999997,
+            "ev": 1.5,
+            "oddsAtPredict": 3.8,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 1,
+            "finish": 4,
+            "payout": 0
+          },
+          {
+            "date": "2026.10.10",
+            "place": "東京",
+            "race": "6",
+            "raceName": "新馬",
+            "cls": "新馬",
+            "dist": "芝1600",
+            "postTime": "12:55",
+            "number": 13,
+            "name": "ランギヌイ",
+            "winProb": 0.4517,
+            "ev": 1.394,
+            "oddsAtPredict": 3.8,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 1,
+            "finish": 2,
+            "payout": 0
+          }
+        ],
+        "unknownPostTime": 0
+      }
     }
   ],
   "summary": {
     "all": {
-      "days": 4,
-      "bets": 16,
+      "days": 5,
+      "bets": 18,
       "hits": 4,
-      "top3": 9,
-      "stake": 1600,
+      "top3": 10,
+      "stake": 1800,
       "ret": 1850,
-      "hitRate": 0.25,
-      "top3Rate": 0.5625,
-      "roi": 1.15625
+      "hitRate": 0.2222222222222222,
+      "top3Rate": 0.5555555555555556,
+      "roi": 1.0277777777777777
     },
     "adv": {
       "days": 4,
@@ -1020,15 +1122,15 @@
       "roi": 1.3
     },
     "myAll": {
-      "days": 4,
-      "bets": 15,
+      "days": 5,
+      "bets": 17,
       "hits": 4,
-      "top3": 9,
-      "stake": 1500,
+      "top3": 10,
+      "stake": 1700,
       "ret": 1850,
-      "hitRate": 0.26666666666666666,
-      "top3Rate": 0.6,
-      "roi": 1.2333333333333334
+      "hitRate": 0.23529411764705882,
+      "top3Rate": 0.5882352941176471,
+      "roi": 1.088235294117647
     },
     "myAdv": {
       "days": 4,
@@ -1045,6 +1147,6 @@
     "evMin": 1.3,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-10-04 16:43:28 JST"
+    "updatedAt": "2026-10-10 17:08:36 JST"
   }
 }
