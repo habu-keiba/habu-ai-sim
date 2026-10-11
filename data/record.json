@@ -1191,69 +1191,32 @@
       ],
       "result": {
         "all": {
-          "bets": 3,
-          "hits": 1,
-          "hitRate": 0.3333333333333333,
-          "top3": 1,
-          "top3Rate": 0.3333333333333333,
-          "stake": 300,
-          "ret": 240,
-          "roi": 0.8
+          "bets": 1,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 100,
+          "ret": 0,
+          "roi": 0
         },
-        "adv": {
-          "bets": 2,
-          "hits": 1,
-          "hitRate": 0.5,
-          "top3": 1,
-          "top3Rate": 0.5,
-          "stake": 200,
-          "ret": 240,
-          "roi": 1.2
-        },
+        "adv": null,
         "myAll": {
-          "bets": 3,
-          "hits": 1,
-          "hitRate": 0.3333333333333333,
-          "top3": 1,
-          "top3Rate": 0.3333333333333333,
-          "stake": 300,
-          "ret": 240,
-          "roi": 0.8
+          "bets": 1,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 100,
+          "ret": 0,
+          "roi": 0
         },
-        "myAdv": {
-          "bets": 2,
-          "hits": 1,
-          "hitRate": 0.5,
-          "top3": 1,
-          "top3Rate": 0.5,
-          "stake": 200,
-          "ret": 240,
-          "roi": 1.2
-        },
+        "myAdv": null,
         "skipped": 0,
         "unknown": 0
       },
       "official": {
         "picks": [
-          {
-            "date": "2026.10.11",
-            "place": "京都",
-            "race": "12",
-            "raceName": "１勝ｸﾗｽ",
-            "cls": "1勝",
-            "dist": "芝1600",
-            "postTime": "16:10",
-            "number": 3,
-            "name": "ダークマルス",
-            "winProb": 0.3871,
-            "ev": 1.746,
-            "oddsAtPredict": 5.5,
-            "aiRank": 1,
-            "mark": "★推奨 [AI1位 EV1.2超]",
-            "fromVersion": 1,
-            "finish": 1,
-            "payout": 240
-          },
           {
             "date": "2026.10.11",
             "place": "東京",
@@ -1272,25 +1235,6 @@
             "fromVersion": 2,
             "finish": 5,
             "payout": 0
-          },
-          {
-            "date": "2026.10.11",
-            "place": "東京",
-            "race": "8",
-            "raceName": "１勝ｸﾗｽ",
-            "cls": "1勝",
-            "dist": "芝2400",
-            "postTime": "14:00",
-            "number": 9,
-            "name": "ゴンファロニエーレ",
-            "winProb": 0.3774,
-            "ev": 1.671,
-            "oddsAtPredict": 5.4,
-            "aiRank": 1,
-            "mark": "★推奨 [AI1位 EV1.2超]",
-            "fromVersion": 1,
-            "finish": 4,
-            "payout": 0
           }
         ],
         "unknownPostTime": 0
@@ -1300,52 +1244,52 @@
   "summary": {
     "all": {
       "days": 6,
-      "bets": 21,
-      "hits": 5,
-      "top3": 11,
-      "stake": 2100,
-      "ret": 2090,
-      "hitRate": 0.23809523809523808,
-      "top3Rate": 0.5238095238095238,
-      "roi": 0.9952380952380953
+      "bets": 19,
+      "hits": 4,
+      "top3": 10,
+      "stake": 1900,
+      "ret": 1850,
+      "hitRate": 0.21052631578947367,
+      "top3Rate": 0.5263157894736842,
+      "roi": 0.9736842105263158
     },
     "adv": {
-      "days": 5,
-      "bets": 12,
-      "hits": 4,
-      "top3": 7,
-      "stake": 1200,
-      "ret": 1540,
-      "hitRate": 0.3333333333333333,
-      "top3Rate": 0.5833333333333334,
-      "roi": 1.2833333333333334
+      "days": 4,
+      "bets": 10,
+      "hits": 3,
+      "top3": 6,
+      "stake": 1000,
+      "ret": 1300,
+      "hitRate": 0.3,
+      "top3Rate": 0.6,
+      "roi": 1.3
     },
     "myAll": {
       "days": 6,
-      "bets": 20,
-      "hits": 5,
-      "top3": 11,
-      "stake": 2000,
-      "ret": 2090,
-      "hitRate": 0.25,
-      "top3Rate": 0.55,
-      "roi": 1.045
+      "bets": 18,
+      "hits": 4,
+      "top3": 10,
+      "stake": 1800,
+      "ret": 1850,
+      "hitRate": 0.2222222222222222,
+      "top3Rate": 0.5555555555555556,
+      "roi": 1.0277777777777777
     },
     "myAdv": {
-      "days": 5,
-      "bets": 11,
-      "hits": 4,
-      "top3": 7,
-      "stake": 1100,
-      "ret": 1540,
-      "hitRate": 0.36363636363636365,
-      "top3Rate": 0.6363636363636364,
-      "roi": 1.4
+      "days": 4,
+      "bets": 9,
+      "hits": 3,
+      "top3": 6,
+      "stake": 900,
+      "ret": 1300,
+      "hitRate": 0.3333333333333333,
+      "top3Rate": 0.6666666666666666,
+      "roi": 1.4444444444444444
     },
     "skipped": 1,
     "evMin": 1.3,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-10-11 18:52:05 JST"
+    "updatedAt": "2026-10-11 19:19:30 JST"
   }
 }

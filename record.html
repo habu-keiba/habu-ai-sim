@@ -152,7 +152,7 @@ function renderDays(r){
     const vers='<table><tr><th style="width:52px">版</th><th style="width:180px">記録した時刻</th><th>指紋（SHA-256）</th><th class="num">点数</th></tr>'
       +d.versions.map(v=>'<tr><td>第'+v.v+'版</td><td>'+v.committedAt+'</td><td class="hash">'+v.hash+'</td><td class="num">'+v.pickCount+'</td></tr>').join('')+'</table>';
     const nEx=off?off.filter(p=>p.excluded).length:0;
-    const picks=off?'<details><summary>▼ 羽生が実際に買った馬を見る（'+(off.length-nEx)+'点／各レースの発走前・最終版'+(nEx?'　※対象外 '+nEx+'点を含む':'')+'）</summary><table><tr><th>レース</th><th>クラス</th><th>発走</th><th>馬番</th><th>馬名</th><th class="num">単勝</th><th class="num">着順</th><th class="num">払戻</th><th>採用版</th></tr>'
+    const picks=off?'<details><summary>▼ 羽生が実際に買った馬を見る（'+(off.length-nEx)+'点／各レースの発走前・最終版'+(nEx?'　※対象外 '+nEx+'点を含む':'')+'）</summary><table><tr><th>レース</th><th>クラス</th><th>発走</th><th>馬番</th><th>馬名</th><th class="num">購入時単勝</th><th class="num">着順</th><th class="num">払戻</th><th>採用版</th></tr>'
       +off.map(p=>'<tr'+(p.excluded||p.skip?' style="opacity:.5"':'')+'><td>'+p.place+p.race+'R</td><td>'+(p.cls||'—')+'</td><td>'+(p.postTime||'—')+'</td><td class="num">'+p.number+'</td><td>'+p.name+(p.excluded?' <span class="tag wait">対象外・'+p.excluded+'</span>':'')+(p.skip?' <span class="tag wait">羽生が見送り'+(/^(裁量で見送り|羽生の判断で見送り)$/.test(p.skip)?'':'・'+p.skip)+'</span>':'')+'</td><td class="num">'+(p.oddsAtPredict??'—')+'</td>'
         +'<td class="num '+(p.excluded?'miss':p.finish===1?'r1':p.finish===2?'r2':p.finish===3?'r3':'miss')+'">'+(p.finish??'—')+'</td><td class="num">'+(p.payout?yen(p.payout):'—')+'</td><td>第'+p.fromVersion+'版</td></tr>').join('')
       +'</table></details>':'';

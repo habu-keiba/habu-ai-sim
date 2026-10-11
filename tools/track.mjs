@@ -195,21 +195,37 @@ function cmdReveal(dateArg) {
  * 発走時刻が不明な場合は、その日の最後の版を使う（記録には unknownPostTime として残す）。
  */
 function selectOfficialPicks(day, postTimes = new Map()) {
-  const chosen = new Map();   // "場所|R|馬番" → {pick, v}
-  let unknownPostTime = 0;
+  // 各版は「その時点のその日の買い目の全部」。レースごとに採用する版を1つ決め、そのレースの買い目は採用版のものだけを使う。
+  // 後の版で消えた買い目（そのレースに買い目が無くなった）は、前の版にあっても数えない。
+  const versions = day.versions.filter((v) => v.picks);
   const lastV = Math.max(...day.versions.map((v) => v.v));
-  for (const v of day.versions) {
-    if (!v.picks) continue;
+  const races = new Map();   // "場所|R" → 発走時刻（どの版にも買い目があったレース）
+  for (const v of versions) {
     for (const p of v.picks) {
       // 発走時刻は予測CSVの列か、結果CSV（TARGET）から取る。公開済みの予測そのものは書き換えない
       const postTime = p.postTime || postTimes.get(`${p.place}|${p.race}`) || null;
-      const post = toMinutes(postTime);
-      if (post === null) { if (v.v !== lastV) continue; unknownPostTime++; }
-      else if (v.committedMin != null && v.committedMin >= post) continue;   // 発走後に出した版は数えない
-      chosen.set(`${p.place}|${p.race}|${p.number}`, { ...p, postTime, fromVersion: v.v });
+      const key = `${p.place}|${p.race}`;
+      if (!races.has(key) || (!races.get(key) && postTime)) races.set(key, postTime);
     }
   }
-  return { picks: [...chosen.values()], unknownPostTime };
+  const picks = [];
+  let unknownPostTime = 0;
+  for (const [key, postTime] of races) {
+    const post = toMinutes(postTime);
+    let adopted;
+    if (post === null) { adopted = versions.find((v) => v.v === lastV); }   // 発走時刻が不明：その日の最後の版
+    else {
+      const before = versions.filter((v) => v.committedMin == null || v.committedMin < post);   // 発走後に出した版は数えない
+      adopted = before.length ? before.reduce((a, b) => (b.v > a.v ? b : a)) : null;
+    }
+    if (!adopted) continue;
+    for (const p of adopted.picks) {
+      if (`${p.place}|${p.race}` !== key) continue;
+      if (post === null) unknownPostTime++;
+      picks.push({ ...p, postTime, fromVersion: adopted.v });
+    }
+  }
+  return { picks, unknownPostTime };
 }
 
 /** 新馬・未勝利を除いたものが「1勝クラス以上」 */
