@@ -1107,8 +1107,58 @@
           "hash": "52bcaffcf275a5bd1c501295ee51a0dad984162fe632bee5f845d5839aa5194a",
           "evMin": 1.3,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.10.11",
+              "place": "京都",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:10",
+              "number": 3,
+              "name": "ダークマルス",
+              "winProb": 0.3871,
+              "ev": 1.746,
+              "oddsAtPredict": 5.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.10.11",
+              "place": "東京",
+              "race": "5",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "dist": "芝2000",
+              "postTime": "12:25",
+              "number": 2,
+              "name": "アインザッツ",
+              "winProb": 0.4194,
+              "ev": 2.752,
+              "oddsAtPredict": 8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.10.11",
+              "place": "東京",
+              "race": "8",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝2400",
+              "postTime": "14:00",
+              "number": 9,
+              "name": "ゴンファロニエーレ",
+              "winProb": 0.3774,
+              "ev": 1.671,
+              "oddsAtPredict": 5.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-10-11 18:52:05 JST"
         },
         {
           "v": 2,
@@ -1117,62 +1167,185 @@
           "hash": "170b59f49f719451cac539a0e710fb7974bfb2c3615207be5898b34e1862cedd",
           "evMin": 1.3,
           "pickCount": 1,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.10.11",
+              "place": "東京",
+              "race": "5",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "dist": "芝2000",
+              "postTime": "12:25",
+              "number": 2,
+              "name": "アインザッツ",
+              "winProb": 0.44049999999999995,
+              "ev": 2.059,
+              "oddsAtPredict": 5.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-10-11 18:52:05 JST"
         }
       ],
-      "result": null
+      "result": {
+        "all": {
+          "bets": 3,
+          "hits": 1,
+          "hitRate": 0.3333333333333333,
+          "top3": 1,
+          "top3Rate": 0.3333333333333333,
+          "stake": 300,
+          "ret": 240,
+          "roi": 0.8
+        },
+        "adv": {
+          "bets": 2,
+          "hits": 1,
+          "hitRate": 0.5,
+          "top3": 1,
+          "top3Rate": 0.5,
+          "stake": 200,
+          "ret": 240,
+          "roi": 1.2
+        },
+        "myAll": {
+          "bets": 3,
+          "hits": 1,
+          "hitRate": 0.3333333333333333,
+          "top3": 1,
+          "top3Rate": 0.3333333333333333,
+          "stake": 300,
+          "ret": 240,
+          "roi": 0.8
+        },
+        "myAdv": {
+          "bets": 2,
+          "hits": 1,
+          "hitRate": 0.5,
+          "top3": 1,
+          "top3Rate": 0.5,
+          "stake": 200,
+          "ret": 240,
+          "roi": 1.2
+        },
+        "skipped": 0,
+        "unknown": 0
+      },
+      "official": {
+        "picks": [
+          {
+            "date": "2026.10.11",
+            "place": "京都",
+            "race": "12",
+            "raceName": "１勝ｸﾗｽ",
+            "cls": "1勝",
+            "dist": "芝1600",
+            "postTime": "16:10",
+            "number": 3,
+            "name": "ダークマルス",
+            "winProb": 0.3871,
+            "ev": 1.746,
+            "oddsAtPredict": 5.5,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 1,
+            "finish": 1,
+            "payout": 240
+          },
+          {
+            "date": "2026.10.11",
+            "place": "東京",
+            "race": "5",
+            "raceName": "新馬",
+            "cls": "新馬",
+            "dist": "芝2000",
+            "postTime": "12:25",
+            "number": 2,
+            "name": "アインザッツ",
+            "winProb": 0.44049999999999995,
+            "ev": 2.059,
+            "oddsAtPredict": 5.7,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 2,
+            "finish": 5,
+            "payout": 0
+          },
+          {
+            "date": "2026.10.11",
+            "place": "東京",
+            "race": "8",
+            "raceName": "１勝ｸﾗｽ",
+            "cls": "1勝",
+            "dist": "芝2400",
+            "postTime": "14:00",
+            "number": 9,
+            "name": "ゴンファロニエーレ",
+            "winProb": 0.3774,
+            "ev": 1.671,
+            "oddsAtPredict": 5.4,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 1,
+            "finish": 4,
+            "payout": 0
+          }
+        ],
+        "unknownPostTime": 0
+      }
     }
   ],
   "summary": {
     "all": {
-      "days": 5,
-      "bets": 18,
-      "hits": 4,
-      "top3": 10,
-      "stake": 1800,
-      "ret": 1850,
-      "hitRate": 0.2222222222222222,
-      "top3Rate": 0.5555555555555556,
-      "roi": 1.0277777777777777
+      "days": 6,
+      "bets": 21,
+      "hits": 5,
+      "top3": 11,
+      "stake": 2100,
+      "ret": 2090,
+      "hitRate": 0.23809523809523808,
+      "top3Rate": 0.5238095238095238,
+      "roi": 0.9952380952380953
     },
     "adv": {
-      "days": 4,
-      "bets": 10,
-      "hits": 3,
-      "top3": 6,
-      "stake": 1000,
-      "ret": 1300,
-      "hitRate": 0.3,
-      "top3Rate": 0.6,
-      "roi": 1.3
+      "days": 5,
+      "bets": 12,
+      "hits": 4,
+      "top3": 7,
+      "stake": 1200,
+      "ret": 1540,
+      "hitRate": 0.3333333333333333,
+      "top3Rate": 0.5833333333333334,
+      "roi": 1.2833333333333334
     },
     "myAll": {
-      "days": 5,
-      "bets": 17,
-      "hits": 4,
-      "top3": 10,
-      "stake": 1700,
-      "ret": 1850,
-      "hitRate": 0.23529411764705882,
-      "top3Rate": 0.5882352941176471,
-      "roi": 1.088235294117647
+      "days": 6,
+      "bets": 20,
+      "hits": 5,
+      "top3": 11,
+      "stake": 2000,
+      "ret": 2090,
+      "hitRate": 0.25,
+      "top3Rate": 0.55,
+      "roi": 1.045
     },
     "myAdv": {
-      "days": 4,
-      "bets": 9,
-      "hits": 3,
-      "top3": 6,
-      "stake": 900,
-      "ret": 1300,
-      "hitRate": 0.3333333333333333,
-      "top3Rate": 0.6666666666666666,
-      "roi": 1.4444444444444444
+      "days": 5,
+      "bets": 11,
+      "hits": 4,
+      "top3": 7,
+      "stake": 1100,
+      "ret": 1540,
+      "hitRate": 0.36363636363636365,
+      "top3Rate": 0.6363636363636364,
+      "roi": 1.4
     },
     "skipped": 1,
     "evMin": 1.3,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-10-10 17:08:36 JST"
+    "updatedAt": "2026-10-11 18:52:05 JST"
   }
 }
