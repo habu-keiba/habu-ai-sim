@@ -1250,16 +1250,139 @@
           "hash": "c367b469a6d0ca0d12163e2d3b9dd02d8170aaf98585ecd4abd6500d53edf409",
           "evMin": 1.3,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.10.17",
+              "place": "京都",
+              "race": "8",
+              "raceName": "もみじＳ",
+              "cls": "OP",
+              "dist": "芝1400",
+              "postTime": "13:45",
+              "number": 6,
+              "name": "カレンハウ",
+              "winProb": 0.258,
+              "ev": 1.417,
+              "oddsAtPredict": 6.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.10.17",
+              "place": "京都",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1400",
+              "postTime": "16:15",
+              "number": 15,
+              "name": "ペプチドブッドレア",
+              "winProb": 0.13699999999999998,
+              "ev": 1.362,
+              "oddsAtPredict": 13.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-10-17 16:44:38 JST"
         }
       ],
-      "result": null
+      "result": {
+        "all": {
+          "bets": 1,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 100,
+          "ret": 0,
+          "roi": 0
+        },
+        "adv": {
+          "bets": 1,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 100,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAll": {
+          "bets": 1,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 100,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAdv": {
+          "bets": 1,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 100,
+          "ret": 0,
+          "roi": 0
+        },
+        "skipped": 0,
+        "unknown": 0
+      },
+      "official": {
+        "picks": [
+          {
+            "date": "2026.10.17",
+            "place": "京都",
+            "race": "12",
+            "raceName": "１勝ｸﾗｽ",
+            "cls": "1勝",
+            "dist": "芝1400",
+            "postTime": "16:15",
+            "number": 15,
+            "name": "ペプチドブッドレア",
+            "winProb": 0.13699999999999998,
+            "ev": 1.362,
+            "oddsAtPredict": 13.4,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 1,
+            "finish": 15,
+            "payout": 0
+          }
+        ],
+        "unknownPostTime": 0
+      }
     }
   ],
   "summary": {
     "all": {
-      "days": 6,
+      "days": 7,
+      "bets": 20,
+      "hits": 4,
+      "top3": 10,
+      "stake": 2000,
+      "ret": 1850,
+      "hitRate": 0.2,
+      "top3Rate": 0.5,
+      "roi": 0.925
+    },
+    "adv": {
+      "days": 5,
+      "bets": 11,
+      "hits": 3,
+      "top3": 6,
+      "stake": 1100,
+      "ret": 1300,
+      "hitRate": 0.2727272727272727,
+      "top3Rate": 0.5454545454545454,
+      "roi": 1.1818181818181819
+    },
+    "myAll": {
+      "days": 7,
       "bets": 19,
       "hits": 4,
       "top3": 10,
@@ -1269,8 +1392,8 @@
       "top3Rate": 0.5263157894736842,
       "roi": 0.9736842105263158
     },
-    "adv": {
-      "days": 4,
+    "myAdv": {
+      "days": 5,
       "bets": 10,
       "hits": 3,
       "top3": 6,
@@ -1280,32 +1403,10 @@
       "top3Rate": 0.6,
       "roi": 1.3
     },
-    "myAll": {
-      "days": 6,
-      "bets": 18,
-      "hits": 4,
-      "top3": 10,
-      "stake": 1800,
-      "ret": 1850,
-      "hitRate": 0.2222222222222222,
-      "top3Rate": 0.5555555555555556,
-      "roi": 1.0277777777777777
-    },
-    "myAdv": {
-      "days": 4,
-      "bets": 9,
-      "hits": 3,
-      "top3": 6,
-      "stake": 900,
-      "ret": 1300,
-      "hitRate": 0.3333333333333333,
-      "top3Rate": 0.6666666666666666,
-      "roi": 1.4444444444444444
-    },
     "skipped": 1,
     "evMin": 1.3,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-10-11 19:19:30 JST"
+    "updatedAt": "2026-10-17 16:44:38 JST"
   }
 }
