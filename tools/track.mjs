@@ -6,7 +6,7 @@
  *   node tools/track.mjs results "<結果CSV>"    結果を取り込み、的中率と回収率を集計する
  *   node tools/track.mjs verify                 公開済みの予測が、記録した指紋と一致するか確かめる
  *
- * 買い目は「AI勝率1位 かつ 期待値1.3以上の単勝」。障害競走は平地用モデルの対象外として除く。
+ * 買い目は「AI勝率1位 かつ 期待値1.2以上（2026-10-24 以降。それ以前は1.3以上）の単勝」。障害競走は平地用モデルの対象外として除く。
  *
  * オッズで期待値が変わるため、1日に何度でも記録できる。すべての版が時刻付きで公開される。
  * 成績に数えるのは「各レースの発走時刻より前に記録された、最後の版」だけ。
@@ -22,8 +22,8 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PRIVATE_DIR = path.join(ROOT, 'data', 'private');
 const RECORD = path.join(ROOT, 'data', 'record.json');
-// 買い目の条件：AI勝率1位 かつ 期待値1.3以上の馬の単勝
-const EV_MIN = 1.3;            // 期待値の下限
+// 買い目の条件：AI勝率1位 かつ 期待値1.2以上（2026-10-24 以降。それ以前は1.3以上）の馬の単勝
+const EV_MIN = 1.2;            // 期待値の下限
 const AI_RANK = 1;             // AI勝率順位（1位のみ）
 const STAKE = 100;             // 1点あたりの購入額（円）
 
