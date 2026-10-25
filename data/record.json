@@ -1969,8 +1969,58 @@
           "hash": "4e497c7e3f5f85c4243afe4dae4036fd26a14fd6b77476f1591ed256443d61a2",
           "evMin": 1.2,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.10.25",
+              "place": "新潟",
+              "race": "3",
+              "raceName": "未勝利*",
+              "cls": "未勝利",
+              "dist": "芝2000",
+              "postTime": "10:40",
+              "number": 17,
+              "name": "スロノス",
+              "winProb": 0.2415,
+              "ev": 2.688,
+              "oddsAtPredict": 15,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.10.25",
+              "place": "新潟",
+              "race": "9",
+              "raceName": "柏崎特別･1勝",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "14:00",
+              "number": 2,
+              "name": "シャンパンライフ",
+              "winProb": 0.19870000000000002,
+              "ev": 1.222,
+              "oddsAtPredict": 7.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.10.25",
+              "place": "東京",
+              "race": "8",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "13:40",
+              "number": 11,
+              "name": "デイジー",
+              "winProb": 0.1597,
+              "ev": 2.287,
+              "oddsAtPredict": 19.3,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-10-25 17:46:50 JST"
         },
         {
           "v": 2,
@@ -1979,62 +2029,147 @@
           "hash": "1becc00b2cfb336b8af9a60bb7b5caaccc1c674998c6c7113932229228c36967",
           "evMin": 1.2,
           "pickCount": 1,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.10.25",
+              "place": "東京",
+              "race": "8",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "13:40",
+              "number": 11,
+              "name": "デイジー",
+              "winProb": 0.1597,
+              "ev": 1.231,
+              "oddsAtPredict": 9.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-10-25 17:46:50 JST"
         }
       ],
-      "result": null
+      "result": {
+        "all": {
+          "bets": 1,
+          "hits": 1,
+          "hitRate": 1,
+          "top3": 1,
+          "top3Rate": 1,
+          "stake": 100,
+          "ret": 530,
+          "roi": 5.3
+        },
+        "adv": {
+          "bets": 1,
+          "hits": 1,
+          "hitRate": 1,
+          "top3": 1,
+          "top3Rate": 1,
+          "stake": 100,
+          "ret": 530,
+          "roi": 5.3
+        },
+        "myAll": {
+          "bets": 1,
+          "hits": 1,
+          "hitRate": 1,
+          "top3": 1,
+          "top3Rate": 1,
+          "stake": 100,
+          "ret": 530,
+          "roi": 5.3
+        },
+        "myAdv": {
+          "bets": 1,
+          "hits": 1,
+          "hitRate": 1,
+          "top3": 1,
+          "top3Rate": 1,
+          "stake": 100,
+          "ret": 530,
+          "roi": 5.3
+        },
+        "skipped": 0,
+        "unknown": 0
+      },
+      "official": {
+        "picks": [
+          {
+            "date": "2026.10.25",
+            "place": "東京",
+            "race": "8",
+            "raceName": "１勝ｸﾗｽ",
+            "cls": "1勝",
+            "dist": "芝1600",
+            "postTime": "13:40",
+            "number": 11,
+            "name": "デイジー",
+            "winProb": 0.1597,
+            "ev": 1.231,
+            "oddsAtPredict": 9.4,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 2,
+            "finish": 1,
+            "payout": 530
+          }
+        ],
+        "unknownPostTime": 0
+      }
     }
   ],
   "summary": {
     "all": {
-      "days": 9,
-      "bets": 29,
-      "hits": 5,
-      "top3": 12,
-      "stake": 2900,
-      "ret": 2430,
-      "hitRate": 0.1724137931034483,
-      "top3Rate": 0.41379310344827586,
-      "roi": 0.8379310344827586
+      "days": 10,
+      "bets": 30,
+      "hits": 6,
+      "top3": 13,
+      "stake": 3000,
+      "ret": 2960,
+      "hitRate": 0.2,
+      "top3Rate": 0.43333333333333335,
+      "roi": 0.9866666666666667
     },
     "adv": {
-      "days": 7,
-      "bets": 14,
-      "hits": 4,
-      "top3": 8,
-      "stake": 1400,
-      "ret": 1880,
-      "hitRate": 0.2857142857142857,
-      "top3Rate": 0.5714285714285714,
-      "roi": 1.3428571428571427
+      "days": 8,
+      "bets": 15,
+      "hits": 5,
+      "top3": 9,
+      "stake": 1500,
+      "ret": 2410,
+      "hitRate": 0.3333333333333333,
+      "top3Rate": 0.6,
+      "roi": 1.6066666666666667
     },
     "myAll": {
-      "days": 9,
-      "bets": 27,
-      "hits": 5,
-      "top3": 12,
-      "stake": 2700,
-      "ret": 2430,
-      "hitRate": 0.18518518518518517,
-      "top3Rate": 0.4444444444444444,
-      "roi": 0.9
+      "days": 10,
+      "bets": 28,
+      "hits": 6,
+      "top3": 13,
+      "stake": 2800,
+      "ret": 2960,
+      "hitRate": 0.21428571428571427,
+      "top3Rate": 0.4642857142857143,
+      "roi": 1.0571428571428572
     },
     "myAdv": {
-      "days": 7,
-      "bets": 13,
-      "hits": 4,
-      "top3": 8,
-      "stake": 1300,
-      "ret": 1880,
-      "hitRate": 0.3076923076923077,
-      "top3Rate": 0.6153846153846154,
-      "roi": 1.4461538461538461
+      "days": 8,
+      "bets": 14,
+      "hits": 5,
+      "top3": 9,
+      "stake": 1400,
+      "ret": 2410,
+      "hitRate": 0.35714285714285715,
+      "top3Rate": 0.6428571428571429,
+      "roi": 1.7214285714285715
     },
     "skipped": 2,
     "evMin": 1.2,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-10-24 20:21:58 JST"
+    "updatedAt": "2026-10-25 17:46:50 JST"
   }
 }
