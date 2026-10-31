@@ -2119,6 +2119,22 @@
         ],
         "unknownPostTime": 0
       }
+    },
+    {
+      "date": "2026-10-31",
+      "versions": [
+        {
+          "v": 1,
+          "committedAt": "2026-10-31 14:18:56 JST",
+          "committedMin": 858,
+          "hash": "3b96b05862c463e5ce15416a5ca33b41d00fc4f63a8bfa9b62fbcd3ad7c34734",
+          "evMin": 1.2,
+          "pickCount": 2,
+          "revealed": false,
+          "picks": null
+        }
+      ],
+      "result": null
     }
   ],
   "summary": {
