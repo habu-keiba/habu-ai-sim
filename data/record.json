@@ -2130,8 +2130,43 @@
           "hash": "3b96b05862c463e5ce15416a5ca33b41d00fc4f63a8bfa9b62fbcd3ad7c34734",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.10.31",
+              "place": "京都",
+              "race": "11",
+              "raceName": "ファンタG3",
+              "cls": "G3",
+              "dist": "芝1400",
+              "postTime": "15:45",
+              "number": 11,
+              "name": "ツキミ",
+              "winProb": 0.16149999999999998,
+              "ev": 2.348,
+              "oddsAtPredict": 19.6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]",
+              "skip": "川田騎手のため見送り"
+            },
+            {
+              "date": "2026.10.31",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1800",
+              "postTime": "16:15",
+              "number": 10,
+              "name": "オルグジェシダ",
+              "winProb": 0.3275,
+              "ev": 1.37,
+              "oddsAtPredict": 5.1,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-10-31 20:37:09 JST"
         },
         {
           "v": 2,
@@ -2140,62 +2175,182 @@
           "hash": "fdcef2eacc292b9d74b9405b2fee2f0236fc417757a01eefb24ce859d68fa137",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.10.31",
+              "place": "京都",
+              "race": "11",
+              "raceName": "ファンタG3",
+              "cls": "G3",
+              "dist": "芝1400",
+              "postTime": "15:45",
+              "number": 11,
+              "name": "ツキミ",
+              "winProb": 0.16149999999999998,
+              "ev": 2.348,
+              "oddsAtPredict": 19.6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.10.31",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1800",
+              "postTime": "16:15",
+              "number": 10,
+              "name": "オルグジェシダ",
+              "winProb": 0.3275,
+              "ev": 1.37,
+              "oddsAtPredict": 5.1,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-10-31 20:37:09 JST"
         }
       ],
-      "result": null
+      "result": {
+        "all": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 1,
+          "top3Rate": 0.5,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "adv": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 1,
+          "top3Rate": 0.5,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAll": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 1,
+          "top3Rate": 0.5,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAdv": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 1,
+          "top3Rate": 0.5,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "skipped": 0,
+        "unknown": 0
+      },
+      "official": {
+        "picks": [
+          {
+            "date": "2026.10.31",
+            "place": "京都",
+            "race": "11",
+            "raceName": "ファンタG3",
+            "cls": "G3",
+            "dist": "芝1400",
+            "postTime": "15:45",
+            "number": 11,
+            "name": "ツキミ",
+            "winProb": 0.16149999999999998,
+            "ev": 2.348,
+            "oddsAtPredict": 19.6,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 2,
+            "finish": 11,
+            "payout": 0
+          },
+          {
+            "date": "2026.10.31",
+            "place": "東京",
+            "race": "12",
+            "raceName": "１勝ｸﾗｽ",
+            "cls": "1勝",
+            "dist": "芝1800",
+            "postTime": "16:15",
+            "number": 10,
+            "name": "オルグジェシダ",
+            "winProb": 0.3275,
+            "ev": 1.37,
+            "oddsAtPredict": 5.1,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 2,
+            "finish": 2,
+            "payout": 0
+          }
+        ],
+        "unknownPostTime": 0
+      }
     }
   ],
   "summary": {
     "all": {
-      "days": 10,
+      "days": 11,
+      "bets": 32,
+      "hits": 6,
+      "top3": 14,
+      "stake": 3200,
+      "ret": 2960,
+      "hitRate": 0.1875,
+      "top3Rate": 0.4375,
+      "roi": 0.925
+    },
+    "adv": {
+      "days": 9,
+      "bets": 17,
+      "hits": 5,
+      "top3": 10,
+      "stake": 1700,
+      "ret": 2410,
+      "hitRate": 0.29411764705882354,
+      "top3Rate": 0.5882352941176471,
+      "roi": 1.4176470588235295
+    },
+    "myAll": {
+      "days": 11,
       "bets": 30,
       "hits": 6,
-      "top3": 13,
+      "top3": 14,
       "stake": 3000,
       "ret": 2960,
       "hitRate": 0.2,
-      "top3Rate": 0.43333333333333335,
+      "top3Rate": 0.4666666666666667,
       "roi": 0.9866666666666667
     },
-    "adv": {
-      "days": 8,
-      "bets": 15,
-      "hits": 5,
-      "top3": 9,
-      "stake": 1500,
-      "ret": 2410,
-      "hitRate": 0.3333333333333333,
-      "top3Rate": 0.6,
-      "roi": 1.6066666666666667
-    },
-    "myAll": {
-      "days": 10,
-      "bets": 28,
-      "hits": 6,
-      "top3": 13,
-      "stake": 2800,
-      "ret": 2960,
-      "hitRate": 0.21428571428571427,
-      "top3Rate": 0.4642857142857143,
-      "roi": 1.0571428571428572
-    },
     "myAdv": {
-      "days": 8,
-      "bets": 14,
+      "days": 9,
+      "bets": 16,
       "hits": 5,
-      "top3": 9,
-      "stake": 1400,
+      "top3": 10,
+      "stake": 1600,
       "ret": 2410,
-      "hitRate": 0.35714285714285715,
-      "top3Rate": 0.6428571428571429,
-      "roi": 1.7214285714285715
+      "hitRate": 0.3125,
+      "top3Rate": 0.625,
+      "roi": 1.50625
     },
     "skipped": 2,
     "evMin": 1.2,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-10-25 17:46:50 JST"
+    "updatedAt": "2026-10-31 20:37:09 JST"
   }
 }
