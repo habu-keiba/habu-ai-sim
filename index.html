@@ -1243,7 +1243,7 @@ function resultPostText(hs,world){
   const nm=race.name.replace(/\*/g,'');
   const lead=world===0?`世界線No.0…${race.orders.length}通りのどこにも、この着順はありませんでした🏇`
     :world?`世界線No.${world}の着順はこうなりました🏇`:'シミュレーションの着順はこうなりました🏇';
-  const mk=withName=>hs.map((h,i)=>`${i+1}着 ${h.number}${withName?' '+h.name:''}`).join('\n');
+  const mk=withName=>hs.slice(0,3).map((h,i)=>`${i+1}着 ${h.number}${withName?' '+h.name:''}`).join('\n');
   const mkText=withName=>`【${BRAND}】${race.place}${race.r}R ${nm}\n${lead}\n${mk(withName)}\nあなたの世界線は？${SITE_URL?'\n▶ '+SITE_URL:''}\n#競馬 #競馬予想 #${BRAND}`;
   const t=mkText(true);
   return weightedLen(t)<=270?t:mkText(false);   // Xの文字数に収まらないときは馬名を省く
