@@ -5,6 +5,10 @@
  *   node tools/track.mjs reveal <日付>          レース後：その日の全ての版の中身を公開する
  *   node tools/track.mjs results "<結果CSV>"    結果を取り込み、的中率と回収率を集計する
  *   node tools/track.mjs verify                 公開済みの予測が、記録した指紋と一致するか確かめる
+ *   node tools/track.mjs worldlog "<結果CSV>" [--dat <datファイル>] [--name "<表示名>"]
+ *                                               重賞：実際の1〜3着が世界線（公開データの着順）の中にあったかを記録する
+ *   node tools/track.mjs worldlog-payout "<全データCSV>"
+ *                                               世界線ログの3連単配当を、全データCSVから埋める（無ければ空白のまま）
  *
  * 買い目は「AI勝率1位 かつ 期待値1.2以上（2026-10-24 以降。それ以前は1.3以上）の単勝」。障害競走は平地用モデルの対象外として除く。
  *
@@ -396,6 +400,104 @@ function cmdVerify() {
   if (ng) process.exitCode = 1;
 }
 
+/* ===== 世界線ログ（重賞のみ） =====
+ * シミュレーターの公開データ（race_public.dat）には、レースごとに世界線（抽選済みの着順）が入っている。
+ * レース後に、実際の1〜3着と同じ並びの世界線を探して記録する。無ければ No.0（worlds が空）。
+ * 公開データは data/worlds/ に控えを残し、ハッシュも記録する（GitHubの履歴で、いつ公開したかが確認できる）。 */
+const WORLD_DIR = path.join(ROOT, 'data', 'worlds');
+function decodeDat(text) {
+  const key = Buffer.from('habu-ai-sim');
+  const b = Buffer.from(text.trim(), 'base64');
+  return JSON.parse(Buffer.from(b.map((x, i) => x ^ key[i % key.length])).toString('utf8'));
+}
+const gradeOf = (...xs) => { const m = toHalf(xs.join(' ')).replace(/Ｇ/g, 'G').match(/G([123])/); return m ? 'G' + m[1] : null; };
+const parseOrders = (R) => (R.orders || []).map((o) => (typeof o === 'string' ? [...o].map((c) => parseInt(c, 36)) : o.map(Number)));
+const normDate = (v) => { const m = toHalf(v).match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/); return m ? `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}` : ''; };
+
+function cmdWorldlog(csvPath, rest) {
+  const flag = (n) => { const i = rest.indexOf(n); return i >= 0 ? rest[i + 1] : null; };
+  const datFile = path.resolve(flag('--dat') || path.join(ROOT, 'race_public.dat'));
+  const nameOverride = flag('--name');
+  const datText = fs.readFileSync(datFile, 'utf8');
+  const dat = decodeDat(datText);
+  const datHash = sha256(datText.trim());
+
+  const rows = readCsv(csvPath);
+  const col = (r, ...names) => { for (const n of names) if (r[n] !== undefined && r[n] !== '') return r[n]; return ''; };
+  const finish = new Map(), post = new Map();
+  for (const r of rows) {
+    let date = String(col(r, '日付', '日付(yyyy.mm.dd)')).replace(/\./g, '-');
+    if (!date) { const id = String(col(r, 'レースID(新)', 'レースID')); if (/^\d{8}/.test(id)) date = `${id.slice(0, 4)}-${id.slice(4, 6)}-${id.slice(6, 8)}`; }
+    const rk = [date, col(r, '場所'), num(col(r, 'Ｒ', 'R'))].join('|');
+    const t = col(r, '発走時刻', '発走'); if (t) post.set(rk, t);
+    const fin = num(col(r, '確定着順', '着順', '着'));
+    if (fin !== null) finish.set(rk + '|' + fin, num(col(r, '馬番', '馬番号')));
+  }
+
+  const rec = loadRecord();
+  rec.worldlog = rec.worldlog || [];
+  const graded = (dat.races || []).filter((R) => gradeOf(R.cls, R.name));
+  if (!graded.length) { console.log('公開データに重賞のレースがありません'); return; }
+  let archived = false;
+  for (const R of graded) {
+    const date = R.date.replace(/\./g, '-');
+    const rk = [date, R.place, num(R.r)].join('|');
+    const top = [1, 2, 3].map((k) => finish.get(rk + '|' + k));
+    if (top.some((v) => v == null)) { console.log(`  × ${date} ${R.place}${R.r}R: 結果CSVに1〜3着が見つかりません`); continue; }
+    const hs = Object.fromEntries(R.horses.map((h) => [Number(h.number), h]));
+    const orders = parseOrders(R);
+    const worlds = [];
+    orders.forEach((o, i) => { if (top.every((n, k) => o[k] === n)) worlds.push(i + 1); });
+    const grade = gradeOf(R.cls, R.name);
+    const baseName = String(R.name).replace(/[ＧG][1-3１-３]\s*$/, '').replace(/\*/g, '').trim();
+    // 作成時刻が発走より後なら、レース後に作った世界線として印を付ける
+    const pt = toMinutes(post.get(rk));
+    const created = new Date(dat.created);
+    const jst = new Date(created.getTime() + 9 * 3600 * 1000);
+    const createdMin = jst.getUTCHours() * 60 + jst.getUTCMinutes();
+    const createdDate = jst.toISOString().slice(0, 10);
+    const postRace = pt == null ? null : (createdDate > date || (createdDate === date && createdMin > pt));
+    const entry = {
+      date, place: R.place, race: num(R.r), raceName: (graded.length === 1 && nameOverride) || baseName, grade, dist: R.dist,
+      top3: top.map((n) => ({ number: n, name: hs[n] ? hs[n].name : '', waku: hs[n] ? hs[n].waku : null })),
+      worlds, worldCount: orders.length, payout3t: null,
+      createdAt: dat.created, postRace, datHash,
+    };
+    if (!archived) {
+      fs.mkdirSync(WORLD_DIR, { recursive: true });
+      fs.writeFileSync(path.join(WORLD_DIR, `${date}_${datHash.slice(0, 8)}.dat`), datText);
+      archived = true;
+    }
+    entry.datFile = `data/worlds/${date}_${datHash.slice(0, 8)}.dat`;
+    const old = rec.worldlog.findIndex((e) => e.date === entry.date && e.place === entry.place && e.race === entry.race);
+    if (old >= 0) { entry.payout3t = rec.worldlog[old].payout3t ?? null; rec.worldlog[old] = entry; } else rec.worldlog.push(entry);
+    const wtxt = worlds.length ? worlds.map((w) => 'No.' + w).join('・') : 'No.0（' + orders.length + '通りのどこにも無し）';
+    console.log(`  ○ ${date} ${R.place}${R.r}R ${entry.raceName}（${grade}）: ${top.join('→')} / 世界線 ${wtxt}${postRace ? '　※レース後に作成した世界線' : ''}`);
+  }
+  rec.worldlog.sort((a, b) => a.date.localeCompare(b.date) || a.place.localeCompare(b.place, 'ja') || a.race - b.race);
+  saveRecord(rec);
+}
+
+function cmdWorldlogPayout(csvPath) {
+  const rec = loadRecord();
+  const todo = (rec.worldlog || []).filter((e) => e.payout3t == null);
+  if (!todo.length) { console.log('3連単配当が空白の世界線ログはありません'); return; }
+  const pay = new Map();
+  for (const r of readCsv(csvPath)) {
+    const v = num(r['３連単'] ?? r['3連単']);
+    if (v === null || v <= 0) continue;
+    pay.set([normDate(r['日付(yyyy.mm.dd)'] ?? r['日付']), r['場所'], num(r['Ｒ'] ?? r['R'])].join('|'), v);
+  }
+  let filled = 0;
+  for (const e of todo) {
+    const v = pay.get([e.date, e.place, e.race].join('|'));
+    if (v != null) { e.payout3t = v; filled++; console.log(`  ○ ${e.date} ${e.place}${e.race}R ${e.raceName}: 3連単 ${v.toLocaleString()}円`); }
+    else console.log(`  － ${e.date} ${e.place}${e.race}R ${e.raceName}: このCSVには3連単配当がありません（空白のまま）`);
+  }
+  saveRecord(rec);
+  console.log(`3連単配当を ${filled}件 埋めました`);
+}
+
 const [cmd, arg, ...rest] = process.argv.slice(2);
 try {
   if (cmd === 'commit') cmdCommit(arg, rest);
@@ -404,6 +506,8 @@ try {
   else if (cmd === 'recalc') cmdRecalc();
   else if (cmd === 'exclude') cmdExclude(arg, rest[0], rest[1], rest.slice(2).join(' '));
   else if (cmd === 'verify') cmdVerify();
+  else if (cmd === 'worldlog') cmdWorldlog(arg, rest);
+  else if (cmd === 'worldlog-payout') cmdWorldlogPayout(arg);
   else {
     console.log('使い方:');
     console.log('  node tools/track.mjs commit "<予測CSV>" [--skip 中山5R[-7][:理由]]');
@@ -414,6 +518,9 @@ try {
     console.log('  node tools/track.mjs exclude <日付> <場所> <R> [理由]   そのレースを成績の対象外にする');
     console.log('  node tools/track.mjs recalc                保存済みの着順から集計を作り直す');
     console.log('  node tools/track.mjs verify                指紋の照合');
+    console.log('  node tools/track.mjs worldlog "<結果CSV>" [--dat <datファイル>] [--name "<表示名>"]');
+    console.log('                                            重賞：実際の1〜3着が世界線の中にあったかを記録');
+    console.log('  node tools/track.mjs worldlog-payout "<全データCSV>"   世界線ログの3連単配当を埋める');
   }
 } catch (e) {
   console.error('エラー:', e.message);

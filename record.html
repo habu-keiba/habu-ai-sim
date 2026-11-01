@@ -54,6 +54,31 @@
   details.month[open]>summary::before{content:'▼';}
   .month-sum{font-size:12px;font-weight:500;color:var(--cream-dim);}
   .month-body{padding:8px 14px 6px;}
+  /* 世界線ログ：1レース＝スマホは2行、PCは1行 */
+  .wl{padding:8px 0;border-top:1px solid var(--line);display:grid;gap:6px;}
+  .wl-a,.wl-b{display:flex;align-items:center;gap:6px;font-size:13px;min-width:0;}
+  .wl-d{font-size:11px;color:var(--cream-dim);}
+  .wl-g{font-size:10px;font-weight:700;border-radius:4px;padding:1px 6px;color:#fff;}
+  .wl-g.G1{background:var(--amber);color:var(--navy);}
+  .wl-g.G2{background:#0F6E56;}
+  .wl-g.G3{background:#534AB7;}
+  .wl-n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .wl-p{font-size:12px;color:var(--cream-dim);white-space:nowrap;}
+  .wl-p b{color:var(--cream);font-weight:500;}
+  .wl-w{font-size:11px;color:var(--cream-dim);white-space:nowrap;}
+  .month .month-body .month-body{padding:4px 6px 4px;}
+  #worldlogPanel{padding:12px 10px;}
+  #worldlogPanel .month>summary{padding:10px 10px;}
+  #worldlogPanel .month-body{padding:6px 10px 4px;}
+  #worldlogPanel .month .month-body{padding:2px 8px 4px;}
+  .wl-win{font-size:13px;min-width:0;flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .wl-c{display:inline-flex;gap:3px;flex:0 0 auto;}
+  .wl-cap{width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;}
+  .wl-no{color:var(--amber);font-weight:700;font-size:12px;white-space:nowrap;}
+  .wl-no small{color:var(--cream-dim);font-weight:400;font-size:12px;}
+  .wl-no.zero{background:var(--alert);color:#fff;border-radius:5px;padding:1px 8px;}
+  .wl-note{font-size:11px;color:var(--cream-dim);grid-column:1/-1;}
+  @media (min-width:720px){.wl{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:16px;}}
   .msums{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:6px 0;}
   .msum{background:rgba(14,22,38,.5);border-radius:8px;padding:10px 12px;}
   .msum-t{font-size:12px;color:var(--cream-dim);font-weight:700;}
@@ -97,6 +122,17 @@
   <div class="panel">
     <p class="panel-title">月ごとの記録（月を押すと、開催日ごとの記録が開きます）</p>
     <div id="days">読み込み中…</div>
+  </div>
+
+  <div class="panel" id="worldlogPanel" style="display:none;">
+    <p class="panel-title">シミュレーターの記録（馬券の成績ではありません）</p>
+    <details class="month">
+      <summary><span>世界線ログ</span><span class="month-sum">重賞のみ</span></summary>
+      <div class="month-body">
+        <p class="how" style="font-size:12px;">シミュレーターの1,000通りの着順（世界線）の中に、重賞の実際の1〜3着があったかの記録です。</p>
+        <div id="worldlog"></div>
+      </div>
+    </details>
   </div>
 
   <div class="panel">
@@ -210,6 +246,29 @@ function renderDays(r){
   }).join('');
 }
 
+const WAKU_COL=[['#f3ede0','#0e1626'],['#1a1a1a','#f3ede0'],['#d7263d','#fff'],['#1e6fd9','#fff'],['#f2c200','#0e1626'],['#2fa84f','#fff'],['#f07c1e','#0e1626'],['#ec6a9c','#0e1626']];
+const esc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function renderWorldlog(r){
+  const L=r.worldlog||[];
+  if(!L.length)return;
+  const rowHtml=e=>{
+    const caps=(e.top3||[]).map(h=>{const c=WAKU_COL[(h.waku||1)-1]||WAKU_COL[0];return '<span class="wl-cap" style="background:'+c[0]+';color:'+c[1]+(c[0]==='#1a1a1a'?';border:.5px solid #555':'')+'">'+esc(h.number)+'</span>';}).join('');
+    const w=e.worlds||[];
+    const no=w.length?'<span class="wl-no">No.'+w[0]+(w.length>1?'<small> ほか'+(w.length-1)+'</small>':'')+'</span>':'<span class="wl-no zero">No.0</span>';
+    return '<div class="wl"><div class="wl-a"><span class="wl-d">'+esc(e.date.slice(5).replace('-','/'))+'</span><span class="wl-g '+esc(e.grade)+'">'+esc(e.grade)+'</span>'
+      +'<span class="wl-n">'+esc(e.raceName)+'</span><span class="wl-p">3連単 <b>'+(e.payout3t?e.payout3t.toLocaleString()+'円':'—')+'</b></span></div>'
+      +'<div class="wl-b"><span class="wl-w">勝ち馬</span><span class="wl-win">'+esc((e.top3&&e.top3[0]||{}).name)+'</span><span class="wl-c">'+caps+'</span>'+no+'</div>'
+      +'</div>';
+  };
+  const months=new Map();
+  [...L].sort((a,b)=>b.date.localeCompare(a.date)||(b.race-a.race)).forEach(e=>{const m=e.date.slice(0,7);if(!months.has(m))months.set(m,[]);months.get(m).push(e);});
+  const years=new Set([...months.keys()].map(m=>m.slice(0,4)));
+  $('worldlog').innerHTML=[...months.entries()].map(([m,es])=>
+    '<details class="month"><summary><span>'+(years.size>1?m.slice(0,4)+'年':'')+Number(m.slice(5))+'月</span><span class="month-sum">重賞'+es.length+'レース</span></summary>'
+    +'<div class="month-body">'+es.map(rowHtml).join('')+'</div></details>').join('');
+  $('worldlogPanel').style.display='block';
+}
+
 async function sha256(text){
   const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));
   return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
@@ -232,7 +291,7 @@ async function verifyAll(){
 
 fetch('data/record.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(r=>{
   if(!r){$('days').textContent='まだ記録がありません。';return;}
-  record=r;renderStats(r);renderDays(r);
+  record=r;renderStats(r);renderDays(r);renderWorldlog(r);
 }).catch(()=>{$('days').textContent='記録を読み込めませんでした。';});
 $('verifyBtn').addEventListener('click',verifyAll);
 </script>

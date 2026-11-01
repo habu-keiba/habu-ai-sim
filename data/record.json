@@ -2739,5 +2739,42 @@
     "aiRank": 1,
     "stakePerBet": 100,
     "updatedAt": "2026-11-01 18:24:19 JST"
-  }
+  },
+  "worldlog": [
+    {
+      "date": "2026-11-01",
+      "place": "東京",
+      "race": 11,
+      "raceName": "天皇賞（秋）",
+      "grade": "G1",
+      "dist": 2000,
+      "top3": [
+        {
+          "number": 17,
+          "name": "ダノンデサイル",
+          "waku": 8
+        },
+        {
+          "number": 10,
+          "name": "ネブラディスク",
+          "waku": 5
+        },
+        {
+          "number": 3,
+          "name": "レガレイラ",
+          "waku": 2
+        }
+      ],
+      "worlds": [
+        647,
+        766
+      ],
+      "worldCount": 999,
+      "payout3t": null,
+      "createdAt": "2026-11-01T11:06:23.891Z",
+      "postRace": true,
+      "datHash": "779a3dc67a7be6ea807507e55a2a17773afc6d4e911d18f7f0518c6fb06d098c",
+      "datFile": "data/worlds/2026-11-01_779a3dc6.dat"
+    }
+  ]
 }
