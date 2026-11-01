@@ -189,8 +189,8 @@
 
   <div class="panel" id="horseListPanel"></div>
 
-  <a class="cta-link" href="record.html">📊 AIの予測実績を見る →<small>検証できる記録と、重賞の世界線ログ</small></a>
-  <a class="cta-link cta-note" id="noteCta" href="https://note.com/habu_keiba" target="_blank" rel="noopener">📝 noteを見る →<small>全頭のAI勝率・期待値と妙味馬を公開中</small></a>
+  <a class="cta-link" href="record.html" data-goatcounter-click="sim-to-record" data-goatcounter-title="シミュレーター→実績ページ">📊 AIの予測実績を見る →<small>検証できる記録と、重賞の世界線ログ</small></a>
+  <a class="cta-link cta-note" id="noteCta" data-goatcounter-click="sim-to-note" data-goatcounter-title="シミュレーター→note" href="https://note.com/habu_keiba" target="_blank" rel="noopener">📝 noteを見る →<small>全頭のAI勝率・期待値と妙味馬を公開中</small></a>
 
   <div id="inAppBanner" style="display:none;margin-top:22px;font-size:12px;color:var(--cream-dim);line-height:1.7;"></div>
 
@@ -1587,6 +1587,16 @@ if(location.protocol.startsWith('http')){
     const d=JSON.parse(t.trim().startsWith('{')?t:decodeData(t));   // 古い形式（そのままのJSON）も読める
     loadPublicData(d);
   }).catch(()=>{});
+}
+</script>
+<script>
+/* アクセス解析（GoatCounter。Cookieなし・個人を特定しない）。サイトコードを入れると有効になる。空のままなら何も読み込まない */
+const GC_CODE='';
+if(GC_CODE){
+  const g=document.createElement('script');g.async=true;g.src='//gc.zgo.at/count.js';g.dataset.goatcounter='https://'+GC_CODE+'.goatcounter.com/count';
+  document.head.appendChild(g);
+  const f=document.querySelector('footer');
+  if(f)f.insertAdjacentHTML('beforeend','<br><span style="opacity:.6">このサイトは、個人を特定しないアクセス解析（GoatCounter・Cookieなし）を使っています。</span>');
 }
 </script>
 </body>

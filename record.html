@@ -125,7 +125,7 @@
     ・<b>AI＋羽生の判断</b>（見送った点を除いた場合）<br>
     見送りも<b>レース前に指紋へ含めて</b>記録するので、結果を見てから外すことはできません。
   </p>
-  <p class="links"><a class="linkbtn" href="./">シミュレーターに戻る</a><a class="linkbtn" href="https://note.com/habu_keiba" target="_blank" rel="noopener">noteを見る</a></p>
+  <p class="links"><a class="linkbtn" href="./" data-goatcounter-click="record-to-sim" data-goatcounter-title="実績ページ→シミュレーター">シミュレーターに戻る</a><a class="linkbtn" data-goatcounter-click="record-to-note" data-goatcounter-title="実績ページ→note" href="https://note.com/habu_keiba" target="_blank" rel="noopener">noteを見る</a></p>
 
   <div class="panel">
     <p class="panel-title" style="font-size:15px;font-weight:700;color:var(--cream);">通算成績</p>
@@ -322,6 +322,16 @@ fetch('data/record.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(r=
   record=r;renderStats(r);renderDays(r);renderWorldlog(r);
 }).catch(()=>{$('days').textContent='記録を読み込めませんでした。';});
 $('verifyBtn').addEventListener('click',verifyAll);
+</script>
+<script>
+/* アクセス解析（GoatCounter。Cookieなし・個人を特定しない）。サイトコードを入れると有効になる。空のままなら何も読み込まない */
+const GC_CODE='';
+if(GC_CODE){
+  const g=document.createElement('script');g.async=true;g.src='//gc.zgo.at/count.js';g.dataset.goatcounter='https://'+GC_CODE+'.goatcounter.com/count';
+  document.head.appendChild(g);
+  const f=document.querySelector('footer');
+  if(f)f.insertAdjacentHTML('beforeend','<br><span style="opacity:.6">このサイトは、個人を特定しないアクセス解析（GoatCounter・Cookieなし）を使っています。</span>');
+}
 </script>
 </body>
 </html>
