@@ -64,6 +64,7 @@
   .verify{margin-top:10px;font-size:12px;}
   .how{font-size:13px;color:var(--cream-dim);}
   .how b{color:var(--cream);}
+  p.how{margin:0 0 10px;}
   footer{text-align:center;color:var(--cream-dim);font-size:11px;margin-top:30px;line-height:1.6;}
 </style>
 </head>
@@ -86,9 +87,10 @@
   <div class="panel">
     <p class="panel-title">実際に買った馬</p>
     <p class="how">
-      レースが終わった日は、下の「月ごとの記録」で月（「●月の結果」）を開き、各日の
-      <b style="color:var(--amber)">「▼ 羽生が実際に買った馬を見る」</b>を開くと、
-      買った馬・単勝オッズ・着順・払戻を1点ずつ確認できます。見送った馬もそこに理由つきで残しています。
+      下の「月ごとの記録」で、月（「●月の結果」）を開いてください。<br>
+      各日の<b style="color:var(--amber)">「▼ 羽生が実際に買った馬を見る」</b>を押すと、<br>
+      買った馬・オッズ・着順・払戻を1点ずつ確認できます。<br>
+      見送った馬も、理由つきで残しています。
     </p>
   </div>
 
@@ -99,22 +101,19 @@
 
   <div class="panel">
     <p class="panel-title">仕組み</p>
-    <p class="how">
-      予想の中身は<b>レース前には公開しません</b>（noteの有料記事で扱うためです）。代わりに、予想を確定させた時点で
-      その内容から計算した<b>指紋（SHA-256ハッシュ）だけ</b>をこのページに記録し、GitHubに送信します。
-      GitHubには送信時刻が公開で残るため、<b>レース前に確定していたこと</b>が後から確認できます。<br>
-      レースが終わったら中身を公開します。下の「指紋を照合する」を押すと、
-      公開された中身から指紋を計算し直し、レース前に記録した指紋と一致するかをあなたのブラウザで確かめられます。
-      一致すれば、<b>後から都合よく書き換えていない</b>ことの証明になります。<br>オッズで期待値が変わるため、予想は1日に何度も出し直します。すべての版を時刻つきで残し、<b>成績に数えるのは各レースの発走時刻より前に記録した最後の版だけ</b>です。レース後に出した予想は自動的に成績から外れます。
-    </p>
+    <p class="how"><b>① レース前</b><br>
+      予想の中身は公開しません（noteの有料記事で扱うため）。<br>
+      代わりに、予想を確定した時点で、内容から計算した<b>指紋（SHA-256）</b>だけをここに記録します。</p>
+    <p class="how"><b>② 記録した時刻</b><br>
+      送信時刻はGitHubに公開で残ります。<b>レース前に確定していたこと</b>を、後から確認できます。<br>
+      <a href="https://github.com/habu-keiba/habu-ai-sim/commits/main/data/record.json" target="_blank" rel="noopener">GitHubの記録履歴を見る →</a></p>
+    <p class="how"><b>③ レース後</b><br>
+      予想の中身を公開します。下のボタンで、公開した中身から指紋を計算し直し、記録済みの指紋と一致するか確かめられます。<br>
+      一致すれば、<b>後から書き換えていない</b>証明になります（計算はあなたのブラウザの中だけで行います）。</p>
     <p class="verify"><button id="verifyBtn">指紋を照合する</button> <span id="verifyResult"></span></p>
-    <p class="how" style="margin-top:10px">
-      <b>このボタンで何が分かるの？</b><br>
-      いま画面に出ている予想の中身から指紋を計算し直して、記録済みの指紋と突き合わせます。中身を1文字でも書き換えると指紋はまったく別の値になるので、
-      一致すれば<b>公開後に成績を良く見せる書き換えをしていない</b>と言えます。計算はあなたのブラウザの中だけで行われます。<br>
-      そして<b>「いつ記録したか」はGitHubの履歴で確認できます</b>。各レースの発走時刻より前に指紋が送信されていれば、後出しではないことになります。
-      <a href="https://github.com/habu-keiba/habu-ai-sim/commits/main/data/record.json" target="_blank" rel="noopener">GitHubの記録履歴を見る →</a>
-    </p>
+    <p class="how" style="margin-top:12px"><b>④ 成績に数える版</b><br>
+      予想は、オッズに合わせて1日に何度も出し直します。<br>
+      成績に数えるのは、<b>各レースの発走時刻より前に記録した最後の版</b>だけです。</p>
   </div>
 
   <footer>
@@ -153,7 +152,8 @@ function renderStats(r){
     html+='<div style="height:10px"></div>'
       +g(s.myAdv,['AI＋羽生の判断｜1勝クラス以上','トラックバイアスやパドックを見て、羽生がレース前に見送った点を除いた場合／新馬・未勝利を除く']);
   }
-  html+='<div style="height:18px"></div><p class="panel-title" style="margin:0 0 8px">全クラス（新馬・未勝利を含む）</p>'
+  html+='<div style="height:18px"></div><p class="panel-title" style="margin:0 0 4px">全クラス（新馬・未勝利を含む）</p>'
+    +'<p class="how" style="font-size:12px;margin:0 0 10px">新馬・未勝利は、AIが過去の成績をもとに予測するため、走った実績が少なく、成績が出にくいクラスです。参考として小さく載せています。</p>'
     +g(s.all,['AIのみ｜全クラス','人の判断を入れず、AIの買い目を全部買った場合'],true);
   if(s.skipped){
     html+='<div style="height:8px"></div>'
