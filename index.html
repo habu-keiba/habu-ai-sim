@@ -1272,8 +1272,16 @@ function setShareImage(card,text,name){
     const file=new File([blob],name,{type:'image/png'});
     const isPhone=window.matchMedia&&matchMedia('(pointer: coarse)').matches;
     const canShare=isPhone&&navigator.canShare&&navigator.canShare({files:[file]});
-    $('imgShare').style.display=canShare?'inline-block':'none';
-    $('imgShare').onclick=()=>navigator.share({files:[file],text}).catch(()=>{});
+    $('imgShare').style.display='none';
+    if(canShare){
+      // スマホ：コピー＆貼り付けではなく、共有メニューで画像と文章をまとめてXへ渡す
+      $('xImgIntent').textContent='𝕏 画像つきで投稿（共有メニューでXを選ぶ）';
+      $('xImgIntent').onclick=e=>{e.preventDefault();navigator.share({files:[file],text}).catch(()=>{});};
+      $('imgNote').textContent='共有メニューで X を選ぶと、画像と文章が入った状態で投稿画面が開きます。';
+    }else{
+      $('xImgIntent').textContent='𝕏 画像をコピーして投稿画面を開く';
+      $('imgNote').textContent='「投稿画面を開く」を押すと、画像がコピーされます。投稿画面の文章欄で貼り付けてください（PCは Ctrl+V）。';
+    }
   },'image/png');
 }
 function makeResultImage(P,world){
