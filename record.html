@@ -41,6 +41,20 @@
   summary::-webkit-details-marker{display:none;}
   summary:hover{background:rgba(245,166,35,.12);}
   details[open] summary{margin-bottom:8px;}
+  /* 月ごとの見出し（押すと、その月の開催日ごとの記録が開く） */
+  details.month{margin:0 0 10px;border:1px solid var(--line);border-radius:10px;background:rgba(14,22,38,.4);}
+  details.month>summary{display:flex;flex-wrap:wrap;align-items:center;gap:2px 14px;border:none;border-radius:10px;padding:12px 14px;font-size:16px;}
+  details.month[open]>summary{margin-bottom:0;border-bottom:1px solid var(--line);border-radius:10px 10px 0 0;}
+  details.month>summary::before{content:'▶';font-size:11px;margin-right:-6px;}
+  details.month[open]>summary::before{content:'▼';}
+  .month-sum{font-size:12px;font-weight:500;color:var(--cream-dim);}
+  .month-body{padding:8px 14px 6px;}
+  .msums{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:6px 0;}
+  .msum{background:rgba(14,22,38,.5);border-radius:8px;padding:10px 12px;}
+  .msum-t{font-size:12px;color:var(--cream-dim);font-weight:700;}
+  .msum-roi{font-family:'RocknRoll One',sans-serif;font-size:26px;color:var(--amber);line-height:1.2;}
+  .msum-l{font-size:11px;color:var(--cream-dim);}
+  .msum-d{font-size:12px;color:var(--cream-dim);margin-top:2px;}
   button{font-family:'Noto Sans JP',sans-serif;font-weight:700;font-size:13px;border:none;border-radius:8px;padding:9px 16px;cursor:pointer;background:var(--amber);color:var(--navy);}
   .verify{margin-top:10px;font-size:12px;}
   .how{font-size:13px;color:var(--cream-dim);}
@@ -87,14 +101,14 @@
   <div class="panel">
     <p class="panel-title">実際に買った馬</p>
     <p class="how">
-      レースが終わった日は、下の「開催日ごとの記録」で各日の
+      レースが終わった日は、下の「月ごとの記録」で月（「●月の結果」）を開き、各日の
       <b style="color:var(--amber)">「▼ 羽生が実際に買った馬を見る」</b>を開くと、
       買った馬・単勝オッズ・着順・払戻を1点ずつ確認できます。見送った馬もそこに理由つきで残しています。
     </p>
   </div>
 
   <div class="panel">
-    <p class="panel-title">開催日ごとの記録</p>
+    <p class="panel-title">月ごとの記録（月を押すと、開催日ごとの記録が開きます）</p>
     <div id="days">読み込み中…</div>
   </div>
 
@@ -142,7 +156,7 @@ function renderStats(r){
 
 function renderDays(r){
   if(!r.days||!r.days.length){$('days').textContent='まだ記録がありません。';return;}
-  $('days').innerHTML=[...r.days].reverse().map(d=>{
+  const dayHtml=d=>{
     const off=d.official?d.official.picks:null;
     const res=d.result&&d.result.all?d.result.all:null, resAdv=d.result&&d.result.adv?d.result.adv:null;
     const revealed=(d.versions||[]).some(v=>v.revealed);
@@ -159,6 +173,31 @@ function renderDays(r){
         +'<td class="num '+(p.excluded?'miss':p.finish===1?'r1':p.finish===2?'r2':p.finish===3?'r3':'miss')+'">'+(p.finish??'—')+'</td><td class="num">'+(p.payout?yen(p.payout):'—')+'</td><td>第'+p.fromVersion+'版</td></tr>').join('')
       +'</table></details>':'';
     return '<div style="padding:10px 0;border-bottom:1px solid var(--line)">'+head+vers+picks+'</div>';
+  };
+
+  // 開催日を月ごとにまとめる。月の見出しには月間の成績を出し、押すとその月の開催日ごとの記録が開く
+  const KEYS=[['adv','AIのみ｜1勝クラス以上'],['all','AIのみ｜全クラス'],['myAdv','AI＋羽生の判断｜1勝クラス以上'],['myAll','AI＋羽生の判断｜全クラス']];
+  const sum=(ds,k)=>{
+    const t={bets:0,hits:0,top3:0,stake:0,ret:0,n:0};
+    ds.forEach(d=>{const x=d.result&&d.result[k];if(x){t.bets+=x.bets||0;t.hits+=x.hits||0;t.top3+=x.top3||0;t.stake+=x.stake||0;t.ret+=x.ret||0;t.n++;}});
+    t.roi=t.stake?t.ret/t.stake:null;return t;
+  };
+  const months=new Map();
+  [...r.days].reverse().forEach(d=>{const m=d.date.slice(0,7);if(!months.has(m))months.set(m,[]);months.get(m).push(d);});
+  const years=new Set([...months.keys()].map(m=>m.slice(0,4)));
+  $('days').innerHTML=[...months.entries()].map(([m,ds])=>{
+    const label=(years.size>1?m.slice(0,4)+'年':'')+Number(m.slice(5))+'月の結果';
+    const a=sum(ds,'adv'),b=sum(ds,'all');
+    const skipped=ds.reduce((n,d)=>n+((d.result&&d.result.skipped)||0),0);
+    const rows=KEYS.filter(k=>skipped||k[0].indexOf('my')!==0).map(k=>{
+      const s=sum(ds,k[0]);
+      return s.n?'<div class="msum"><div class="msum-t">'+k[1]+'</div><div><span class="msum-roi">'+pct(s.roi)+'</span> <span class="msum-l">単勝回収率</span></div>'
+        +'<div class="msum-d">購入'+s.bets+'点・的中'+s.hits+'点（'+pct(s.bets?s.hits/s.bets:null)+'）・3着内'+s.top3+'点<br>投資'+yen(s.stake)+'／払戻'+yen(s.ret)+'</div></div>':'';
+    }).join('');
+    const table=rows?'<div class="msums">'+rows+'</div><p class="how" style="font-size:11px;margin:4px 0 8px">結果が確定した開催日だけを集計しています。</p>':'';
+    const brief=(a.n||b.n)?'1勝クラス以上 回収率'+pct(a.roi)+' ／ 全クラス 回収率'+pct(b.roi):'結果の取り込み待ち';
+    return '<details class="month"><summary><span>'+label+'</span><span class="month-sum">開催'+ds.length+'日</span><span class="month-sum">'+brief+'</span></summary>'
+      +'<div class="month-body">'+table+ds.map(dayHtml).join('')+'</div></details>';
   }).join('');
 }
 
