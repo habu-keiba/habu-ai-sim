@@ -154,9 +154,10 @@
       <div id="boardRows"></div>
     </div>
     <div class="share-actions" id="resultActions">
-      <a id="xImgIntent" class="btn-x" target="_blank" rel="noopener">𝕏 着順画像を保存して投稿画面を開く</a>
+      <a id="xImgIntent" class="btn-x" target="_blank" rel="noopener">𝕏 画像をコピーして投稿画面を開く</a>
       <a id="imgDl" class="ghost-btn">⬇ 画像だけ保存</a>
       <button id="imgShare" class="ghost-btn" style="display:none;">📱 スマホでシェア</button>
+      <p class="share-note" id="imgNote" style="width:100%;margin:4px 0 0;">「投稿画面を開く」を押すと、画像がコピーされます。投稿画面の文章欄で貼り付けてください（PCは Ctrl+V）。</p>
     </div>
   </div>
 
@@ -573,32 +574,50 @@ function xAtTime(P,t){
 function gateLat(h,N){return N>1?(h.number-1)/(N-1)*(LANES-1):0;}
 /* 区間の頭で、その区間を走り終えるまでの各馬の位置を先読みしてレーンを決める。
    同じレーンに入れるのは「区間中ずっと1.15馬身以上離れていて、前後が入れ替わらない」馬どうしだけ。
-   区間の途中ではレーンを変えないので、直線で斜行したり、追い抜きで馬が重なったりしない。 */
+   区間の途中ではレーンを変えないので、直線で斜行したり、追い抜きで馬が重なったりしない。
+   【v17】枠順どおりの動きにする：
+   ・序盤は、馬番（枠）のレーンから出て、脚質と位置取りに応じて内へ寄る（前にいる馬ほど、内ラチへ寄れる）。外枠の馬が内枠の馬の内へ潜ったり、内枠の馬が外へ出たりしない。
+   ・近くにいる馬どうしの左右の順序は、入れ替えにくくする（入れ替えるときだけ、ペナルティを払う）。
+   ・直線で、差し・追込が外へ持ち出す動きは、今までどおり。 */
+const LANE_IN_STYLE={nige:0.33,senko:0.65,sashi:0.85,oikomi:0.95};   // 序盤に、枠のレーンの何割まで内へ寄るか（小さいほど、内へ寄る）
+const LANE_IN_STYLE_W=0.5,LANE_IN_POS_MIN=0.35;                       // 脚質と位置取りの混ぜ方、先頭の馬が寄る割合の下限
+const LANE_SWAP_COST=2.0,LANE_NEAR=3.0;                              // 左右の入れ替えのペナルティ（レーン換算）と、「近い」とみなす前後の差（馬身）
 function planLanes(P,S,phase){
+  const N=horses.length;
   const a=phase.kind===0?Math.max(phase.x0,P.xGate*0.8):phase.x0,b=Math.min(phase.x1,P.D+10);
   const xs=[];for(let i=0;i<=10;i++)xs.push(lerp(a,b,i/10));
   const traj={};horses.forEach(h=>traj[h.number]=xs.map(x=>behindAt(P,h,x)));
-  const members=Array.from({length:LANES},()=>[]);
-  [...horses].sort((p,q)=>traj[p.number][0]-traj[q.number][0]).forEach(h=>{
+  const members=Array.from({length:LANES},()=>[]),placed=[];
+  [...horses].sort((p,q)=>traj[p.number][0]-traj[q.number][0]).forEach((h,idx)=>{
     const p=P.plan[h.number],cur=S.lat[h.number],A=traj[h.number];
+    const gate=gateLat(h,N),pos=N>1?idx/(N-1):0;   // pos：その区間の頭の位置取り（0＝先頭、1＝最後方）
     let want,stick;
-    if(phase.kind===0){want={nige:0,senko:1,sashi:2,oikomi:2.5}[h.kyaku];stick=0.2;}
-    else if(phase.kind===1){want=p.dEarly-p.dCorner>2?cur+2:cur;stick=0.3;}       // 押し上げる馬は外へ
-    else{const gain=p.dCorner-p.dFinish;want=h.kyaku==='nige'?cur:h.kyaku==='senko'?cur+0.5:cur+(gain>2.5?3:2);stick=0.15;}   // 差し・追込は外へ持ち出す
+    if(phase.kind===0){want=gate*(LANE_IN_STYLE_W*LANE_IN_STYLE[h.kyaku]+(1-LANE_IN_STYLE_W)*(LANE_IN_POS_MIN+(1-LANE_IN_POS_MIN)*pos));stick=0.5;}
+    else if(phase.kind===1){want=p.dEarly-p.dCorner>2?cur+1:cur;stick=0.4;}       // 押し上げる馬は少し外へ
+    else{const gain=p.dCorner-p.dFinish;want=h.kyaku==='nige'?cur:h.kyaku==='senko'?cur+0.5:cur+(gain>2.5?2.2:1.2);stick=0.15;}   // 差し・追込は外へ持ち出す
     want=clamp(want,0,LANES-1);
     let best=-1,bestCost=Infinity,fb=0,fbBad=Infinity;
     for(let l=0;l<LANES;l++){
-      const cost=Math.abs(l-want)+stick*Math.abs(l-cur);
+      let cost=Math.abs(l-want)+stick*Math.abs(l-cur);
       let bad=0;
       for(const g of members[l]){
         const B=traj[g.number],s0=Math.sign(A[0]-B[0]);
         for(let i=0;i<A.length;i++)if(Math.abs(A[i]-B[i])<1.15||Math.sign(A[i]-B[i])!==s0)bad++;
       }
+      // 近くにいる馬との左右の順序（序盤は枠順、あとは今の並び）を入れ替えるなら、ペナルティ
+      for(const q of placed){
+        if(q.lane===l)continue;
+        const B=traj[q.h.number];let near=false;
+        for(let i=0;i<A.length;i++)if(Math.abs(A[i]-B[i])<LANE_NEAR){near=true;break;}
+        if(!near)continue;
+        const oh=phase.kind===0?gate:cur,oq=phase.kind===0?gateLat(q.h,N):S.lat[q.h.number];
+        if((oh-oq)*(l-q.lane)<0)cost+=LANE_SWAP_COST;
+      }
       if(bad===0&&cost<bestCost){bestCost=cost;best=l;}
       if(bad<fbBad||(bad===fbBad&&cost<Math.abs(fb-want))){fbBad=bad;fb=l;}
     }
     const lane=best>=0?best:fb;
-    members[lane].push(h);S.target[h.number]=lane;
+    members[lane].push(h);placed.push({h,lane});S.target[h.number]=lane;
   });
 }
 
@@ -1234,9 +1253,22 @@ function setShareImage(card,text,name){
     if(!blob)return;
     const url=URL.createObjectURL(blob);
     $('imgDl').href=url;$('imgDl').download=name;
-    $('xImgIntent').href='https://x.com/intent/post?text='+encodeURIComponent(text);
-    // Xの投稿リンクは文章しか渡せないので、先に画像を保存してから開く
-    $('xImgIntent').onclick=()=>{$('imgDl').click();};
+    const intent='https://x.com/intent/post?text='+encodeURIComponent(text);
+    $('xImgIntent').href=intent;
+    // Xの投稿リンクは文章しか渡せないので、画像をコピーしてから開き、貼り付けてもらう（コピーできないときは保存する）
+    $('xImgIntent').onclick=async e=>{
+      e.preventDefault();
+      let copied=false;
+      try{   // 画面が前面でないときなど、コピーが終わらない場合は待たずに保存へ切り替える
+        await Promise.race([navigator.clipboard.write([new ClipboardItem({'image/png':blob})]),new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),1500))]);
+        copied=true;
+      }catch(err){}
+      if(!copied)$('imgDl').click();
+      $('imgNote').textContent=copied
+        ?'画像をコピーしました。投稿画面の文章欄で貼り付けてください（PCは Ctrl+V、スマホは長押し→貼り付け）。'
+        :'このブラウザは画像をコピーできないため、画像を保存しました。投稿画面の🖼から、保存した画像を選んでください。';
+      window.open(intent,'_blank','noopener');
+    };
     const file=new File([blob],name,{type:'image/png'});
     const isPhone=window.matchMedia&&matchMedia('(pointer: coarse)').matches;
     const canShare=isPhone&&navigator.canShare&&navigator.canShare({files:[file]});
