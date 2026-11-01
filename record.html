@@ -24,7 +24,7 @@
   .stat .l{font-size:12px;color:var(--cream-dim);margin-top:4px;}
   .panel.small{padding:10px;}
   .panel.small .stat{padding:8px 10px;}
-  .panel.small .stat .v{font-size:19px;}
+  .panel.small .stat .v{font-size:19px;color:#bd8d3c;}
   .panel.small .stat .l{font-size:11px;}
   .panel.small .stats{grid-template-columns:repeat(auto-fit,minmax(110px,1fr));}
   table{width:100%;border-collapse:collapse;font-size:13px;}
@@ -45,6 +45,12 @@
     border:1px solid rgba(245,166,35,.45);border-radius:8px;padding:6px 12px;list-style:none;}
   summary::-webkit-details-marker{display:none;}
   summary:hover{background:rgba(245,166,35,.12);}
+  /* 「羽生が実際に買った馬を見る」は、月の見出し（琥珀色）と区別するため緑にする */
+  details:not(.month)>summary{color:var(--ok);border-color:rgba(123,217,156,.45);}
+  details:not(.month)>summary:hover{background:rgba(123,217,156,.12);}
+  .links{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 16px;}
+  .linkbtn{display:inline-block;text-decoration:none;font-weight:700;font-size:14px;color:var(--amber);border:1px solid rgba(245,166,35,.6);border-radius:8px;padding:9px 16px;background:rgba(245,166,35,.1);}
+  .linkbtn:hover{background:rgba(245,166,35,.2);}
   details[open] summary{margin-bottom:8px;}
   /* 月ごとの見出し（押すと、その月の開催日ごとの記録が開く） */
   details.month{margin:0 0 10px;border:1px solid var(--line);border-radius:10px;background:rgba(14,22,38,.4);}
@@ -85,6 +91,11 @@
   .wl-note{font-size:11px;color:var(--cream-dim);grid-column:1/-1;}
   @media (min-width:720px){.wl{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:16px;}}
   .msums{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:6px 0;}
+  .msums.small{gap:8px;}
+  .msum.small{padding:8px 10px;}
+  .msum.small .msum-t{font-size:11px;}
+  .msum.small .msum-roi{font-size:18px;color:#bd8d3c;}
+  .msum.small .msum-d{font-size:11px;}
   .msum{background:rgba(14,22,38,.5);border-radius:8px;padding:10px 12px;}
   .msum-t{font-size:12px;color:var(--cream-dim);font-weight:700;}
   .msum-roi{font-family:'RocknRoll One',sans-serif;font-size:26px;color:var(--amber);line-height:1.2;}
@@ -103,10 +114,18 @@
   <p class="brand">🏇 羽生AI</p>
   <h1>予測実績（検証できる記録）</h1>
   <p class="sub">
-    AI勝率1位かつ期待値1.2以上と判定した馬の単勝を、1点100円で買った場合の記録です。新馬・未勝利を除いた「1勝クラス以上」と、全クラスの2通りで集計しています。障害競走は平地用のモデルのため対象外で、記録には理由つきで残したうえで集計から外しています。
-    AIが挙げた買い目でも、当日のトラックバイアスやパドックの状態を見て羽生が見送ることがあります。その日は「<b>AIのみ</b>（人の判断を入れず全部買った場合）」と「<b>AI＋羽生の判断</b>（見送った点を除いた場合）」を並べて出します。見送りも<b>レース前に指紋へ含めて</b>記録するので、結果を見てから外すことはできません。
-    <a href="./">シミュレーターに戻る</a> ／ <a href="https://note.com/habu_keiba" target="_blank" rel="noopener">note</a>
+    AI勝率1位かつ期待値1.2以上と判定した馬の単勝を、1点100円で買った場合の記録です。<br>
+    新馬・未勝利を除いた「1勝クラス以上」と、全クラスの2通りで集計しています。<br>
+    障害競走は平地用のモデルのため対象外で、記録には理由つきで残したうえで集計から外しています。
   </p>
+  <p class="sub">
+    AIが挙げた買い目でも、当日のトラックバイアスやパドックの状態を見て、羽生が見送ることがあります。<br>
+    その日は、次の2つを並べて出します。<br>
+    ・<b>AIのみ</b>（人の判断を入れず、全部買った場合）<br>
+    ・<b>AI＋羽生の判断</b>（見送った点を除いた場合）<br>
+    見送りも<b>レース前に指紋へ含めて</b>記録するので、結果を見てから外すことはできません。
+  </p>
+  <p class="links"><a class="linkbtn" href="./">シミュレーターに戻る</a><a class="linkbtn" href="https://note.com/habu_keiba" target="_blank" rel="noopener">noteを見る</a></p>
 
   <div class="panel">
     <p class="panel-title">通算成績</p>
@@ -118,7 +137,7 @@
     <p class="panel-title">実際に買った馬</p>
     <p class="how">
       下の「月ごとの記録」で、月（「●月の結果」）を開いてください。<br>
-      各日の<b style="color:var(--amber)">「▼ 羽生が実際に買った馬を見る」</b>を押すと、<br>
+      各日の<b style="color:var(--ok)">「▼ 羽生が実際に買った馬を見る」</b>を押すと、<br>
       買った馬・オッズ・着順・払戻を1点ずつ確認できます。<br>
       見送った馬も、理由つきで残しています。
     </p>
@@ -226,7 +245,7 @@ function renderDays(r){
   };
 
   // 開催日を月ごとにまとめる。月の見出しには月間の成績を出し、押すとその月の開催日ごとの記録が開く
-  const KEYS=[['adv','AIのみ｜1勝クラス以上'],['all','AIのみ｜全クラス'],['myAdv','AI＋羽生の判断｜1勝クラス以上'],['myAll','AI＋羽生の判断｜全クラス']];
+  const KEYS=[['adv','AIのみ｜1勝クラス以上'],['myAdv','AI＋羽生の判断｜1勝クラス以上'],['all','AIのみ｜全クラス'],['myAll','AI＋羽生の判断｜全クラス']];
   const sum=(ds,k)=>{
     const t={bets:0,hits:0,top3:0,stake:0,ret:0,n:0};
     ds.forEach(d=>{const x=d.result&&d.result[k];if(x){t.bets+=x.bets||0;t.hits+=x.hits||0;t.top3+=x.top3||0;t.stake+=x.stake||0;t.ret+=x.ret||0;t.n++;}});
@@ -239,12 +258,16 @@ function renderDays(r){
     const label=(years.size>1?m.slice(0,4)+'年':'')+Number(m.slice(5))+'月の結果';
     const a=sum(ds,'adv'),b=sum(ds,'all');
     const skipped=ds.reduce((n,d)=>n+((d.result&&d.result.skipped)||0),0);
-    const rows=KEYS.filter(k=>skipped||k[0].indexOf('my')!==0).map(k=>{
+    const card=(k,small)=>{
       const s=sum(ds,k[0]);
-      return s.n?'<div class="msum"><div class="msum-t">'+k[1]+'</div><div><span class="msum-roi">'+pct(s.roi)+'</span> <span class="msum-l">単勝回収率</span></div>'
+      return s.n?'<div class="msum'+(small?' small':'')+'"><div class="msum-t">'+k[1]+'</div><div><span class="msum-roi">'+pct(s.roi)+'</span> <span class="msum-l">単勝回収率</span></div>'
         +'<div class="msum-d">購入'+s.bets+'点・的中'+s.hits+'点（'+pct(s.bets?s.hits/s.bets:null)+'）・3着内'+s.top3+'点<br>投資'+yen(s.stake)+'／払戻'+yen(s.ret)+'</div></div>':'';
-    }).join('');
-    const table=rows?'<div class="msums">'+rows+'</div><p class="how" style="font-size:11px;margin:4px 0 8px">結果が確定した開催日だけを集計しています。</p>':'';
+    };
+    const keys=KEYS.filter(k=>skipped||k[0].indexOf('my')!==0);
+    const big=keys.filter(k=>k[0]==='adv'||k[0]==='myAdv').map(k=>card(k,false)).join('');
+    const small=keys.filter(k=>k[0]==='all'||k[0]==='myAll').map(k=>card(k,true)).join('');
+    const table=(big||small)?(big?'<div class="msums">'+big+'</div>':'')+(small?'<div class="msums small">'+small+'</div>':'')
+      +'<p class="how" style="font-size:11px;margin:4px 0 8px">結果が確定した開催日だけを集計しています。</p>':'';
     const brief=(a.n||b.n)?'1勝クラス以上 回収率'+pct(a.roi)+' ／ 全クラス 回収率'+pct(b.roi):'結果の取り込み待ち';
     return '<details class="month"><summary><span>'+label+'</span><span class="month-sum">開催'+ds.length+'日</span><span class="month-sum">'+brief+'</span></summary>'
       +'<div class="month-body">'+table+ds.map(dayHtml).join('')+'</div></details>';
