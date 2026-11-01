@@ -269,7 +269,7 @@ const SKEW=0.35;             // 斜め上から見下ろす奥行き（外のレ
 const sk=y=>(y-Y_LANE0)*SKEW;
 
 const BRAND='羽生AI';
-const BUILD='2026-11-01 共有改善7';   // フッターに出す。公開ページが最新かどうかの確認用
+const BUILD='2026-11-01 共有改善8';   // フッターに出す。公開ページが最新かどうかの確認用
 const NOTE_URL='https://note.com/habu_keiba';   // ページのリンクとXの投稿文に使う
 const SITE_URL='https://habu-keiba.github.io/habu-ai-sim/';   // 公開したページのURL（入れるとXの投稿文に載る）
 const PUBLIC_DATA='race_public.dat';    // ページと同じ場所にこのファイルがあれば、開いた時点で読み込む
@@ -1303,6 +1303,7 @@ function setShareImage(card,text,name){
     const canShare=isPhone&&!!navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}));
     $('imgShare').style.display='none';
     $('imgPreview').style.display='none';
+    $('xImgIntent').style.display='';
     $('imgDl').style.display=isPhone?'none':'';   // スマホでは保存ボタンが効かないことが多いので出さない
     if(isPhone){
       // スマホ：画像を表示する（スクショ用）。画像のコピーはアプリによって効かないので、コピーしたとは言わない
@@ -1321,9 +1322,8 @@ function setShareImage(card,text,name){
         };
         $('imgNote').textContent='共有メニューで X を選ぶと、画像と文章が入った状態で投稿画面が開きます。';
       }else{
-        // 共有メニューが使えない：文章だけの投稿画面を開く。画像はスクショしてもらう
-        $('xImgIntent').textContent='𝕏 投稿画面を開く（文章のみ）';
-        $('xImgIntent').onclick=null;
+        // 共有メニューが使えない：Xのボタンは出さず、画像のスクショを案内する
+        $('xImgIntent').style.display='none';
         $('imgNote').textContent=SHOT;
       }
     }else{
@@ -1543,6 +1543,17 @@ function findWorlds(){
 $('worldFindBtn').addEventListener('click',findWorlds);
 $('worldFind').addEventListener('keydown',e=>{if(e.key==='Enter')findWorlds();});
 $('recBtn').addEventListener('click',recordRace);
+(function(){
+  const isPhone=(window.matchMedia&&matchMedia('(pointer: coarse)').matches)||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent||'');
+  if(!isPhone)return;
+  let ok=false;
+  try{
+    const t=recorderType();
+    const f=new File([new Blob(['x'])],'a.mp4',{type:'video/mp4'});
+    ok=!!(t&&t.indexOf('video/mp4')===0&&navigator.share&&navigator.canShare&&navigator.canShare({files:[f]}));
+  }catch(e){}
+  if(!ok)$('recBtn').style.display='none';
+})();
 if(NOTE_URL){document.getElementById('noteCta').href=NOTE_URL;}
 $('fileBtn').addEventListener('click',()=>{if(!raceRunning)$('fileInput').click();});
 $('fileInput').addEventListener('change',e=>{
