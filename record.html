@@ -71,8 +71,13 @@
   #worldlogPanel .month>summary{padding:10px 10px;}
   #worldlogPanel .month-body{padding:6px 10px 4px;}
   #worldlogPanel .month .month-body{padding:2px 8px 4px;}
-  .wl-win{font-size:13px;min-width:0;flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .wl-c{display:inline-flex;gap:3px;flex:0 0 auto;}
+  .wl-b{flex-wrap:wrap;row-gap:4px;}
+  .wl-win{font-size:13px;flex:0 1 auto;white-space:nowrap;}
+  .wl-m{margin-left:auto;display:inline-flex;align-items:center;gap:6px;}
+  .wl-ok,.wl-ng{font-size:11px;font-weight:700;border-radius:999px;padding:1px 8px;white-space:nowrap;}
+  .wl-ok{background:rgba(90,200,120,.18);color:var(--ok);}
+  .wl-ng{background:rgba(215,38,61,.2);color:#ff8a97;}
+  .wl-c{display:inline-flex;gap:3px;}
   .wl-cap{width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;}
   .wl-no{color:var(--amber);font-weight:700;font-size:12px;white-space:nowrap;}
   .wl-no small{color:var(--cream-dim);font-weight:400;font-size:12px;}
@@ -254,10 +259,10 @@ function renderWorldlog(r){
   const rowHtml=e=>{
     const caps=(e.top3||[]).map(h=>{const c=WAKU_COL[(h.waku||1)-1]||WAKU_COL[0];return '<span class="wl-cap" style="background:'+c[0]+';color:'+c[1]+(c[0]==='#1a1a1a'?';border:.5px solid #555':'')+'">'+esc(h.number)+'</span>';}).join('');
     const w=e.worlds||[];
-    const no=w.length?'<span class="wl-no">No.'+w[0]+(w.length>1?'<small> ほか'+(w.length-1)+'</small>':'')+'</span>':'<span class="wl-no zero">No.0</span>';
+    const no=w.length?'<span class="wl-ok">一致</span><span class="wl-no">No.'+w[0]+(w.length>1?'<small> ほか'+(w.length-1)+'</small>':'')+'</span>':'<span class="wl-ng">一致なし</span><span class="wl-no zero">No.0</span>';
     return '<div class="wl"><div class="wl-a"><span class="wl-d">'+esc(e.date.slice(5).replace('-','/'))+'</span><span class="wl-g '+esc(e.grade)+'">'+esc(e.grade)+'</span>'
       +'<span class="wl-n">'+esc(e.raceName)+'</span><span class="wl-p">3連単 <b>'+(e.payout3t?e.payout3t.toLocaleString()+'円':'—')+'</b></span></div>'
-      +'<div class="wl-b"><span class="wl-w">勝ち馬</span><span class="wl-win">'+esc((e.top3&&e.top3[0]||{}).name)+'</span><span class="wl-c">'+caps+'</span>'+no+'</div>'
+      +'<div class="wl-b"><span class="wl-w">勝ち馬</span><span class="wl-win">'+esc((e.top3&&e.top3[0]||{}).name)+'</span><span class="wl-m"><span class="wl-c">'+caps+'</span>'+no+'</span></div>'
       +'</div>';
   };
   const months=new Map();
