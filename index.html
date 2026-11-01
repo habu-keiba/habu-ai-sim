@@ -184,7 +184,8 @@
   <footer>
     枠色・枠番の割り当て・回り向き・直線の長さはJRAのコースに準拠しています。<br>
     着順はAI予測勝率にもとづく抽選演出であり、実際のレース結果を保証するものではありません。<br>
-    予測精度・回収率は2026年データでの検証結果であり、将来の的中や利益を保証するものではありません。
+    予測精度・回収率は2026年データでの検証結果であり、将来の的中や利益を保証するものではありません。<br>
+    <span style="opacity:.6">表示バージョン：<span id="buildTag"></span></span>
   </footer>
 </div>
 
@@ -255,6 +256,7 @@ const SKEW=0.35;             // 斜め上から見下ろす奥行き（外のレ
 const sk=y=>(y-Y_LANE0)*SKEW;
 
 const BRAND='羽生AI';
+const BUILD='2026-11-01 共有改善3';   // フッターに出す。公開ページが最新かどうかの確認用
 const NOTE_URL='https://note.com/habu_keiba';   // ページのリンクとXの投稿文に使う
 const SITE_URL='https://habu-keiba.github.io/habu-ai-sim/';   // 公開したページのURL（入れるとXの投稿文に載る）
 const PUBLIC_DATA='race_public.dat';    // ページと同じ場所にこのファイルがあれば、開いた時点で読み込む
@@ -271,6 +273,7 @@ function updateWorldPanel(){
   if(wn){$('worldNo').max=wn;$('worldCount').textContent=`（No.1〜${wn}）`;}
 }
 
+document.getElementById('buildTag').textContent=BUILD;
 const canvas=document.getElementById('track');
 const ctx=canvas.getContext('2d');
 const $=id=>document.getElementById(id);
@@ -1287,11 +1290,10 @@ function setShareImage(card,text,name){
       $('xImgIntent').textContent='𝕏 画像をコピーして投稿画面を開く';
       $('xImgIntent').onclick=e=>{e.preventDefault();copyAndOpen();};
       $('imgNote').textContent='「投稿画面を開く」を押すと、画像がコピーされます。投稿画面の文章欄で貼り付けてください（PCは Ctrl+V）。';
-      if(isPhone){   // スマホで共有メニューが使えないブラウザ：画像を表示して、長押しで保存・コピーしてもらう
-        $('imgPreview').src=url;$('imgPreview').style.display='block';
-        $('imgNote').textContent+='うまくいかないときは、下の画像を長押しして、保存またはコピーしてください。';
-      }
+      if(isPhone)$('imgNote').textContent='このブラウザでは共有メニューが使えません。下の画像を長押しして保存かコピーをして、「投稿画面を開く」から貼り付けてください。Xなどアプリの中で開いている場合は、ChromeかSafariで開き直すと、共有メニューが使えることがあります。';
     }
+    // スマホでは、保存やコピーが効かない場合に備えて、画像を表示して長押しでも保存できるようにする
+    if(isPhone){$('imgPreview').src=url;$('imgPreview').style.display='block';}
   },'image/png');
 }
 function makeResultImage(P,world){
