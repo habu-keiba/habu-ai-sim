@@ -101,6 +101,8 @@
     <p class="sub" id="raceSub">CSVを開くと、その日のレースから選んで走らせられます</p>
   </header>
 
+  <div class="cta-banner" id="inAppBanner" style="display:none;margin:0 0 12px;"></div>
+
   <div class="race-row" id="raceRow" style="display:none;">
     レース：<select id="raceSelect"></select>
   </div>
@@ -256,7 +258,7 @@ const SKEW=0.35;             // 斜め上から見下ろす奥行き（外のレ
 const sk=y=>(y-Y_LANE0)*SKEW;
 
 const BRAND='羽生AI';
-const BUILD='2026-11-01 共有改善3';   // フッターに出す。公開ページが最新かどうかの確認用
+const BUILD='2026-11-01 共有改善4';   // フッターに出す。公開ページが最新かどうかの確認用
 const NOTE_URL='https://note.com/habu_keiba';   // ページのリンクとXの投稿文に使う
 const SITE_URL='https://habu-keiba.github.io/habu-ai-sim/';   // 公開したページのURL（入れるとXの投稿文に載る）
 const PUBLIC_DATA='race_public.dat';    // ページと同じ場所にこのファイルがあれば、開いた時点で読み込む
@@ -274,6 +276,22 @@ function updateWorldPanel(){
 }
 
 document.getElementById('buildTag').textContent=BUILD;
+/* Xなどのアプリの中のブラウザでは、画像の共有・保存が使えないことが多い。そのときは、外部のブラウザで開き直すよう案内する */
+(function(){
+  const UA=navigator.userAgent||'';
+  const isAndroid=/Android/i.test(UA),isIOS=/iPhone|iPad|iPod/i.test(UA);
+  const inApp=/Twitter|FBAN|FBAV|Instagram|Line\/|; wv\)/i.test(UA)||(isAndroid&&!navigator.share);
+  if(!inApp||!(isAndroid||isIOS))return;
+  const b=document.getElementById('inAppBanner');
+  if(isAndroid){
+    const fb=encodeURIComponent(location.href);
+    const intent='intent://'+location.host+location.pathname+location.search+'#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url='+fb+';end';
+    b.innerHTML='Xなどのアプリの中で開いていると、<b>画像の共有や保存ができない</b>ことがあります。<br><a href="'+intent+'" style="font-weight:700;">Chromeで開き直す →</a>';
+  }else{
+    b.innerHTML='Xなどのアプリの中で開いていると、<b>画像の共有や保存ができない</b>ことがあります。画面のメニュー（…や共有のマーク）から<b>「Safariで開く」</b>を選んでください。';
+  }
+  b.style.display='block';
+})();
 const canvas=document.getElementById('track');
 const ctx=canvas.getContext('2d');
 const $=id=>document.getElementById(id);
