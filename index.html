@@ -101,7 +101,6 @@
     <p class="sub" id="raceSub">CSVを開くと、その日のレースから選んで走らせられます</p>
   </header>
 
-  <div class="cta-banner" id="inAppBanner" style="display:none;margin:0 0 12px;"></div>
 
   <div class="race-row" id="raceRow" style="display:none;">
     レース：<select id="raceSelect"></select>
@@ -183,9 +182,11 @@
   <div class="cta-banner" style="margin-bottom:0;"><b>AIの予測実績</b>（AI勝率1位かつ期待値1.2以上の単勝／検証できる記録）→ <a href="record.html" style="color:var(--amber);">実績ページを見る</a></div>
   <div class="cta-banner" id="noteCta"><b>全頭のAI勝率・期待値と妙味馬</b>はnoteで公開中 →（リンクをここに設定）</div>
 
+  <div class="cta-banner" id="inAppBanner" style="display:none;"></div>
+
   <footer>
     枠色・枠番の割り当て・回り向き・直線の長さはJRAのコースに準拠しています。<br>
-    着順はAI予測勝率にもとづく抽選演出であり、実際のレース結果を保証するものではありません。<br>
+    着順は、AI勝率にもとづく<span id="simCount">シミュレーション</span>の結果の1つであり、実際のレース結果を保証するものではありません。<br>
     予測精度・回収率は2026年データでの検証結果であり、将来の的中や利益を保証するものではありません。<br>
     <span style="opacity:.6">表示バージョン：<span id="buildTag"></span></span>
   </footer>
@@ -258,7 +259,7 @@ const SKEW=0.35;             // 斜め上から見下ろす奥行き（外のレ
 const sk=y=>(y-Y_LANE0)*SKEW;
 
 const BRAND='羽生AI';
-const BUILD='2026-11-01 共有改善5';   // フッターに出す。公開ページが最新かどうかの確認用
+const BUILD='2026-11-01 共有改善6';   // フッターに出す。公開ページが最新かどうかの確認用
 const NOTE_URL='https://note.com/habu_keiba';   // ページのリンクとXの投稿文に使う
 const SITE_URL='https://habu-keiba.github.io/habu-ai-sim/';   // 公開したページのURL（入れるとXの投稿文に載る）
 const PUBLIC_DATA='race_public.dat';    // ページと同じ場所にこのファイルがあれば、開いた時点で読み込む
@@ -271,6 +272,7 @@ let worldPick=null, currentWorld=null;   // 世界線No.（nullなら毎回ラ�
 /* 世界線の番号指定・検索は運営者だけ（CSVを開いたレースにだけ出る）。見る人は走らせて出た世界線を見るだけ */
 function updateWorldPanel(){
   const wn=race&&race.orders?race.orders.length:0;
+  document.getElementById('simCount').textContent=wn?wn.toLocaleString()+'通りのシミュレーション':'シミュレーション';
   $('worldPanel').style.display=(wn&&race.admin)?'block':'none';
   if(wn){$('worldNo').max=wn;$('worldCount').textContent=`（No.1〜${wn}）`;}
 }
