@@ -262,27 +262,12 @@ const HOLD_AFTER_FINISH=3.2;   // 動画の最後に掲示板を映しておく�
 
 let horses=[], race=null, raceRunning=false, parsedRaces=null, recording=null;
 let worldPick=null, currentWorld=null;   // 世界線No.（nullなら毎回ランダム）
-/* 世界線の番号指定・検索は運営者だけ。見る人は走らせて出た世界線を見るだけ。
-   運営者は ?owner=合言葉 付きで一度開くと、そのブラウザで有効になる（見えなくしているだけで、鍵ではない） */
-const OWNER_HASH='9908937e0d63cf0ddb30a8f8871b13abd55f1f02fc0fc2d89ca364c76a142db6';
-let isOwner=false;
-try{isOwner=localStorage.getItem('habu-ai-sim-owner')==='1';}catch(e){}
+/* 世界線の番号指定・検索は運営者だけ（CSVを開いたレースにだけ出る）。見る人は走らせて出た世界線を見るだけ */
 function updateWorldPanel(){
   const wn=race&&race.orders?race.orders.length:0;
-  $('worldPanel').style.display=(wn&&isOwner)?'block':'none';
+  $('worldPanel').style.display=(wn&&race.admin)?'block':'none';
   if(wn){$('worldNo').max=wn;$('worldCount').textContent=`（No.1〜${wn}）`;}
 }
-(async()=>{
-  const k=new URLSearchParams(location.search).get('owner');
-  if(!k)return;
-  try{
-    const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(k));
-    const hex=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
-    if(hex===OWNER_HASH){isOwner=true;try{localStorage.setItem('habu-ai-sim-owner','1');}catch(e){}}
-  }catch(e){}
-  history.replaceState(null,'',location.pathname+location.hash);   // 合言葉をアドレスに残さない
-  updateWorldPanel();
-})();
 
 const canvas=document.getElementById('track');
 const ctx=canvas.getContext('2d');
@@ -1356,7 +1341,12 @@ function loadRace(R){
   updateWorldPanel();
 }
 function loadText(raw){
-  showRaces(parseCSV(raw.trim()));
+  const races=parseCSV(raw.trim());
+  Object.values(races).forEach(R=>{
+    R.admin=true;
+    R.orders=Array.from({length:PUBLIC_ORDERS},()=>sampleFinishOrder(R.horses).map(h=>h.number));   // 世界線No.1〜（書き出す公開データと同じもの）
+  });
+  showRaces(races);
   $('exportBtn').style.display='inline-block';   // CSVを開いた人（＝運営者）だけに出る
 }
 /* 公開用データ（勝率・オッズ・期待値・推奨は含まない）を作る */
@@ -1365,7 +1355,7 @@ function buildPublicData(){
     date:R.date,place:R.place,r:R.r,name:R.name,cls:R.cls||'',dist:R.dist,baba:R.baba||'良',pace:R.pace,courseKey:R.courseKey,provisional:!!R.provisional,
     horses:R.horses.map(h=>({number:h.number,waku:h.waku,name:h.name,jockey:h.jockey||'',coatName:h.coatName||null,
       kyaku:h.kyaku,early:h.early,corner:h.corner,push:h.push,kick:h.kick,bure:h.bure,order:h.order??null})),
-    orders:Array.from({length:PUBLIC_ORDERS},()=>sampleFinishOrder(R.horses).map(h=>Number(h.number).toString(36)).join(''))}));
+    orders:(R.orders||Array.from({length:PUBLIC_ORDERS},()=>sampleFinishOrder(R.horses).map(h=>h.number))).map(o=>o.map(n=>Number(n).toString(36)).join(''))}));
   return {format:'habu-ai-sim/1',created:new Date().toISOString(),races};
 }
 /* 公開データの符号化。鍵はページ内にあるので暗号ではなく、URLを開いただけでは中身が読めないようにするだけ */
