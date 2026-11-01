@@ -158,6 +158,7 @@
       <a id="imgDl" class="ghost-btn">⬇ 画像だけ保存</a>
       <button id="imgShare" class="ghost-btn" style="display:none;">📱 スマホでシェア</button>
       <p class="share-note" id="imgNote" style="width:100%;margin:4px 0 0;">「投稿画面を開く」を押すと、画像がコピーされます。投稿画面の文章欄で貼り付けてください（PCは Ctrl+V）。</p>
+      <img id="imgPreview" alt="着順画像（長押しで保存）" style="display:none;width:100%;border-radius:8px;margin-top:8px;">
     </div>
   </div>
 
@@ -1256,8 +1257,7 @@ function setShareImage(card,text,name){
     const intent='https://x.com/intent/post?text='+encodeURIComponent(text);
     $('xImgIntent').href=intent;
     // Xの投稿リンクは文章しか渡せないので、画像をコピーしてから開き、貼り付けてもらう（コピーできないときは保存する）
-    $('xImgIntent').onclick=async e=>{
-      e.preventDefault();
+    const copyAndOpen=async()=>{
       let copied=false;
       try{   // 画面が前面でないときなど、コピーが終わらない場合は待たずに保存へ切り替える
         await Promise.race([navigator.clipboard.write([new ClipboardItem({'image/png':blob})]),new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),1500))]);
@@ -1270,17 +1270,27 @@ function setShareImage(card,text,name){
       window.open(intent,'_blank','noopener');
     };
     const file=new File([blob],name,{type:'image/png'});
-    const isPhone=window.matchMedia&&matchMedia('(pointer: coarse)').matches;
-    const canShare=isPhone&&navigator.canShare&&navigator.canShare({files:[file]});
+    const isPhone=(window.matchMedia&&matchMedia('(pointer: coarse)').matches)||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent||'');
+    const canShare=isPhone&&!!navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}));
     $('imgShare').style.display='none';
+    $('imgPreview').style.display='none';
     if(canShare){
-      // スマホ：コピー＆貼り付けではなく、共有メニューで画像と文章をまとめてXへ渡す
+      // スマホ：コピー＆貼り付けではなく、共有メニューで画像と文章をまとめてXへ渡す。共有メニューが使えなければ、コピー→投稿画面に切り替える
       $('xImgIntent').textContent='𝕏 画像つきで投稿（共有メニューでXを選ぶ）';
-      $('xImgIntent').onclick=e=>{e.preventDefault();navigator.share({files:[file],text}).catch(()=>{});};
+      $('xImgIntent').onclick=async e=>{
+        e.preventDefault();
+        try{await navigator.share({files:[file],text});}
+        catch(err){if(!err||err.name!=='AbortError')copyAndOpen();}   // 閉じただけ（AbortError）のときは何もしない
+      };
       $('imgNote').textContent='共有メニューで X を選ぶと、画像と文章が入った状態で投稿画面が開きます。';
     }else{
       $('xImgIntent').textContent='𝕏 画像をコピーして投稿画面を開く';
+      $('xImgIntent').onclick=e=>{e.preventDefault();copyAndOpen();};
       $('imgNote').textContent='「投稿画面を開く」を押すと、画像がコピーされます。投稿画面の文章欄で貼り付けてください（PCは Ctrl+V）。';
+      if(isPhone){   // スマホで共有メニューが使えないブラウザ：画像を表示して、長押しで保存・コピーしてもらう
+        $('imgPreview').src=url;$('imgPreview').style.display='block';
+        $('imgNote').textContent+='うまくいかないときは、下の画像を長押しして、保存またはコピーしてください。';
+      }
     }
   },'image/png');
 }
