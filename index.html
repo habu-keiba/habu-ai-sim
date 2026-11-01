@@ -262,6 +262,27 @@ const HOLD_AFTER_FINISH=3.2;   // 動画の最後に掲示板を映しておく�
 
 let horses=[], race=null, raceRunning=false, parsedRaces=null, recording=null;
 let worldPick=null, currentWorld=null;   // 世界線No.（nullなら毎回ランダム）
+/* 世界線の番号指定・検索は運営者だけ。見る人は走らせて出た世界線を見るだけ。
+   運営者は ?owner=合言葉 付きで一度開くと、そのブラウザで有効になる（見えなくしているだけで、鍵ではない） */
+const OWNER_HASH='9908937e0d63cf0ddb30a8f8871b13abd55f1f02fc0fc2d89ca364c76a142db6';
+let isOwner=false;
+try{isOwner=localStorage.getItem('habu-ai-sim-owner')==='1';}catch(e){}
+function updateWorldPanel(){
+  const wn=race&&race.orders?race.orders.length:0;
+  $('worldPanel').style.display=(wn&&isOwner)?'block':'none';
+  if(wn){$('worldNo').max=wn;$('worldCount').textContent=`（No.1〜${wn}）`;}
+}
+(async()=>{
+  const k=new URLSearchParams(location.search).get('owner');
+  if(!k)return;
+  try{
+    const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(k));
+    const hex=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+    if(hex===OWNER_HASH){isOwner=true;try{localStorage.setItem('habu-ai-sim-owner','1');}catch(e){}}
+  }catch(e){}
+  history.replaceState(null,'',location.pathname+location.hash);   // 合言葉をアドレスに残さない
+  updateWorldPanel();
+})();
 
 const canvas=document.getElementById('track');
 const ctx=canvas.getContext('2d');
@@ -1332,8 +1353,7 @@ function loadRace(R){
   $('runBtn').textContent='🏁 レース発走';
   worldPick=null;currentWorld=null;$('worldNo').value='';$('worldHits').innerHTML='';$('worldFind').value='';
   const wn=R.orders?R.orders.length:0;
-  $('worldPanel').style.display=wn?'block':'none';
-  if(wn){$('worldNo').max=wn;$('worldCount').textContent=`（No.1〜${wn}）`;}
+  updateWorldPanel();
 }
 function loadText(raw){
   showRaces(parseCSV(raw.trim()));
