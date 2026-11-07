@@ -2,6 +2,10 @@
  * 羽生AI 実績記録ツール
  *
  *   node tools/track.mjs commit "<予測CSV>"     レース前：予測の指紋(ハッシュ)だけを記録する（1日に何度でも可）
+ *       オプション: --skip 中山5R[:理由]   AIの買い目を、羽生の判断で見送る（指紋に含める）
+ *                   --add-csv <別の予測CSV> --add 京都7R[:理由]
+ *                                          AIの記録には入れず、羽生の判断で別のCSV（例: ダート）のAI1位を買い足す。
+ *                                          「AI＋羽生の判断」にだけ数え、「AIのみ」には数えない（指紋に含める）
  *   node tools/track.mjs reveal <日付>          レース後：その日の全ての版の中身を公開する
  *   node tools/track.mjs results "<結果CSV>"    結果を取り込み、的中率と回収率を集計する
  *   node tools/track.mjs verify                 公開済みの予測が、記録した指紋と一致するか確かめる
@@ -45,14 +49,14 @@ const toMinutes = (v) => {
 };
 /**
  * 障害競走かどうか。平地用のモデルなので買い目から外す。
- * JRAの平地は最長3600mで、距離はすべて100mの倍数。
+ * JRAの平地は最長3600mで、距離はほぼすべて100mの倍数（例外は福島ダート1150m）。
  * 障害は3210・3350・3570mのような半端な距離か、3600m超になる（3300m・2900mも障害だけにある）。
  * 距離が取れない古い記録のために、レース名でも判定する（ジャパンＣを巻き込まないよう「ジャパ」は除く）。
  */
 function isJumpRace(p) {
   const d = num(p.dist);
   if (d !== null) {
-    if (d % 100 !== 0 || d > 3600 || d === 3300 || d === 2900) return true;
+    if ((d % 100 !== 0 && d !== 1150) || d > 3600 || d === 3300 || d === 2900) return true;   // 福島ダート1150mだけは平地の半端な距離
   }
   const name = String(p.raceName || '') + String(p.cls || '');
   return /障害|ハードル|ジャンプ|ジャ(?!パ)/.test(name);
@@ -132,9 +136,38 @@ function parseSkips(args) {
   return out;
 }
 
+/** 「--add 京都7R」「--add 福島8R:理由」を読む（書き方は --skip と同じ。番号は付けない） */
+function parseAdds(args) {
+  const out = [];
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] !== '--add') continue;
+    const spec = args[++i];
+    if (!spec) continue;
+    const [target, ...why] = spec.split(':');
+    const m = toHalf(target).match(/^(.+?)\s*(\d{1,2})\s*R?$/);
+    if (!m) throw new Error(`--add の書き方が違います: ${spec}（例: --add 京都7R、--add 福島8R:理由）`);
+    out.push({ place: m[1].trim(), race: m[2], reason: why.join(':').trim() || '羽生の判断で追加' });
+  }
+  return out;
+}
+
 function cmdCommit(csvPath, args = []) {
   const rows = readCsv(csvPath);
   const { picks, jumps } = extractPicks(rows);
+  // 羽生の判断で、別のCSV（ダートなど）から買い足す点。AIの記録には入れず、added の印を付けて指紋に含める
+  const adds = parseAdds(args);
+  const addCsvIdx = args.indexOf('--add-csv');
+  if (adds.length) {
+    if (addCsvIdx < 0 || !args[addCsvIdx + 1]) throw new Error('--add を使うときは --add-csv <別の予測CSV> も指定してください');
+    const { picks: extra } = extractPicks(readCsv(args[addCsvIdx + 1]));
+    for (const a of adds) {
+      const hit = extra.filter((p) => p.place === a.place && String(p.race) === String(a.race));
+      if (!hit.length) throw new Error(`--add ${a.place}${a.race}R に当たる買い目が、追加用のCSVにありません（買い目: ${extra.map((p) => p.place + p.race + 'R').join(' / ') || 'なし'}）`);
+      if (picks.some((p) => p.place === a.place && String(p.race) === String(a.race))) throw new Error(`--add ${a.place}${a.race}R は、すでにAIの買い目にあります`);
+      hit.forEach((p) => { p.added = a.reason; picks.push(p); });
+    }
+    picks.sort((a, b) => String(a.place).localeCompare(String(b.place), 'ja') || (a.race - b.race) || (b.ev - a.ev));
+  }
   // レース前に決めた「見送り」を、買い目そのものと一緒に指紋へ含める
   const skips = parseSkips(args);
   for (const s of skips) {
@@ -166,7 +199,7 @@ function cmdCommit(csvPath, args = []) {
   const noPost = picks.filter((p) => !p.postTime).length;
   console.log(`${key} 第${v}版: 推奨 ${picks.length} 点の指紋を記録しました（${jstStamp()}）`);
   console.log(`  ハッシュ: ${hash}`);
-  console.log(`  内訳: ${picks.map((p) => `${p.place}${p.race}R ${p.number}番${p.skip ? '【見送り】' : ''}${p.postTime ? `(${p.postTime}発走)` : ''}`).join(' / ')}`);
+  console.log(`  内訳: ${picks.map((p) => `${p.place}${p.race}R ${p.number}番${p.skip ? '【見送り】' : ''}${p.added ? '【羽生が買い足し】' : ''}${p.postTime ? `(${p.postTime}発走)` : ''}`).join(' / ')}`);
   if (skips.length) console.log(`  ※ 羽生の判断で見送り ${picks.filter((p) => p.skip).length} 点（${picks.filter((p) => p.skip).map((p) => `${p.place}${p.race}R ${p.number}番: ${p.skip}`).join(' / ')}）`);
   if (jumps.length) console.log(`  ※ 障害競走 ${jumps.length} 件を除きました（${jumps.map((p) => `${p.place}${p.race}R ${p.raceName}`).join(' / ')}）`);
   if (noPost) console.log(`  ※ 発走時刻の列が無い点が ${noPost} 件あります（結果CSVの発走時刻で判定するので、このままで問題ありません）`);
@@ -295,13 +328,15 @@ function cmdResults(csvPath) {
       p.payout = r.finish === 1 ? payout : 0;
       matched++;
     }
-    const counted = picks.filter((p) => !p.excluded);        // AI通り（ルール通りに全部買った場合）
-    const mine = counted.filter((p) => !p.skip);             // AI＋羽生の判断（レース前に見送ると決めた点を除く）
+    const counted = picks.filter((p) => !p.excluded && !p.added);   // AI通り（ルール通りに全部買った場合）。羽生の買い足しは含めない
+    const added = picks.filter((p) => !p.excluded && p.added);      // 羽生の判断でレース前に買い足した点（AIの記録には入れない）
+    const keptPicks = counted.filter((p) => !p.skip);
+    const mine = keptPicks.concat(added);                           // AI＋羽生の判断（見送った点を除き、買い足した点を加える）
     day.official = { picks, unknownPostTime };
     day.result = {
       all: tally(counted), adv: tally(counted.filter(isAdvanced)),
       myAll: tally(mine), myAdv: tally(mine.filter(isAdvanced)),
-      skipped: counted.length - mine.length, unknown,
+      skipped: counted.length - keptPicks.length, added: added.length, unknown,
     };
   }
 
@@ -319,13 +354,15 @@ function rebuildDays(rec) {
     if (!day.official || !day.official.picks) continue;
     const picks = day.official.picks;
     for (const p of picks) { const why = excludedReason(rec, day.date, p); if (why) p.excluded = why; else delete p.excluded; }
-    const counted = picks.filter((p) => !p.excluded);
-    const mine = counted.filter((p) => !p.skip);
+    const counted = picks.filter((p) => !p.excluded && !p.added);
+    const added = picks.filter((p) => !p.excluded && p.added);
+    const kept = counted.filter((p) => !p.skip);
+    const mine = kept.concat(added);
     day.result = {
       all: tally(counted), adv: tally(counted.filter(isAdvanced)),
       myAll: tally(mine), myAdv: tally(mine.filter(isAdvanced)),
-      skipped: counted.length - mine.length,
-      unknown: counted.filter((p) => p.finish == null).length,
+      skipped: counted.length - kept.length, added: added.length,
+      unknown: picks.filter((p) => !p.excluded && p.finish == null).length,
     };
   }
 }
@@ -343,9 +380,10 @@ function rebuildSummary(rec) {
       : null;
   };
   const skipped = rec.days.reduce((a, d) => a + ((d.result && d.result.skipped) || 0), 0);
+  const added = rec.days.reduce((a, d) => a + ((d.result && d.result.added) || 0), 0);
   rec.summary = {
     all: sum('all'), adv: sum('adv'), myAll: sum('myAll'), myAdv: sum('myAdv'),
-    skipped, evMin: EV_MIN, aiRank: AI_RANK, stakePerBet: STAKE, updatedAt: jstStamp(),
+    skipped, added, evMin: EV_MIN, aiRank: AI_RANK, stakePerBet: STAKE, updatedAt: jstStamp(),
   };
   return skipped;
 }
@@ -361,13 +399,14 @@ function cmdRecalc() {
 
 function printSummary(rec, skipped) {
   const rows2 = [['all', 'AIのみ   全クラス    '], ['adv', 'AIのみ   1勝クラス以上']];
-  if (skipped) rows2.push(['myAll', 'AI＋羽生 全クラス    ']);
+  if (skipped || (rec.summary.added || 0)) rows2.push(['myAll', 'AI＋羽生 全クラス    ']);
   for (const [key, label] of rows2) {
     const s = rec.summary[key];
     if (s) console.log(`  ${label} 通算 ${s.days}日 ${s.bets}点  的中 ${s.hits}点 (${(s.hitRate * 100).toFixed(1)}%)`
       + `  3着内 ${s.top3}点 (${(s.top3Rate * 100).toFixed(1)}%)  回収率 ${(s.roi * 100).toFixed(1)}%`);
   }
   if (skipped) console.log(`  （レース前に羽生が見送った点: 通算 ${skipped} 点）`);
+  if (rec.summary.added) console.log(`  （レース前に羽生が買い足した点: 通算 ${rec.summary.added} 点。AIのみには数えない）`);
 }
 
 /** 特定のレースを成績の対象外にする（理由は公開ページに表示される） */

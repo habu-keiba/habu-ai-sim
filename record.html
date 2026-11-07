@@ -120,10 +120,11 @@
   </p>
   <p class="sub">
     AIが挙げた買い目でも、当日のトラックバイアスやパドックの状態を見て、羽生が見送ることがあります。<br>
+    また、AIの記録には入れていないレース（ダートなど）を、羽生の判断で買い足すこともあります。<br>
     そのため、次の2つを並べて出します。<br>
-    ・<b>AIのみ</b>（人の判断を入れず、全部買った場合）<br>
-    ・<b>AI＋羽生の判断</b>（見送った点を除いた場合）<br>
-    見送りも<b>レース前に指紋へ含めて</b>記録するので、結果を見てから外すことはできません。
+    ・<b>AIのみ</b>（人の判断を入れず、全部買った場合。買い足しは含めません）<br>
+    ・<b>AI＋羽生の判断</b>（見送った点を除き、買い足した点を加えた場合）<br>
+    見送りも買い足しも<b>レース前に指紋へ含めて</b>記録するので、結果を見てから変えることはできません。
   </p>
   <p class="links"><a class="linkbtn" href="./" data-goatcounter-click="record-to-sim" data-goatcounter-title="実績ページ→シミュレーター">シミュレーターに戻る</a><a class="linkbtn" data-goatcounter-click="record-to-note" data-goatcounter-title="実績ページ→note" href="https://note.com/habu_keiba" target="_blank" rel="noopener">noteを見る</a></p>
 
@@ -208,16 +209,16 @@ function renderStats(r){
   const g=(a,b,small)=>statCards(a,b[0],b[1],small);
   // 1勝クラス以上を先に大きく、全クラス（新馬・未勝利を含む）は後ろに小さく
   let html=g(s.adv,['AIのみ｜1勝クラス以上','人の判断を入れず、AIの買い目を全部買った場合／新馬・未勝利を除く']);
-  if(s.skipped){
+  if(s.skipped||s.added){
     html+='<div style="height:10px"></div>'
-      +g(s.myAdv,['AI＋羽生の判断｜1勝クラス以上','トラックバイアスやパドックを見て、羽生がレース前に見送った点を除いた場合／新馬・未勝利を除く']);
+      +g(s.myAdv,['AI＋羽生の判断｜1勝クラス以上','トラックバイアスやパドックを見て、羽生がレース前に見送った点を除き、買い足した点を加えた場合／新馬・未勝利を除く']);
   }
   html+='<div style="height:18px"></div><p class="panel-title" style="margin:0 0 4px">全クラス（新馬・未勝利を含む）</p>'
     +'<p class="how" style="font-size:12px;margin:0 0 10px">新馬・未勝利は、AIが過去の成績をもとに予測するため、走った実績が少なく、成績が出にくいクラスです。参考として小さく載せています。</p>'
     +g(s.all,['AIのみ｜全クラス','人の判断を入れず、AIの買い目を全部買った場合'],true);
-  if(s.skipped){
+  if(s.skipped||s.added){
     html+='<div style="height:8px"></div>'
-      +g(s.myAll,['AI＋羽生の判断｜全クラス','羽生がレース前に見送った点を除いた場合'],true);
+      +g(s.myAll,['AI＋羽生の判断｜全クラス','羽生がレース前に見送った点を除き、買い足した点を加えた場合'],true);
   }
   $('stats').innerHTML=html;
   $('updated').textContent='買い目: AI勝率'+(s.aiRank||1)+'位かつ期待値'+(s.evMin||1.3)+'以上の単勝を1点'+(s.stakePerBet||100)+'円 ／ 最終更新: '+(s.updatedAt||'');
@@ -238,7 +239,7 @@ function renderDays(r){
       +d.versions.map(v=>'<tr><td>第'+v.v+'版</td><td>'+v.committedAt+'</td><td class="hash">'+v.hash+'</td><td class="num">'+v.pickCount+'</td></tr>').join('')+'</table>';
     const nEx=off?off.filter(p=>p.excluded).length:0;
     const picks=off?'<details><summary>▼ 羽生が実際に買った馬を見る（'+(off.length-nEx)+'点／各レースの発走前・最終版'+(nEx?'　※対象外 '+nEx+'点を含む':'')+'）</summary><table><tr><th>レース</th><th>クラス</th><th>発走</th><th>馬番</th><th>馬名</th><th class="num">購入時単勝</th><th class="num">着順</th><th class="num">払戻</th><th>採用版</th></tr>'
-      +off.map(p=>'<tr'+(p.excluded||p.skip?' style="opacity:.5"':'')+'><td>'+p.place+p.race+'R</td><td>'+(p.cls||'—')+'</td><td>'+(p.postTime||'—')+'</td><td class="num">'+p.number+'</td><td>'+p.name+(p.excluded?' <span class="tag wait">対象外・'+p.excluded+'</span>':'')+(p.skip?' <span class="tag wait">羽生が見送り'+(/^(裁量で見送り|羽生の判断で見送り)$/.test(p.skip)?'':'・'+p.skip)+'</span>':'')+'</td><td class="num">'+(p.oddsAtPredict??'—')+'</td>'
+      +off.map(p=>'<tr'+(p.excluded||p.skip?' style="opacity:.5"':'')+'><td>'+p.place+p.race+'R</td><td>'+(p.cls||'—')+'</td><td>'+(p.postTime||'—')+'</td><td class="num">'+p.number+'</td><td>'+p.name+(p.excluded?' <span class="tag wait">対象外・'+p.excluded+'</span>':'')+(p.skip?' <span class="tag wait">羽生が見送り'+(/^(裁量で見送り|羽生の判断で見送り)$/.test(p.skip)?'':'・'+p.skip)+'</span>':'')+(p.added?' <span class="tag open">羽生が買い足し'+(/^羽生の判断で追加$/.test(p.added)?'':'・'+p.added)+'</span>':'')+'</td><td class="num">'+(p.oddsAtPredict??'—')+'</td>'
         +'<td class="num '+(p.excluded?'miss':p.finish===1?'r1':p.finish===2?'r2':p.finish===3?'r3':'miss')+'">'+(p.finish??'—')+'</td><td class="num">'+(p.payout?yen(p.payout):'—')+'</td><td>第'+p.fromVersion+'版</td></tr>').join('')
       +'</table></details>':'';
     return '<div style="padding:10px 0;border-bottom:1px solid var(--line)">'+head+vers+picks+'</div>';
@@ -257,7 +258,7 @@ function renderDays(r){
   $('days').innerHTML=[...months.entries()].map(([m,ds])=>{
     const label=(years.size>1?m.slice(0,4)+'年':'')+Number(m.slice(5))+'月の結果';
     const a=sum(ds,'adv'),b=sum(ds,'all');
-    const skipped=ds.reduce((n,d)=>n+((d.result&&d.result.skipped)||0),0);
+    const skipped=ds.reduce((n,d)=>n+((d.result&&((d.result.skipped||0)+(d.result.added||0)))||0),0);
     const card=(k,small)=>{
       const s=sum(ds,k[0]);
       return s.n?'<div class="msum'+(small?' small':'')+'"><div class="msum-t">'+k[1]+'</div><div><span class="msum-roi">'+pct(s.roi)+'</span> <span class="msum-l">単勝回収率</span></div>'
