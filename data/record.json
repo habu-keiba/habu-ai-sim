@@ -3226,5 +3226,13 @@
       "datHash": "779a3dc67a7be6ea807507e55a2a17773afc6d4e911d18f7f0518c6fb06d098c",
       "datFile": "data/worlds/2026-11-01_779a3dc6.dat"
     }
+  ],
+  "excluded": [
+    {
+      "date": "2026-11-08",
+      "place": "福島",
+      "race": "9",
+      "reason": "運用ミスにより対象外（14:00の予測でEV1.2を下回ったが、外す版を記録できなかった）"
+    }
   ]
 }
