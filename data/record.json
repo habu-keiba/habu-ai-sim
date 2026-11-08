@@ -3123,6 +3123,16 @@
           "pickCount": 1,
           "revealed": false,
           "picks": null
+        },
+        {
+          "v": 2,
+          "committedAt": "2026-11-08 14:53:08 JST",
+          "committedMin": 893,
+          "hash": "e765a39c2d326ba5bf93fffa08ad47a3bf346020e50ed16c6bf821f35679b7a0",
+          "evMin": 1.2,
+          "pickCount": 0,
+          "revealed": false,
+          "picks": null
         }
       ],
       "result": null

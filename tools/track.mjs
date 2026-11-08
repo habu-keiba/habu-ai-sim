@@ -175,8 +175,14 @@ function cmdCommit(csvPath, args = []) {
     if (!hit.length) throw new Error(`--skip ${s.place}${s.race}R に当たる買い目がありません（買い目: ${picks.map((p) => p.place + p.race + 'R').join(' / ') || 'なし'}）`);
     hit.forEach((p) => { p.skip = s.reason; });
   }
-  if (!picks.length) throw new Error(`AI勝率1位かつ期待値${EV_MIN}以上の馬が1頭もありません（オッズが入っていないCSVの可能性があります）`);
-  const date = picks[0].date;
+  // 買い目が0点の版も記録できる（その時点で買い目が無い、または前の版の買い目が基準割れで外れた、という記録になる）。
+  // ただし、オッズが入っていないCSVで0点になったときは、間違いなので止める（期待値が数字で入っている行が半分未満）。
+  if (!picks.length) {
+    const withEv = rows.filter((r) => num(r['期待値(EV)']) !== null).length;
+    if (!rows.length || withEv < rows.length * 0.5) throw new Error(`買い目が0点ですが、期待値が入っている行が少なすぎます（${withEv}/${rows.length}行）。オッズが入っていないCSVの可能性があります`);
+  }
+  const date = picks.length ? picks[0].date : (rows.find((r) => r['日付']) || {})['日付'];
+  if (!date) throw new Error('予測CSVに「日付」の列がありません');
   const key = date.replace(/\./g, '-');
   const now = jstDate();
   const body = JSON.stringify({ date, evMin: EV_MIN, picks });
@@ -197,7 +203,7 @@ function cmdCommit(csvPath, args = []) {
   saveRecord(rec);
 
   const noPost = picks.filter((p) => !p.postTime).length;
-  console.log(`${key} 第${v}版: 推奨 ${picks.length} 点の指紋を記録しました（${jstStamp()}）`);
+  console.log(`${key} 第${v}版: ${picks.length ? `推奨 ${picks.length} 点` : '買い目なし（0点）'}の指紋を記録しました（${jstStamp()}）`);
   console.log(`  ハッシュ: ${hash}`);
   console.log(`  内訳: ${picks.map((p) => `${p.place}${p.race}R ${p.number}番${p.skip ? '【見送り】' : ''}${p.added ? '【羽生が買い足し】' : ''}${p.postTime ? `(${p.postTime}発走)` : ''}`).join(' / ')}`);
   if (skips.length) console.log(`  ※ 羽生の判断で見送り ${picks.filter((p) => p.skip).length} 点（${picks.filter((p) => p.skip).map((p) => `${p.place}${p.race}R ${p.number}番: ${p.skip}`).join(' / ')}）`);
