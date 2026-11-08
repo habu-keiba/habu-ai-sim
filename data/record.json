@@ -3121,8 +3121,26 @@
           "hash": "1a913b32ab4cefd31e3b24ad31f395e535076983d2f8923b7b39a11e13503445",
           "evMin": 1.2,
           "pickCount": 1,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.08",
+              "place": "福島",
+              "race": "9",
+              "raceName": "二本松特･1勝",
+              "cls": "1勝",
+              "dist": "芝1800",
+              "postTime": "14:10",
+              "number": 9,
+              "name": "バンオンタイム",
+              "winProb": 0.19030000000000002,
+              "ev": 1.233,
+              "oddsAtPredict": 7.9,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-08 16:40:10 JST"
         },
         {
           "v": 2,
@@ -3131,11 +3149,43 @@
           "hash": "e765a39c2d326ba5bf93fffa08ad47a3bf346020e50ed16c6bf821f35679b7a0",
           "evMin": 1.2,
           "pickCount": 0,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [],
+          "revealedAt": "2026-11-08 16:40:10 JST"
         }
       ],
-      "result": null
+      "result": {
+        "all": null,
+        "adv": null,
+        "myAll": null,
+        "myAdv": null,
+        "skipped": 0,
+        "added": 0,
+        "unknown": 0
+      },
+      "official": {
+        "picks": [
+          {
+            "date": "2026.11.08",
+            "place": "福島",
+            "race": "9",
+            "raceName": "二本松特･1勝",
+            "cls": "1勝",
+            "dist": "芝1800",
+            "postTime": "14:10",
+            "number": 9,
+            "name": "バンオンタイム",
+            "winProb": 0.19030000000000002,
+            "ev": 1.233,
+            "oddsAtPredict": 7.9,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 1,
+            "excluded": "自動実行の手順漏れのため対象外"
+          }
+        ],
+        "unknownPostTime": 0
+      }
     }
   ],
   "summary": {
@@ -3188,7 +3238,7 @@
     "evMin": 1.2,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-11-07 17:54:47 JST"
+    "updatedAt": "2026-11-08 16:40:10 JST"
   },
   "worldlog": [
     {
