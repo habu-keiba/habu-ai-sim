@@ -3275,6 +3275,72 @@
       "postRace": true,
       "datHash": "779a3dc67a7be6ea807507e55a2a17773afc6d4e911d18f7f0518c6fb06d098c",
       "datFile": "data/worlds/2026-11-01_779a3dc6.dat"
+    },
+    {
+      "date": "2026-11-08",
+      "place": "京都",
+      "race": 11,
+      "raceName": "みやこＳ",
+      "grade": "G3",
+      "dist": 1800,
+      "top3": [
+        {
+          "number": 11,
+          "name": "ロードクロンヌ",
+          "waku": 6
+        },
+        {
+          "number": 8,
+          "name": "テスティモーネ",
+          "waku": 4
+        },
+        {
+          "number": 3,
+          "name": "パシアンジャン",
+          "waku": 2
+        }
+      ],
+      "worlds": [
+        899
+      ],
+      "worldCount": 1000,
+      "payout3t": null,
+      "createdAt": "2026-11-06T12:37:20.506Z",
+      "postRace": false,
+      "datHash": "480590c8375de031ccdd6138ebf229e3ff057dde056a18d71fea76807dae584a",
+      "datFile": "data/worlds/2026-11-08_480590c8.dat"
+    },
+    {
+      "date": "2026-11-08",
+      "place": "東京",
+      "race": 11,
+      "raceName": "アルゼンＨ",
+      "grade": "G2",
+      "dist": 2500,
+      "top3": [
+        {
+          "number": 6,
+          "name": "ファミリータイム",
+          "waku": 3
+        },
+        {
+          "number": 15,
+          "name": "ホーエリート",
+          "waku": 7
+        },
+        {
+          "number": 12,
+          "name": "メイショウゲキリン",
+          "waku": 6
+        }
+      ],
+      "worlds": [],
+      "worldCount": 1000,
+      "payout3t": null,
+      "createdAt": "2026-11-06T12:37:20.506Z",
+      "postRace": false,
+      "datHash": "480590c8375de031ccdd6138ebf229e3ff057dde056a18d71fea76807dae584a",
+      "datFile": "data/worlds/2026-11-08_480590c8.dat"
     }
   ],
   "excluded": [
