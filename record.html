@@ -160,6 +160,22 @@
     </details>
   </div>
 
+  <div class="panel" id="betaPanel">
+    <p class="panel-title" style="font-size:15px;font-weight:700;color:var(--cream);">🧪 開発中β版（単勝のみ）</p>
+    <p class="how">
+      羽生AI（上の成績）とは<b>別のAI</b>を開発中で、その買い目を<b>試験的に公開</b>しています。<br>
+      締切の約6分前の時点で、機械的に選んだ馬（単勝20〜40倍）の単勝を、<b>1点100円</b>で買った場合の記録です。<br>
+      買い目は、選んだ時点（発走の約6分前）にこのページへ追加され、<b>記録した時刻がGitHubに残ります</b>。<br>
+      開発中のため、羽生AIの成績には<b>含めていません</b>。成績が安定するまでは、参考程度にご覧ください。
+    </p>
+    <div id="betaStats" style="margin-bottom:6px"></div>
+    <p class="verify" id="betaUpdated"></p>
+    <div id="betaDays">読み込み中…</div>
+    <p class="how" style="font-size:12px;margin-top:10px">
+      <a href="https://github.com/habu-keiba/habu-ai-sim/commits/main/data/beta.json" target="_blank" rel="noopener">GitHubの記録履歴を見る →</a>
+    </p>
+  </div>
+
   <div class="panel">
     <p class="panel-title">仕組み</p>
     <p class="how"><b>① レース前</b><br>
@@ -297,6 +313,45 @@ function renderWorldlog(r){
     +'<div class="month-body">'+es.map(rowHtml).join('')+'</div></details>').join('');
   $('worldlogPanel').style.display='block';
 }
+
+/* 開発中β版（data/beta.json）。羽生AIの成績とは別に集計する */
+const WDAY=['日','月','火','水','木','金','土'];
+function renderBeta(b){
+  const days=(b&&b.days)||[];
+  if(!days.length){
+    $('betaStats').innerHTML='';
+    $('betaDays').textContent='まだ記録がありません。買い目が出るたびに、ここへ追加されます。';
+    return;
+  }
+  const s=b.summary;
+  $('betaStats').innerHTML=s?statCards(s,'開発中β版｜単勝のみ','1点100円で買った場合／結果が確定した買い目だけを集計',false)
+    :'<div class="stat"><div class="v">—</div><div class="l">開発中β版｜単勝のみ<br>結果の取り込み待ち</div></div>';
+  $('betaUpdated').textContent='最終更新: '+(b.updatedAt||'');
+  const res=d=>{
+    const done=d.picks.filter(p=>p.finish!=null&&!p.void);
+    const ret=done.filter(p=>p.finish===1).reduce((a,p)=>a+(p.payout||0),0);
+    return {n:done.length,hits:done.filter(p=>p.finish===1).length,roi:done.length?ret/(done.length*100):null,wait:d.picks.filter(p=>p.finish==null&&!p.void).length,total:d.picks.length};
+  };
+  const dayHtml=d=>{
+    const r=res(d), wd=WDAY[new Date(d.date+'T00:00:00+09:00').getDay()];
+    const head='<div style="margin-bottom:6px"><b style="color:var(--amber)">'+esc(d.date)+'（'+wd+'）</b> '
+      +(r.wait?'<span class="tag wait">結果待ち</span> ':'<span class="tag open">確定</span> ')
+      +'<span style="font-size:12px;color:var(--cream-dim)">買い目'+r.total+'点'+(r.n?'・的中'+r.hits+'点・回収率'+pct(r.roi):'')+'</span></div>';
+    const rows=[...d.picks].sort((a,b)=>String(a.postTime).localeCompare(String(b.postTime))||(a.race-b.race)).map(p=>
+      '<tr'+(p.void?' style="opacity:.5"':'')+'><td>'+esc(p.place)+p.race+'R</td><td>'+esc(p.postTime)+'</td><td class="num">'+p.number+'</td><td>'+esc(p.name)+'</td><td class="num">'+p.odds6+'</td><td>'+esc(String(p.recordedAt||'').slice(11,19))+'</td>'
+      +(p.void?'<td class="num miss">返還</td><td class="num">—</td>'
+        :'<td class="num '+(p.finish===1?'r1':p.finish===2?'r2':p.finish===3?'r3':'miss')+'">'+(p.finish??'—')+'</td><td class="num">'+(p.finish==null?'—':(p.payout?yen(p.payout):'0円'))+'</td>')+'</tr>').join('');
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--line)">'+head
+      +'<details><summary>▼ 買い目を見る（'+d.picks.length+'点）</summary><table><tr><th>レース</th><th>発走</th><th>馬番</th><th>馬名</th><th class="num">6分前単勝</th><th>記録した時刻</th><th class="num">着順</th><th class="num">払戻</th></tr>'+rows+'</table></details></div>';
+  };
+  const months=new Map();
+  [...days].sort((a,b)=>b.date.localeCompare(a.date)).forEach(d=>{const m=d.date.slice(0,7);if(!months.has(m))months.set(m,[]);months.get(m).push(d);});
+  $('betaDays').innerHTML=[...months.entries()].map(([m,ds],i)=>{
+    const t=ds.reduce((a,d)=>{const r=res(d);a.n+=r.n;a.hits+=r.hits;a.ret+=d.picks.filter(p=>p.finish===1&&!p.void).reduce((x,p)=>x+(p.payout||0),0);a.total+=r.total;return a;},{n:0,hits:0,ret:0,total:0});
+    return '<details class="month"'+(i===0?' open':'')+'><summary><span>'+Number(m.slice(5))+'月</span><span class="month-sum">開催'+ds.length+'日・買い目'+t.total+'点</span><span class="month-sum">'+(t.n?'確定'+t.n+'点・回収率'+pct(t.ret/(t.n*100)):'結果待ち')+'</span></summary><div class="month-body">'+ds.map(dayHtml).join('')+'</div></details>';
+  }).join('');
+}
+fetch('data/beta.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(b=>renderBeta(b)).catch(()=>renderBeta(null));
 
 async function sha256(text){
   const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));
