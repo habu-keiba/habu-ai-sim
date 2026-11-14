@@ -329,11 +329,11 @@ function renderBeta(b){
     :'<div class="stat"><div class="v">—</div><div class="l">開発中β版｜単勝のみ<br>結果の取り込み待ち</div></div>';
   $('betaUpdated').textContent='最終更新: '+(b.updatedAt||'');
   const res=d=>{
-    const done=d.entries.filter(e=>e.finish!=null&&!e.void);
+    const done=d.entries.filter(e=>e.finish!=null&&!e.void&&!e.excluded);
     const ret=done.filter(e=>e.finish===1).reduce((a,e)=>a+(e.payout||0),0);
-    return {n:done.length,hits:done.filter(e=>e.finish===1).length,ret:ret,roi:done.length?ret/(done.length*100):null,wait:d.entries.filter(e=>e.finish==null&&!e.void).length,total:d.entries.length};
+    return {n:done.length,hits:done.filter(e=>e.finish===1).length,ret:ret,roi:done.length?ret/(done.length*100):null,wait:d.entries.filter(e=>e.finish==null&&!e.void&&!e.excluded).length,total:d.entries.length};
   };
-  const place=e=>e.void?'<td class="num miss">返還</td><td class="num">—</td>'
+  const place=e=>e.excluded?'<td class="num miss" title="'+esc(e.excluded)+'">対象外</td><td class="num">—</td>':e.void?'<td class="num miss">返還</td><td class="num">—</td>'
     :'<td class="num '+(e.finish===1?'r1':e.finish===2?'r2':e.finish===3?'r3':'miss')+'">'+(e.finish??'—')+'</td><td class="num">'+(e.finish==null?'—':(e.payout?yen(e.payout):'0円'))+'</td>';
   const dayHtml=d=>{
     const r=res(d), wd=WDAY[new Date(d.date+'T00:00:00+09:00').getDay()];
@@ -349,7 +349,7 @@ function renderBeta(b){
         +'</table><p class="verify"><button class="betaVerify" data-d="'+esc(d.date)+'">指紋を照合する</button> <span id="bv-'+esc(d.date)+'"></span></p>';
     }else{
       table='<table><tr><th style="width:44px">No.</th><th style="width:170px">記録した時刻</th><th>指紋（SHA-256）</th><th class="num">着順</th><th class="num">払戻</th></tr>'
-        +d.entries.map(e=>'<tr'+(e.void?' style="opacity:.5"':'')+'><td>'+e.no+'</td><td>'+esc(e.recordedAt)+'</td><td class="hash">'+esc(e.hash)+'</td>'+place(e)+'</tr>').join('')+'</table>';
+        +d.entries.map(e=>'<tr'+(e.void||e.excluded?' style="opacity:.5"':'')+'><td>'+e.no+'</td><td>'+esc(e.recordedAt)+'</td><td class="hash">'+esc(e.hash)+'</td>'+place(e)+'</tr>').join('')+'</table>';
     }
     return '<div style="padding:10px 0;border-bottom:1px solid var(--line)">'+head+'<details><summary>▼ 記録を見る（'+d.entries.length+'点）</summary>'+table+'</details></div>';
   };
