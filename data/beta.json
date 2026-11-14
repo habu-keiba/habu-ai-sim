@@ -15,10 +15,17 @@
      "finish": null,
      "payout": null,
      "excluded": "発走39秒前に出た（買えない）"
+    },
+    {
+     "no": 2,
+     "recordedAt": "2026-11-14 11:25:50 JST",
+     "hash": "fbe8c104b4559845c3433279bb7d0b6d6ebd9fcdbb6804ba9f43eb0fb6555430",
+     "finish": null,
+     "payout": null
     }
    ]
   }
  ],
  "summary": null,
- "updatedAt": "2026-11-14 11:24:48 JST"
+ "updatedAt": "2026-11-14 11:25:50 JST"
 }
