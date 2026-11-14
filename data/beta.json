@@ -1,0 +1,23 @@
+{
+ "format": "habu-ai/beta/2",
+ "name": "開発中β版",
+ "stakePerBet": 100,
+ "days": [
+  {
+   "date": "2026-11-14",
+   "settled": false,
+   "revealed": false,
+   "entries": [
+    {
+     "no": 1,
+     "recordedAt": "2026-11-14 11:19:21 JST",
+     "hash": "d00127fd514b7ae8bcc7b6076141de6b7f0ed9b397e5ec8c55dcb1341c2050bf",
+     "finish": null,
+     "payout": null
+    }
+   ]
+  }
+ ],
+ "summary": null,
+ "updatedAt": "2026-11-14 11:19:21 JST"
+}
