@@ -125,13 +125,83 @@
      "no": 4,
      "recordedAt": "2026-11-15 16:19:18 JST",
      "hash": "bf26412fe16206a846d084224a5e48beb4cc9e15c3a1b301fc98c49a2d7cc7b6"
+    },
+    {
+     "no": 5,
+     "recordedAt": "2026-11-15 21:55:28 JST",
+     "hash": "12ecf911b6fb66f00bd97a56d35181910893a5a479c71b64b226a70ede56f62f"
+    },
+    {
+     "no": 6,
+     "recordedAt": "2026-11-15 21:55:28 JST",
+     "hash": "cdadbe7c9875409cfee7222ad9af1f986008d72aebfd41d609fe750684c45e15"
+    },
+    {
+     "no": 7,
+     "recordedAt": "2026-11-15 21:55:28 JST",
+     "hash": "6a6edd6f5dbfa7d639304dae94870fcd57ea8e0f3396eb23a774dd1abb041676"
+    },
+    {
+     "no": 8,
+     "recordedAt": "2026-11-15 21:55:28 JST",
+     "hash": "2a1ea0965881bc472f6d5de7b6f7442e09c5f56d12421d2d021277056dceb54f"
+    },
+    {
+     "no": 9,
+     "recordedAt": "2026-11-15 21:55:28 JST",
+     "hash": "d639ccd2b0d922c7c00a55d7d318e98e6e252e71f9ca6058807fa94e6b79f12e"
+    },
+    {
+     "no": 10,
+     "recordedAt": "2026-11-15 21:55:28 JST",
+     "hash": "83152d695e4ee1ae1962934b80fe018b3d62bab0e25fd3d9b9fd3a6563ac009e"
+    },
+    {
+     "no": 11,
+     "recordedAt": "2026-11-15 21:55:28 JST",
+     "hash": "a22508c5c71c742f89cbff95bf718c7c21f37e5621571a37c2be1ac6cee7e02e"
+    },
+    {
+     "no": 12,
+     "recordedAt": "2026-11-15 21:55:28 JST",
+     "hash": "110a84be468ea41444799772e669269f95facf3ecdd733f0469cd9cce4811710"
+    },
+    {
+     "no": 13,
+     "recordedAt": "2026-11-15 21:55:28 JST",
+     "hash": "2f053281aa61e0290a8059645f2fe500b4f2cded4d2cad042cb33ad0ae8f1fd2"
+    },
+    {
+     "no": 14,
+     "recordedAt": "2026-11-15 21:55:28 JST",
+     "hash": "f8fdca5c3f5536b654abe59b4206d07917c470b7fbbfa1914904f6406d28c8a1"
+    },
+    {
+     "no": 15,
+     "recordedAt": "2026-11-15 21:55:28 JST",
+     "hash": "0c0574942d3161f52253b2856ba4ded2bc5c206c8161a5c1f689c31e1c5946d4"
+    },
+    {
+     "no": 16,
+     "recordedAt": "2026-11-15 21:55:28 JST",
+     "hash": "c42c4a920ead827238c9a6d883f497474c0f364a468b8897a378ed2ca1bd1b9f"
+    },
+    {
+     "no": 17,
+     "recordedAt": "2026-11-15 21:55:28 JST",
+     "hash": "9569f38bb615acd3ebe77d00d3e88890df2bf3b9dc59a75485328768a3a96c3c"
+    },
+    {
+     "no": 18,
+     "recordedAt": "2026-11-15 21:55:28 JST",
+     "hash": "ce4b60568219fcfd4d6652dea9ab8f642d6d83011ba0665d91ae73a8d52b0c38"
     }
    ],
    "result": {
     "bets": 0,
     "ret": 0,
     "void": 0,
-    "wait": 4
+    "wait": 18
    }
   }
  ],
@@ -142,5 +212,5 @@
   "ret": 1720.0,
   "roi": 1.2285714285714286
  },
- "updatedAt": "2026-11-15 16:25:04 JST"
+ "updatedAt": "2026-11-15 21:55:28 JST"
 }
