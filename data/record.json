@@ -3369,8 +3369,90 @@
           "hash": "eb218d8ec97c9b94d6d8069b9785c289e6d3bda8272dc6f2f29e0b60927d8fd7",
           "evMin": 1.2,
           "pickCount": 5,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.15",
+              "place": "京都",
+              "race": "3",
+              "raceName": "未勝利*",
+              "cls": "未勝利",
+              "dist": "芝2000",
+              "postTime": "10:55",
+              "number": 9,
+              "name": "ホウオウビースト",
+              "winProb": 0.3096,
+              "ev": 1.396,
+              "oddsAtPredict": 5.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.15",
+              "place": "京都",
+              "race": "12",
+              "raceName": "ドンカＨ･3勝",
+              "cls": "3勝",
+              "dist": "芝1800",
+              "postTime": "16:25",
+              "number": 6,
+              "name": "オリバナム",
+              "winProb": 0.1408,
+              "ev": 1.609,
+              "oddsAtPredict": 15.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.15",
+              "place": "東京",
+              "race": "2",
+              "raceName": "未勝利*",
+              "cls": "未勝利",
+              "dist": "芝1800",
+              "postTime": "10:15",
+              "number": 2,
+              "name": "ポジティブレンサ",
+              "winProb": 0.2231,
+              "ev": 3.718,
+              "oddsAtPredict": 20.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.15",
+              "place": "東京",
+              "race": "3",
+              "raceName": "未勝利*",
+              "cls": "未勝利",
+              "dist": "芝1400",
+              "postTime": "10:45",
+              "number": 15,
+              "name": "アルパイングリーン",
+              "winProb": 0.171,
+              "ev": 1.396,
+              "oddsAtPredict": 11,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.15",
+              "place": "福島",
+              "race": "10",
+              "raceName": "三陸特Ｈ･2勝",
+              "cls": "2勝",
+              "dist": "芝2600",
+              "postTime": "14:35",
+              "number": 12,
+              "name": "アスクデッドヒート",
+              "winProb": 0.2562,
+              "ev": 1.533,
+              "oddsAtPredict": 7.3,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-15 21:57:13 JST"
         },
         {
           "v": 2,
@@ -3379,8 +3461,90 @@
           "hash": "22e31764115e26cbe1dfacfa6f7875fb835ad16104975b3e138156f13b9fb2bb",
           "evMin": 1.2,
           "pickCount": 5,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.15",
+              "place": "京都",
+              "race": "3",
+              "raceName": "未勝利*",
+              "cls": "未勝利",
+              "dist": "芝2000",
+              "postTime": "10:55",
+              "number": 9,
+              "name": "ホウオウビースト",
+              "winProb": 0.3096,
+              "ev": 1.396,
+              "oddsAtPredict": 5.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.15",
+              "place": "京都",
+              "race": "12",
+              "raceName": "ドンカＨ･3勝",
+              "cls": "3勝",
+              "dist": "芝1800",
+              "postTime": "16:25",
+              "number": 6,
+              "name": "オリバナム",
+              "winProb": 0.151,
+              "ev": 1.669,
+              "oddsAtPredict": 14.9,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.15",
+              "place": "東京",
+              "race": "2",
+              "raceName": "未勝利*",
+              "cls": "未勝利",
+              "dist": "芝1800",
+              "postTime": "10:15",
+              "number": 2,
+              "name": "ポジティブレンサ",
+              "winProb": 0.2231,
+              "ev": 3.718,
+              "oddsAtPredict": 20.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.15",
+              "place": "東京",
+              "race": "3",
+              "raceName": "未勝利*",
+              "cls": "未勝利",
+              "dist": "芝1400",
+              "postTime": "10:45",
+              "number": 15,
+              "name": "アルパイングリーン",
+              "winProb": 0.171,
+              "ev": 1.396,
+              "oddsAtPredict": 11,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.15",
+              "place": "福島",
+              "race": "10",
+              "raceName": "三陸特Ｈ･2勝",
+              "cls": "2勝",
+              "dist": "芝2600",
+              "postTime": "14:35",
+              "number": 12,
+              "name": "アスクデッドヒート",
+              "winProb": 0.2562,
+              "ev": 1.596,
+              "oddsAtPredict": 7.6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-15 21:57:13 JST"
         },
         {
           "v": 3,
@@ -3389,27 +3553,183 @@
           "hash": "51d793985302cb99ac8ba01cc382843b49ea119fd64167356f0f1ddebf55ba16",
           "evMin": 1.2,
           "pickCount": 4,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.15",
+              "place": "京都",
+              "race": "3",
+              "raceName": "未勝利*",
+              "cls": "未勝利",
+              "dist": "芝2000",
+              "postTime": "10:55",
+              "number": 9,
+              "name": "ホウオウビースト",
+              "winProb": 0.3096,
+              "ev": 1.396,
+              "oddsAtPredict": 5.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.15",
+              "place": "東京",
+              "race": "2",
+              "raceName": "未勝利*",
+              "cls": "未勝利",
+              "dist": "芝1800",
+              "postTime": "10:15",
+              "number": 2,
+              "name": "ポジティブレンサ",
+              "winProb": 0.2231,
+              "ev": 3.718,
+              "oddsAtPredict": 20.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.15",
+              "place": "東京",
+              "race": "3",
+              "raceName": "未勝利*",
+              "cls": "未勝利",
+              "dist": "芝1400",
+              "postTime": "10:45",
+              "number": 15,
+              "name": "アルパイングリーン",
+              "winProb": 0.171,
+              "ev": 1.396,
+              "oddsAtPredict": 11,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.15",
+              "place": "福島",
+              "race": "10",
+              "raceName": "三陸特Ｈ･2勝",
+              "cls": "2勝",
+              "dist": "芝2600",
+              "postTime": "14:35",
+              "number": 12,
+              "name": "アスクデッドヒート",
+              "winProb": 0.2562,
+              "ev": 1.596,
+              "oddsAtPredict": 7.6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-15 21:57:13 JST"
         }
       ],
-      "result": null
+      "result": {
+        "all": {
+          "bets": 1,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 100,
+          "ret": 0,
+          "roi": 0
+        },
+        "adv": {
+          "bets": 1,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 100,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAll": {
+          "bets": 1,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 100,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAdv": {
+          "bets": 1,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 100,
+          "ret": 0,
+          "roi": 0
+        },
+        "skipped": 0,
+        "added": 0,
+        "unknown": 0
+      },
+      "official": {
+        "picks": [
+          {
+            "date": "2026.11.15",
+            "place": "京都",
+            "race": "12",
+            "raceName": "ドンカＨ･3勝",
+            "cls": "3勝",
+            "dist": "芝1800",
+            "postTime": "16:25",
+            "number": 6,
+            "name": "オリバナム",
+            "winProb": 0.151,
+            "ev": 1.669,
+            "oddsAtPredict": 14.9,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 2,
+            "finish": 13,
+            "payout": 0
+          }
+        ],
+        "unknownPostTime": 0
+      }
     }
   ],
   "summary": {
     "all": {
-      "days": 14,
-      "bets": 43,
+      "days": 15,
+      "bets": 44,
       "hits": 7,
       "top3": 19,
-      "stake": 4300,
+      "stake": 4400,
       "ret": 3450,
-      "hitRate": 0.16279069767441862,
-      "top3Rate": 0.4418604651162791,
-      "roi": 0.8023255813953488
+      "hitRate": 0.1590909090909091,
+      "top3Rate": 0.4318181818181818,
+      "roi": 0.7840909090909091
     },
     "adv": {
-      "days": 12,
+      "days": 13,
+      "bets": 25,
+      "hits": 6,
+      "top3": 13,
+      "stake": 2500,
+      "ret": 2900,
+      "hitRate": 0.24,
+      "top3Rate": 0.52,
+      "roi": 1.16
+    },
+    "myAll": {
+      "days": 15,
+      "bets": 41,
+      "hits": 7,
+      "top3": 19,
+      "stake": 4100,
+      "ret": 3450,
+      "hitRate": 0.17073170731707318,
+      "top3Rate": 0.4634146341463415,
+      "roi": 0.8414634146341463
+    },
+    "myAdv": {
+      "days": 13,
       "bets": 24,
       "hits": 6,
       "top3": 13,
@@ -3419,34 +3739,12 @@
       "top3Rate": 0.5416666666666666,
       "roi": 1.2083333333333333
     },
-    "myAll": {
-      "days": 14,
-      "bets": 40,
-      "hits": 7,
-      "top3": 19,
-      "stake": 4000,
-      "ret": 3450,
-      "hitRate": 0.175,
-      "top3Rate": 0.475,
-      "roi": 0.8625
-    },
-    "myAdv": {
-      "days": 12,
-      "bets": 23,
-      "hits": 6,
-      "top3": 13,
-      "stake": 2300,
-      "ret": 2900,
-      "hitRate": 0.2608695652173913,
-      "top3Rate": 0.5652173913043478,
-      "roi": 1.2608695652173914
-    },
     "skipped": 3,
     "added": 0,
     "evMin": 1.2,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-11-15 14:28:32 JST"
+    "updatedAt": "2026-11-15 21:57:16 JST"
   },
   "worldlog": [
     {
@@ -3549,6 +3847,43 @@
       "postRace": false,
       "datHash": "480590c8375de031ccdd6138ebf229e3ff057dde056a18d71fea76807dae584a",
       "datFile": "data/worlds/2026-11-08_480590c8.dat"
+    },
+    {
+      "date": "2026-11-15",
+      "place": "京都",
+      "race": 11,
+      "raceName": "エリザベ",
+      "grade": "G1",
+      "dist": 2200,
+      "top3": [
+        {
+          "number": 15,
+          "name": "ラフターラインズ",
+          "waku": 7
+        },
+        {
+          "number": 7,
+          "name": "カムニャック",
+          "waku": 4
+        },
+        {
+          "number": 16,
+          "name": "アクアヴァーナル",
+          "waku": 8
+        }
+      ],
+      "worlds": [
+        213,
+        598,
+        633,
+        796
+      ],
+      "worldCount": 1000,
+      "payout3t": null,
+      "createdAt": "2026-11-13T12:56:16.967Z",
+      "postRace": false,
+      "datHash": "0f6ae9de5f97c45b86e257c20cd78f03a0a6e65f9bb03a6958829eab31d35c68",
+      "datFile": "data/worlds/2026-11-15_0f6ae9de.dat"
     }
   ],
   "excluded": [
