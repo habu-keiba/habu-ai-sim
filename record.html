@@ -325,31 +325,32 @@ function renderBeta(b){
     return;
   }
   const s=b.summary;
-  $('betaStats').innerHTML=s?statCards(s,'開発中β版｜単勝のみ','1点100円で買った場合／結果が確定した記録だけを集計',false)
+  $('betaStats').innerHTML=s?'<div class="panel small" style="background:rgba(14,22,38,.4);margin:0"><p class="panel-title"><b style="color:var(--cream)">開発中β版｜単勝のみ</b>　1点100円で買った場合／結果が確定した記録だけを集計</p><div class="stats">'
+      +[['単勝回収率',pct(s.roi),'投資'+yen(s.stake)+'／払戻'+yen(s.ret)],['対象頭数',s.bets+'頭','']]
+        .map(function(x){return '<div class="stat"><div class="v">'+x[1]+'</div><div class="l">'+x[0]+(x[2]?'<br>'+x[2]:'')+'</div></div>';}).join('')+'</div></div>'
     :'<div class="stat"><div class="v">—</div><div class="l">開発中β版｜単勝のみ<br>結果の取り込み待ち</div></div>';
   $('betaUpdated').textContent='最終更新: '+(b.updatedAt||'');
   const res=d=>{
-    const done=d.entries.filter(e=>e.finish!=null&&!e.void&&!e.excluded);
+    const done=d.entries.filter(e=>e.finish!=null&&!e.void);
     const ret=done.filter(e=>e.finish===1).reduce((a,e)=>a+(e.payout||0),0);
-    return {n:done.length,hits:done.filter(e=>e.finish===1).length,ret:ret,roi:done.length?ret/(done.length*100):null,wait:d.entries.filter(e=>e.finish==null&&!e.void&&!e.excluded).length,total:d.entries.length};
+    return {n:done.length,hits:done.filter(e=>e.finish===1).length,ret:ret,roi:done.length?ret/(done.length*100):null,wait:d.entries.filter(e=>e.finish==null&&!e.void).length,total:d.entries.length};
   };
-  const place=e=>e.excluded?'<td class="num miss" title="'+esc(e.excluded)+'">対象外</td><td class="num">—</td>':e.void?'<td class="num miss">返還</td><td class="num">—</td>'
-    :'<td class="num '+(e.finish===1?'r1':e.finish===2?'r2':e.finish===3?'r3':'miss')+'">'+(e.finish??'—')+'</td><td class="num">'+(e.finish==null?'—':(e.payout?yen(e.payout):'0円'))+'</td>';
+  const place=e=>e.void?'<td class="num miss">返還</td>':(e.finish==null?'<td class="num">結果待ち</td>':'<td class="num">確定</td>');
   const dayHtml=d=>{
     const r=res(d), wd=WDAY[new Date(d.date+'T00:00:00+09:00').getDay()];
     const head='<div style="margin-bottom:6px"><b style="color:var(--amber)">'+esc(d.date)+'（'+wd+'）</b> '
       +(r.wait?'<span class="tag wait">結果待ち</span> ':'<span class="tag open">確定</span> ')
       +(d.revealed?'<span class="tag open">中身を公開済み</span> ':'')
-      +'<span style="font-size:12px;color:var(--cream-dim)">記録'+r.total+'点'+(r.n?'・的中'+r.hits+'点・回収率'+pct(r.roi):'')+'</span></div>';
+      +'<span style="font-size:12px;color:var(--cream-dim)">記録'+r.total+'点'+(r.n?'・対象'+r.n+'頭・回収率'+pct(r.roi):'')+'</span></div>';
     let table;
     if(d.revealed&&d.picks){
-      table='<table><tr><th>レース</th><th>馬番</th><th>馬名</th><th class="num">購入時単勝</th><th>記録した時刻</th><th class="num">着順</th><th class="num">払戻</th></tr>'
+      table='<table><tr><th>レース</th><th>馬番</th><th>馬名</th><th class="num">購入時単勝</th><th>記録した時刻</th><th class="num">状態</th></tr>'
         +[...d.picks].sort((a,b)=>String(a.recordedAt).localeCompare(String(b.recordedAt))).map(p=>
           '<tr'+(p.void?' style="opacity:.5"':'')+'><td>'+esc(p.place)+p.race+'R</td><td class="num">'+p.number+'</td><td>'+esc(p.name)+'</td><td class="num">'+esc(p.odds6)+'</td><td>'+esc(String(p.recordedAt).slice(11,19))+'</td>'+place(p)+'</tr>').join('')
         +'</table><p class="verify"><button class="betaVerify" data-d="'+esc(d.date)+'">指紋を照合する</button> <span id="bv-'+esc(d.date)+'"></span></p>';
     }else{
-      table='<table><tr><th style="width:44px">No.</th><th style="width:170px">記録した時刻</th><th>指紋（SHA-256）</th><th class="num">着順</th><th class="num">払戻</th></tr>'
-        +d.entries.map(e=>'<tr'+(e.void||e.excluded?' style="opacity:.5"':'')+'><td>'+e.no+'</td><td>'+esc(e.recordedAt)+'</td><td class="hash">'+esc(e.hash)+'</td>'+place(e)+'</tr>').join('')+'</table>';
+      table='<table><tr><th style="width:44px">No.</th><th style="width:170px">記録した時刻</th><th>指紋（SHA-256）</th><th class="num">状態</th></tr>'
+        +d.entries.map(e=>'<tr'+(e.void?' style="opacity:.5"':'')+'><td>'+e.no+'</td><td>'+esc(e.recordedAt)+'</td><td class="hash">'+esc(e.hash)+'</td>'+place(e)+'</tr>').join('')+'</table>';
     }
     return '<div style="padding:10px 0;border-bottom:1px solid var(--line)">'+head+'<details><summary>▼ 記録を見る（'+d.entries.length+'点）</summary>'+table+'</details></div>';
   };
