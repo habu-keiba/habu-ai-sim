@@ -100,6 +100,13 @@
      "no": 1,
      "recordedAt": "2026-11-15 15:05:47 JST",
      "hash": "06019fac3c8e085b8efa0c09951e726099491ab0c1aad0337b27a1a828b103b8"
+    },
+    {
+     "no": 2,
+     "recordedAt": "2026-11-15 15:14:19 JST",
+     "hash": "7ca32f9c1ec8f55ab1d69ad20bb04a6c32a1c119f90b43647ec9beb785498b30",
+     "finish": null,
+     "payout": null
     }
    ],
    "result": {
@@ -110,12 +117,6 @@
    }
   }
  ],
- "summary": {
-  "days": 1,
-  "bets": 12,
-  "stake": 1200,
-  "ret": 1720.0,
-  "roi": 1.4333333333333333
- },
- "updatedAt": "2026-11-15 15:09:28 JST"
+ "summary": null,
+ "updatedAt": "2026-11-15 15:14:19 JST"
 }
