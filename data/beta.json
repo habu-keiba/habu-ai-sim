@@ -11,109 +11,85 @@
     {
      "no": 1,
      "recordedAt": "2026-11-14 11:19:21 JST",
-     "hash": "d00127fd514b7ae8bcc7b6076141de6b7f0ed9b397e5ec8c55dcb1341c2050bf",
-     "finish": 1,
-     "payout": 1720.0
+     "hash": "d00127fd514b7ae8bcc7b6076141de6b7f0ed9b397e5ec8c55dcb1341c2050bf"
     },
     {
      "no": 2,
      "recordedAt": "2026-11-14 11:25:50 JST",
-     "hash": "fbe8c104b4559845c3433279bb7d0b6d6ebd9fcdbb6804ba9f43eb0fb6555430",
-     "finish": 5,
-     "payout": 0.0
+     "hash": "fbe8c104b4559845c3433279bb7d0b6d6ebd9fcdbb6804ba9f43eb0fb6555430"
     },
     {
      "no": 3,
      "recordedAt": "2026-11-14 12:25:27 JST",
-     "hash": "8b21da5c0957753408cb09fdef7ac94eebb98cf5b5eb5164f6475b02823c34ce",
-     "finish": 7,
-     "payout": 0.0
+     "hash": "8b21da5c0957753408cb09fdef7ac94eebb98cf5b5eb5164f6475b02823c34ce"
     },
     {
      "no": 4,
      "recordedAt": "2026-11-14 12:55:48 JST",
-     "hash": "3f73309433bff9f8f6ec19bd05df56f967078623a7e41dbc50378197a40e0284",
-     "finish": 8,
-     "payout": 0.0
+     "hash": "3f73309433bff9f8f6ec19bd05df56f967078623a7e41dbc50378197a40e0284"
     },
     {
      "no": 5,
      "recordedAt": "2026-11-14 13:05:26 JST",
-     "hash": "1f4d9f8bfe0ca55af35258807eeb290a927ad7fc49ea07e9fa7c3c0458e2c3bd",
-     "finish": 3,
-     "payout": 0.0
+     "hash": "1f4d9f8bfe0ca55af35258807eeb290a927ad7fc49ea07e9fa7c3c0458e2c3bd"
     },
     {
      "no": 6,
      "recordedAt": "2026-11-14 13:15:26 JST",
-     "hash": "10dbcd54f5ba2831e45bfadbb5834616ad80021f228c754abe9e5ce934ef0615",
-     "finish": 3,
-     "payout": 0.0
+     "hash": "10dbcd54f5ba2831e45bfadbb5834616ad80021f228c754abe9e5ce934ef0615"
     },
     {
      "no": 7,
      "recordedAt": "2026-11-14 13:15:26 JST",
-     "hash": "dbcae3dfb6518181228cc0f1e545a823d0e1c0142553b41431121f8dd5dd2a43",
-     "finish": 8,
-     "payout": 0.0
+     "hash": "dbcae3dfb6518181228cc0f1e545a823d0e1c0142553b41431121f8dd5dd2a43"
     },
     {
      "no": 8,
      "recordedAt": "2026-11-14 14:15:27 JST",
-     "hash": "b053511f9845a6692f53d4e37060d1df27e5849e108f184b3a3b95173357972e",
-     "finish": 5,
-     "payout": 0.0
+     "hash": "b053511f9845a6692f53d4e37060d1df27e5849e108f184b3a3b95173357972e"
     },
     {
      "no": 9,
      "recordedAt": "2026-11-14 14:25:48 JST",
-     "hash": "72393591d0fc99c8c6825263ff55482c36be3fe29baab1d8f3fbdfa2519347b2",
-     "finish": null,
-     "payout": null
+     "hash": "72393591d0fc99c8c6825263ff55482c36be3fe29baab1d8f3fbdfa2519347b2"
     },
     {
      "no": 10,
      "recordedAt": "2026-11-14 14:50:28 JST",
-     "hash": "9267b640b9afa3668893b132217c06fc98505473f36841672f54dc6c95482a59",
-     "finish": 12,
-     "payout": 0.0
+     "hash": "9267b640b9afa3668893b132217c06fc98505473f36841672f54dc6c95482a59"
     },
     {
      "no": 11,
      "recordedAt": "2026-11-14 14:50:28 JST",
-     "hash": "c71e609be085a59eda010e068c482f55cb86db9d0d3150ca6d077fcf71a5793c",
-     "finish": 11,
-     "payout": 0.0
+     "hash": "c71e609be085a59eda010e068c482f55cb86db9d0d3150ca6d077fcf71a5793c"
     },
     {
      "no": 12,
      "recordedAt": "2026-11-14 14:50:28 JST",
-     "hash": "94bf657744896c0b4e3fdab51e03f6ca730aa5b8cbacf713a6c4e3ef90d59233",
-     "finish": 3,
-     "payout": 0.0
+     "hash": "94bf657744896c0b4e3fdab51e03f6ca730aa5b8cbacf713a6c4e3ef90d59233"
     },
     {
      "no": 13,
      "recordedAt": "2026-11-14 15:00:28 JST",
-     "hash": "596e6d20852cf0f278270435e1d357930d3af331b56eb018902c9067c6a58628",
-     "finish": null,
-     "payout": null
+     "hash": "596e6d20852cf0f278270435e1d357930d3af331b56eb018902c9067c6a58628"
     },
     {
      "no": 14,
      "recordedAt": "2026-11-14 15:55:49 JST",
-     "hash": "cdd81b66aa29163ff594a6626bae96f4ae49ba9f0d3e0234ed15613d6cd80839",
-     "finish": 3,
-     "payout": 0.0
+     "hash": "cdd81b66aa29163ff594a6626bae96f4ae49ba9f0d3e0234ed15613d6cd80839"
     },
     {
      "no": 15,
      "recordedAt": "2026-11-14 16:19:21 JST",
-     "hash": "fa2c62f4f41090c372f0aeedfaecd241c948447bcb902d97c5e79140d3a7c355",
-     "finish": null,
-     "payout": null
+     "hash": "fa2c62f4f41090c372f0aeedfaecd241c948447bcb902d97c5e79140d3a7c355"
     }
-   ]
+   ],
+   "result": {
+    "bets": 12,
+    "ret": 1720.0,
+    "void": 0,
+    "wait": 3
+   }
   },
   {
    "date": "2026-11-15",
@@ -123,23 +99,23 @@
     {
      "no": 1,
      "recordedAt": "2026-11-15 15:05:47 JST",
-     "hash": "06019fac3c8e085b8efa0c09951e726099491ab0c1aad0337b27a1a828b103b8",
-     "finish": null,
-     "payout": null
+     "hash": "06019fac3c8e085b8efa0c09951e726099491ab0c1aad0337b27a1a828b103b8"
     }
-   ]
+   ],
+   "result": {
+    "bets": 0,
+    "ret": 0,
+    "void": 0,
+    "wait": 1
+   }
   }
  ],
  "summary": {
   "days": 1,
   "bets": 12,
-  "hits": 1,
-  "top3": 5,
   "stake": 1200,
   "ret": 1720.0,
-  "hitRate": 0.08333333333333333,
-  "top3Rate": 0.4166666666666667,
   "roi": 1.4333333333333333
  },
- "updatedAt": "2026-11-15 15:05:47 JST"
+ "updatedAt": "2026-11-15 15:09:28 JST"
 }
