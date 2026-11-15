@@ -330,12 +330,7 @@ function renderBeta(b){
         .map(function(x){return '<div class="stat"><div class="v">'+x[1]+'</div><div class="l">'+x[0]+(x[2]?'<br>'+x[2]:'')+'</div></div>';}).join('')+'</div></div>'
     :'<div class="stat"><div class="v">—</div><div class="l">開発中β版｜単勝のみ<br>結果の取り込み待ち</div></div>';
   $('betaUpdated').textContent='最終更新: '+(b.updatedAt||'');
-  const res=d=>{
-    const done=d.entries.filter(e=>e.finish!=null&&!e.void);
-    const ret=done.filter(e=>e.finish===1).reduce((a,e)=>a+(e.payout||0),0);
-    return {n:done.length,hits:done.filter(e=>e.finish===1).length,ret:ret,roi:done.length?ret/(done.length*100):null,wait:d.entries.filter(e=>e.finish==null&&!e.void).length,total:d.entries.length};
-  };
-  const place=e=>e.void?'<td class="num miss">返還</td>':(e.finish==null?'<td class="num">結果待ち</td>':'<td class="num">確定</td>');
+  const res=d=>{const r=d.result||{};return {n:r.bets||0,ret:r.ret||0,roi:r.bets?r.ret/(r.bets*100):null,wait:r.wait||0,total:d.entries.length};};
   const dayHtml=d=>{
     const r=res(d), wd=WDAY[new Date(d.date+'T00:00:00+09:00').getDay()];
     const head='<div style="margin-bottom:6px"><b style="color:var(--amber)">'+esc(d.date)+'（'+wd+'）</b> '
@@ -344,13 +339,13 @@ function renderBeta(b){
       +'<span style="font-size:12px;color:var(--cream-dim)">記録'+r.total+'点'+(r.n?'・対象'+r.n+'頭・回収率'+pct(r.roi):'')+'</span></div>';
     let table;
     if(d.revealed&&d.picks){
-      table='<table><tr><th>レース</th><th>馬番</th><th>馬名</th><th class="num">購入時単勝</th><th>記録した時刻</th><th class="num">状態</th></tr>'
+      table='<table><tr><th>レース</th><th>馬番</th><th>馬名</th><th class="num">購入時単勝</th><th>記録した時刻</th></tr>'
         +[...d.picks].sort((a,b)=>String(a.recordedAt).localeCompare(String(b.recordedAt))).map(p=>
-          '<tr'+(p.void?' style="opacity:.5"':'')+'><td>'+esc(p.place)+p.race+'R</td><td class="num">'+p.number+'</td><td>'+esc(p.name)+'</td><td class="num">'+esc(p.odds6)+'</td><td>'+esc(String(p.recordedAt).slice(11,19))+'</td>'+place(p)+'</tr>').join('')
+          '<tr'+(p.void?' style="opacity:.5"':'')+'><td>'+esc(p.place)+p.race+'R</td><td class="num">'+p.number+'</td><td>'+esc(p.name)+'</td><td class="num">'+esc(p.odds6)+'</td><td>'+esc(String(p.recordedAt).slice(11,19))+'</td></tr>').join('')
         +'</table><p class="verify"><button class="betaVerify" data-d="'+esc(d.date)+'">指紋を照合する</button> <span id="bv-'+esc(d.date)+'"></span></p>';
     }else{
-      table='<table><tr><th style="width:44px">No.</th><th style="width:170px">記録した時刻</th><th>指紋（SHA-256）</th><th class="num">状態</th></tr>'
-        +d.entries.map(e=>'<tr'+(e.void?' style="opacity:.5"':'')+'><td>'+e.no+'</td><td>'+esc(e.recordedAt)+'</td><td class="hash">'+esc(e.hash)+'</td>'+place(e)+'</tr>').join('')+'</table>';
+      table='<table><tr><th style="width:44px">No.</th><th style="width:170px">記録した時刻</th><th>指紋（SHA-256）</th></tr>'
+        +d.entries.map(e=>'<tr><td>'+e.no+'</td><td>'+esc(e.recordedAt)+'</td><td class="hash">'+esc(e.hash)+'</td></tr>').join('')+'</table>';
     }
     return '<div style="padding:10px 0;border-bottom:1px solid var(--line)">'+head+'<details><summary>▼ 記録を見る（'+d.entries.length+'点）</summary>'+table+'</details></div>';
   };
