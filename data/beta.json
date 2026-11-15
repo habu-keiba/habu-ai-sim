@@ -114,6 +114,13 @@
      "hash": "2f29b22771ce47c69c9d7e343a6bfad012b56546b05560e03b5494d5a089e19b",
      "finish": null,
      "payout": null
+    },
+    {
+     "no": 4,
+     "recordedAt": "2026-11-15 16:19:18 JST",
+     "hash": "bf26412fe16206a846d084224a5e48beb4cc9e15c3a1b301fc98c49a2d7cc7b6",
+     "finish": null,
+     "payout": null
     }
    ],
    "result": {
@@ -125,5 +132,5 @@
   }
  ],
  "summary": null,
- "updatedAt": "2026-11-15 15:14:22 JST"
+ "updatedAt": "2026-11-15 16:19:18 JST"
 }
