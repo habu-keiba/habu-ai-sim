@@ -324,7 +324,7 @@ function renderBeta(b){
     $('betaDays').textContent='まだ記録がありません。買い目が出るたびに、ここへ追加されます。';
     return;
   }
-  const s=b.summary;
+  const s=(()=>{const t={days:0,bets:0,stake:0,ret:0};days.forEach(d=>{const r=d.result||{};if(r.bets){t.days++;t.bets+=r.bets;t.stake+=r.bets*100;t.ret+=r.ret||0;}});t.roi=t.stake?t.ret/t.stake:null;return t.bets?t:null;})();      // 日ごとの result から集計する（公開データの summary には頼らない）
   $('betaStats').innerHTML=s?'<div class="panel small" style="background:rgba(14,22,38,.4);margin:0"><p class="panel-title"><b style="color:var(--cream)">開発中β版｜単勝のみ</b>　1点100円で買った場合／結果が確定した記録だけを集計</p><div class="stats">'
       +[['単勝回収率',pct(s.roi),'投資'+yen(s.stake)+'／払戻'+yen(s.ret)],['対象頭数',s.bets+'頭','']]
         .map(function(x){return '<div class="stat"><div class="v">'+x[1]+'</div><div class="l">'+x[0]+(x[2]?'<br>'+x[2]:'')+'</div></div>';}).join('')+'</div></div>'
