@@ -82,13 +82,18 @@
      "no": 15,
      "recordedAt": "2026-11-14 16:19:21 JST",
      "hash": "fa2c62f4f41090c372f0aeedfaecd241c948447bcb902d97c5e79140d3a7c355"
+    },
+    {
+     "no": 16,
+     "recordedAt": "2026-11-15 16:24:52 JST",
+     "hash": "b2e7a091fbf6faa24c20a6aa54dade3b7a9510067e2a534561fe9e9765804690"
     }
    ],
    "result": {
     "bets": 12,
     "ret": 1720.0,
     "void": 0,
-    "wait": 3
+    "wait": 4
    }
   },
   {
@@ -104,33 +109,33 @@
     {
      "no": 2,
      "recordedAt": "2026-11-15 15:14:19 JST",
-     "hash": "7ca32f9c1ec8f55ab1d69ad20bb04a6c32a1c119f90b43647ec9beb785498b30",
-     "finish": null,
-     "payout": null
+     "hash": "7ca32f9c1ec8f55ab1d69ad20bb04a6c32a1c119f90b43647ec9beb785498b30"
     },
     {
      "no": 3,
      "recordedAt": "2026-11-15 15:14:19 JST",
-     "hash": "2f29b22771ce47c69c9d7e343a6bfad012b56546b05560e03b5494d5a089e19b",
-     "finish": null,
-     "payout": null
+     "hash": "2f29b22771ce47c69c9d7e343a6bfad012b56546b05560e03b5494d5a089e19b"
     },
     {
      "no": 4,
      "recordedAt": "2026-11-15 16:19:18 JST",
-     "hash": "bf26412fe16206a846d084224a5e48beb4cc9e15c3a1b301fc98c49a2d7cc7b6",
-     "finish": null,
-     "payout": null
+     "hash": "bf26412fe16206a846d084224a5e48beb4cc9e15c3a1b301fc98c49a2d7cc7b6"
     }
    ],
    "result": {
     "bets": 0,
     "ret": 0,
     "void": 0,
-    "wait": 1
+    "wait": 4
    }
   }
  ],
- "summary": null,
- "updatedAt": "2026-11-15 16:19:18 JST"
+ "summary": {
+  "days": 1,
+  "bets": 12,
+  "stake": 1200,
+  "ret": 1720.0,
+  "roi": 1.4333333333333333
+ },
+ "updatedAt": "2026-11-15 16:24:53 JST"
 }
