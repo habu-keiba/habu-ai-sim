@@ -114,6 +114,20 @@
      "payout": null
     }
    ]
+  },
+  {
+   "date": "2026-11-15",
+   "settled": false,
+   "revealed": false,
+   "entries": [
+    {
+     "no": 1,
+     "recordedAt": "2026-11-15 15:05:47 JST",
+     "hash": "06019fac3c8e085b8efa0c09951e726099491ab0c1aad0337b27a1a828b103b8",
+     "finish": null,
+     "payout": null
+    }
+   ]
   }
  ],
  "summary": {
@@ -127,5 +141,5 @@
   "top3Rate": 0.4166666666666667,
   "roi": 1.4333333333333333
  },
- "updatedAt": "2026-11-15 14:59:38 JST"
+ "updatedAt": "2026-11-15 15:05:47 JST"
 }
