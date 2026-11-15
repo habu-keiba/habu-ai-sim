@@ -3197,64 +3197,220 @@
           "hash": "64938acbcdbf43f51123a4162f1f6d3e47b8fcbd88fa9e4bce7a73ae548e9a13",
           "evMin": 1.2,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.14",
+              "place": "京都",
+              "race": "12",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝1400",
+              "postTime": "16:25",
+              "number": 13,
+              "name": "ダンデノン",
+              "winProb": 0.20670000000000002,
+              "ev": 1.254,
+              "oddsAtPredict": 7.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.14",
+              "place": "福島",
+              "race": "5",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "dist": "芝2000",
+              "postTime": "12:00",
+              "number": 5,
+              "name": "エコロレディ",
+              "winProb": 0.1182,
+              "ev": 1.246,
+              "oddsAtPredict": 14.2,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.14",
+              "place": "福島",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ・牝",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "16:00",
+              "number": 5,
+              "name": "ムーンリットアイル",
+              "winProb": 0.2866,
+              "ev": 1.222,
+              "oddsAtPredict": 5.2,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-15 14:28:32 JST"
         }
       ],
-      "result": null
+      "result": {
+        "all": {
+          "bets": 3,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 1,
+          "top3Rate": 0.3333333333333333,
+          "stake": 300,
+          "ret": 0,
+          "roi": 0
+        },
+        "adv": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 1,
+          "top3Rate": 0.5,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAll": {
+          "bets": 3,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 1,
+          "top3Rate": 0.3333333333333333,
+          "stake": 300,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAdv": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 1,
+          "top3Rate": 0.5,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "skipped": 0,
+        "added": 0,
+        "unknown": 0
+      },
+      "official": {
+        "picks": [
+          {
+            "date": "2026.11.14",
+            "place": "京都",
+            "race": "12",
+            "raceName": "２勝ｸﾗｽ",
+            "cls": "2勝",
+            "dist": "芝1400",
+            "postTime": "16:25",
+            "number": 13,
+            "name": "ダンデノン",
+            "winProb": 0.20670000000000002,
+            "ev": 1.254,
+            "oddsAtPredict": 7.4,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 1,
+            "finish": 3,
+            "payout": 0
+          },
+          {
+            "date": "2026.11.14",
+            "place": "福島",
+            "race": "5",
+            "raceName": "新馬",
+            "cls": "新馬",
+            "dist": "芝2000",
+            "postTime": "12:00",
+            "number": 5,
+            "name": "エコロレディ",
+            "winProb": 0.1182,
+            "ev": 1.246,
+            "oddsAtPredict": 14.2,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 1,
+            "finish": 5,
+            "payout": 0
+          },
+          {
+            "date": "2026.11.14",
+            "place": "福島",
+            "race": "12",
+            "raceName": "１勝ｸﾗｽ・牝",
+            "cls": "1勝",
+            "dist": "芝1200",
+            "postTime": "16:00",
+            "number": 5,
+            "name": "ムーンリットアイル",
+            "winProb": 0.2866,
+            "ev": 1.222,
+            "oddsAtPredict": 5.2,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 1,
+            "finish": 4,
+            "payout": 0
+          }
+        ],
+        "unknownPostTime": 0
+      }
     }
   ],
   "summary": {
     "all": {
-      "days": 13,
+      "days": 14,
+      "bets": 43,
+      "hits": 7,
+      "top3": 19,
+      "stake": 4300,
+      "ret": 3450,
+      "hitRate": 0.16279069767441862,
+      "top3Rate": 0.4418604651162791,
+      "roi": 0.8023255813953488
+    },
+    "adv": {
+      "days": 12,
+      "bets": 24,
+      "hits": 6,
+      "top3": 13,
+      "stake": 2400,
+      "ret": 2900,
+      "hitRate": 0.25,
+      "top3Rate": 0.5416666666666666,
+      "roi": 1.2083333333333333
+    },
+    "myAll": {
+      "days": 14,
       "bets": 40,
       "hits": 7,
-      "top3": 18,
+      "top3": 19,
       "stake": 4000,
       "ret": 3450,
       "hitRate": 0.175,
-      "top3Rate": 0.45,
+      "top3Rate": 0.475,
       "roi": 0.8625
     },
-    "adv": {
-      "days": 11,
-      "bets": 22,
-      "hits": 6,
-      "top3": 12,
-      "stake": 2200,
-      "ret": 2900,
-      "hitRate": 0.2727272727272727,
-      "top3Rate": 0.5454545454545454,
-      "roi": 1.3181818181818181
-    },
-    "myAll": {
-      "days": 13,
-      "bets": 37,
-      "hits": 7,
-      "top3": 18,
-      "stake": 3700,
-      "ret": 3450,
-      "hitRate": 0.1891891891891892,
-      "top3Rate": 0.4864864864864865,
-      "roi": 0.9324324324324325
-    },
     "myAdv": {
-      "days": 11,
-      "bets": 21,
+      "days": 12,
+      "bets": 23,
       "hits": 6,
-      "top3": 12,
-      "stake": 2100,
+      "top3": 13,
+      "stake": 2300,
       "ret": 2900,
-      "hitRate": 0.2857142857142857,
-      "top3Rate": 0.5714285714285714,
-      "roi": 1.380952380952381
+      "hitRate": 0.2608695652173913,
+      "top3Rate": 0.5652173913043478,
+      "roi": 1.2608695652173914
     },
     "skipped": 3,
     "added": 0,
     "evMin": 1.2,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-11-08 16:40:10 JST"
+    "updatedAt": "2026-11-15 14:28:32 JST"
   },
   "worldlog": [
     {
