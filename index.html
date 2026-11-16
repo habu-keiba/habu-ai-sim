@@ -293,7 +293,7 @@ const SITE_URL='https://habu-keiba.github.io/habu-ai-sim/';   // 公開したペ
 const PUBLIC_DATA='race_public.dat';    // ページと同じ場所にこのファイルがあれば、開いた時点で読み込む
 const DATA_KEY='habu-ai-sim';           // 公開データの読みにくさ用（暗号ではなく、そのままでは読めなくするだけ）
 const PUBLIC_ORDERS=1000;               // 公開用データに入れておく抽選済み着順の数（＝世界線No.1〜1000。No.0は「どれにも無かった着順」）
-const HOLD_AFTER_FINISH=3.2;   // 動画の最後に掲示板を映しておく秒数
+const HOLD_AFTER_FINISH=5.5;   // 動画の最後に掲示板を映しておく秒数
 
 let horses=[], race=null, raceRunning=false, parsedRaces=null, recording=null;
 let worldPick=null, currentWorld=null;   // 世界線No.（nullなら毎回ランダム）
@@ -1037,35 +1037,48 @@ function drawWatermarkBase(){
   ctx.font="bold 10px Noto Sans JP,sans-serif";ctx.fillStyle='rgba(14,22,38,.6)';ctx.fillText(t2,REF_W-12,REF_H-9);
 }
 let FIELD_SPAN=40;
-function drawTicker(runners){scaled(10,REF_H-8,Math.min(uiScale(),1.15),()=>drawTickerBase(runners));}   // スマホでも、画面を覆いすぎない大きさに抑える
-/* 全頭の位置バー：いつも3段。右が先頭、左が最後方。馬の走るレーン（外ラチまで）の下に収まる高さにして、馬とかぶらない */
-function drawTickerBase(runners){
+function drawTicker(runners,S){scaled(10,REF_H-8,Math.min(uiScale(),1.15),()=>drawTickerBase(runners,S));}   // スマホでも、画面を覆いすぎない大きさに抑える
+/* 全頭の位置：テレビ中継の隊列図のように、各馬の丸が、前後（走った位置）と、上下（コースの内〜外）に、なめらかに動く。
+   段（行）には分けない。丸どうしが重なりそうなときは、上下に少しずつ押し分けて、ほどく（ぱっと移るのでなく、すっと動く） */
+function drawTickerBase(runners,S){
   const n=runners.length;if(!n)return;
-  const r=8,ROWS=3,labW=96,padR=10,bottom=REF_H-8,Wd=Math.min(REF_W-200,560);
+  const r=7,labW=96,padR=10,bottom=REF_H-8,Wd=Math.min(REF_W-200,560),Hh=66,y0=bottom-Hh;
+  const now=performance.now(),dt=Math.min(0.1,Math.max(0.001,(now-(S.tkT||now))/1000));S.tkT=now;
+  const kx=1-Math.exp(-dt*10),ky=1-Math.exp(-dt*8);                      // 秒あたりの追いつき具合（コマ数に左右されない）
   const lead=runners[0].m,last=runners[n-1].m;
-  FIELD_SPAN+=(Math.max(36,lead-last+4)-FIELD_SPAN)*0.08;
+  FIELD_SPAN+=(Math.max(36,lead-last+4)-FIELD_SPAN)*Math.min(1,dt*5);
   const span=FIELD_SPAN,inner=Wd-labW-padR-2*r,rightward=runDir()>0;
-  const rowX=[[],[],[]],pos=runners.map(o=>{
-    const fr=Math.max(0,1-(lead-o.m)/span),x=10+labW+r+inner*(rightward?fr:1-fr);   // 画面の進行方向に合わせる（左へ走る向きなら、先頭は左）
-    let best=0,bd=-1;
-    for(let k=0;k<ROWS;k++){   // 重ならない段のうち、いちばん上の段へ。全部の段が混んでいれば、いちばん空いている段へ
-      const md=rowX[k].reduce((m,px)=>Math.min(m,Math.abs(px-x)),99);
-      if(md>=2*r+1){best=k;break;}
-      if(md>bd){bd=md;best=k;}
-    }
-    rowX[best].push(x);return {o,x,row:best};
+  const yMin=y0+6+r,yMax=y0+Hh-6-r,tk=S.tk||(S.tk={});
+  window.__tk=tk;
+  const items=runners.map((o,i)=>{
+    const id=o.h.number,fr=Math.max(0,1-(lead-o.m)/span),tx=10+labW+r+inner*(rightward?fr:1-fr);   // 画面の進行方向に合わせる
+    const ty=yMin+Math.min(1,Math.max(0,o.lat/(LANES-1)))*(yMax-yMin);                              // コースの内（上）〜外（下）
+    const s=tk[id]||(tk[id]={x:tx,y:ty});
+    s.tx=tx;s.ty=ty;return {o,s,i};
   });
-  const Hh=ROWS*(2*r+2)+8,y0=bottom-Hh;
+  items.forEach(({s})=>{s.x+=(s.tx-s.x)*kx;s.y+=(s.ty-s.y)*ky;});
+  for(let it=0;it<4;it++){                                                // 重なりをほどく（主に上下に。余地がなければ、前後にわずかに）
+    for(let a=0;a<n;a++)for(let b=a+1;b<n;b++){
+      const A=items[a].s,B=items[b].s,dx=A.x-B.x;let dy=A.y-B.y;
+      if(Math.abs(dx)>=2*r||Math.abs(dy)>=2*r)continue;
+      const d=Math.hypot(dx,dy);if(d>=2*r)continue;
+      if(Math.abs(dy)<0.01)dy=(items[a].o.h.number<items[b].o.h.number?-0.01:0.01);
+      const dd=Math.max(d,0.01),ov=2*r-dd,ux=dx/dd,uy=dy/dd;
+      A.y+=uy*ov*0.3;B.y-=uy*ov*0.3;A.x+=ux*ov*0.08;B.x-=ux*ov*0.08;
+    }
+    items.forEach(({s})=>{s.y=Math.min(yMax,Math.max(yMin,s.y));});
+  }
   ctx.fillStyle='rgba(14,22,38,.82)';ctx.fillRect(10,y0,Wd,Hh);
+  ctx.strokeStyle='rgba(243,237,224,.14)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(10+labW,y0+Hh/2);ctx.lineTo(10+Wd-6,y0+Hh/2);ctx.stroke();   // 目安の線
   ctx.textBaseline='middle';ctx.textAlign='left';
   ctx.font='bold 10.5px Noto Sans JP,sans-serif';ctx.fillStyle='rgba(243,237,224,.95)';ctx.fillText('全頭の位置',17,y0+Hh*0.3);
   ctx.font='bold 9.5px Noto Sans JP,sans-serif';ctx.fillStyle='rgba(243,237,224,.7)';
   ctx.fillText('最後方まで '+Math.round((lead-last)/LEN_M)+'馬身',17,y0+Hh*0.62);
-  for(let i=pos.length-1;i>=0;i--){
-    const {o,x,row}=pos[i],c=capOf(o.h),cy=y0+4+r+row*(2*r+2);
-    ctx.beginPath();ctx.fillStyle=c.fill;ctx.arc(x,cy,r,0,Math.PI*2);ctx.fill();
+  for(let i=items.length-1;i>=0;i--){                                    // 後ろの馬から描き、先頭を一番上に
+    const {o,s}=items[i],c=capOf(o.h);
+    ctx.beginPath();ctx.fillStyle=c.fill;ctx.arc(s.x,s.y,r,0,Math.PI*2);ctx.fill();
     ctx.lineWidth=i===0?2:1.2;ctx.strokeStyle=i===0?'#ffb31a':'rgba(0,0,0,.5)';ctx.stroke();
-    ctx.fillStyle=c.text;ctx.font='bold 9.5px Noto Sans JP,sans-serif';ctx.textAlign='center';ctx.fillText(o.h.number,x,cy+0.6);
+    ctx.fillStyle=c.text;ctx.font='bold 9.5px Noto Sans JP,sans-serif';ctx.textAlign='center';ctx.fillText(o.h.number,s.x,s.y+0.6);
   }
   drawProvisionalTag(y0-22);
 }
@@ -1152,10 +1165,10 @@ const CM=(()=>{
   const mg=g=>{const t=marginLabel(g);return t==='ハナ'||t==='アタマ'||t==='クビ'?t+'差':t==='大差'?'大差':t+'馬身';};
   const pick=a=>a[Math.floor(Math.random()*a.length)];
   const fresh=()=>({cur:null,q:[],fired:{},leader:null,leaderName:'',first:null,pend:null,pendAt:0,hist:[],histAt:-9,pulled:{},lastLC:-9,lastSurge:-9,goalAt:null,y:50,x4leader:null,gapPrev:null,gapPrevAt:-9});
-  function push(c,key,pri,text,hold,realT,drops){
+  function push(c,key,pri,text,hold,realT,drops,opts){
     if(key){if(c.fired[key])return;c.fired[key]=1;}
     if(drops)c.q=c.q.filter(e=>!drops.includes(e.key));
-    c.q.push({key,pri,text,hold:hold||2.6,t0:realT});
+    c.q.push(Object.assign({key,pri,text,hold:hold||2.6,t0:realT},opts||{}));
   }
   function split2(text,ctx2,fs,availW){   // 画面が狭くて1行に入らないときは、読点のあたりで2行にする
     ctx2.font=`bold ${fs}px 'Noto Sans JP',sans-serif`;
@@ -1165,15 +1178,15 @@ const CM=(()=>{
     const l=[text.slice(0,best).trim(),text.slice(best).trim()];
     return ctx2.measureText(l[0]).width<=availW&&ctx2.measureText(l[1]).width<=availW?l:null;
   }
-  function drawBar(text,a,age,y){
+  function drawBar(text,a,age,y,big){
     scaled(12,12,Math.min(uiScale(),1.4),()=>{
-      const s=Math.min(uiScale(),1.4),mm=150*Math.min(uiScale(),1.35)+22,availW=(REF_W-12-mm)/s-54;   // 右上のミニマップにかからない幅
+      const s=Math.min(uiScale(),1.4),mm=150*Math.min(uiScale(),1.35)+22,availW=(REF_W-12-(big?0:mm))/s-54;   // 右上のミニマップにかからない幅
       ctx.save();ctx.globalAlpha=a;
-      let fs=14,lines=[text];
+      let fs=big?17:14,lines=[text];
       ctx.font=`bold ${fs}px 'Noto Sans JP',sans-serif`;
       if(ctx.measureText(text).width>availW){
         lines=null;
-        for(fs=13;fs>=10;fs--){
+        for(fs=big?16:13;fs>=10;fs--){
           ctx.font=`bold ${fs}px 'Noto Sans JP',sans-serif`;
           if(ctx.measureText(text).width<=availW){lines=[text];break;}
           lines=split2(text,ctx,fs,availW);if(lines)break;
@@ -1198,7 +1211,7 @@ const CM=(()=>{
       const c=S.cm||(S.cm=fresh()),n=runners.length;if(!n)return;
       const lead=runners[0],gapL=i=>i<n?(lead.m-runners[i].m)/LEN_M:0,fo=P.finishOrder;
       const A=nm(lead),B=n>1?nm(runners[1]):'',C=n>2?nm(runners[2]):'',last=runners[n-1];
-      const fixed=(key,pri,text,hold,drops)=>push(c,key,pri,text,hold,realT,drops);
+      const fixed=(key,pri,text,hold,drops,opts)=>push(c,key,pri,text,hold,realT,drops,opts);
       const spread=(lead.m-last.m)/LEN_M;
       // ---------- 距離で決まる実況（どの世界線でも出る）----------
       if(x>=25){c.first=c.first??lead.h.number;fixed('start',1,pick([`まず${A}が前に出ます`,`${A}、好スタート！`,`各馬一斉にスタート！先頭は${A}`,`スタートしました！${A}が行く気を見せます`]),2.4);}
@@ -1238,7 +1251,7 @@ const CM=(()=>{
           else t=pick([`${N0}、競り勝って1着！`,`${N0}、${nm(f1)}をわずかに抑えてゴール！`]);
           if(f1&&fo.length>=2)t+=`　2着${nm(f1)}（${mg(g1)}）`;
         }
-        fixed('goal',5,t,3.0,['r400','x4','r200','r100','lc','sg','mv','nuke','nebaru','nara','catch','escape']);
+        fixed('goal',5,t,999,['r400','x4','r200','r100','lc','sg','mv','nuke','nebaru','nara','catch','escape'],{big:true});   // 着順の表示が出たあとも、動画の最後まで、消さずに出しておく
       }
       // ---------- 展開で決まる実況（その世界線に、その場面があるときだけ）----------
       if(c.leader==null&&x>=60){c.leader=lead.h.number;c.leaderName=A;}
@@ -1297,9 +1310,10 @@ const CM=(()=>{
       if(c.cur){
         const age=realT-c.cur.at;let a=Math.min(1,age/0.18);
         if(age>c.cur.hold&&!c.q.length){a=Math.max(0,1-(age-c.cur.hold)/0.5);if(a<=0)c.cur=null;}
-        if(c.cur&&on&&since<0.6){   // 掲示板（着順）が出たら、実況は消す（かぶるため）
-          const ty=x<250?74:50;c.y+=(ty-c.y)*0.25;   // 上の小さな説明（コース名など）が出ている間は、その下に出す
-          drawBar(c.cur.text,a,age,c.y);
+        if(c.cur&&on){
+          const boardShown=since>=0.6&&uiScale()<=1.2;   // 映像の中に掲示板が出ている間は、その下に出す（かぶらないように）
+          const ty=boardShown?136:(x<250?74:50);c.y+=(ty-c.y)*0.25;   // 上の小さな説明（コース名など）が出ている間は、その下に出す
+          drawBar(c.cur.text,a,age,c.y,!!c.cur.big);
         }
       }
     }
@@ -1477,7 +1491,7 @@ function runRace(opts={}){
     if(telop!==S.telop){S.telop=telop;S.telopAt=realT;}
     const pop=clamp(1-(realT-S.telopAt)/0.35,0,1);
     drawTelop(telop,x<250?`${course().label} ${surfName(race)}${P.D}m　馬場：${race.baba||'良'}　想定ペース：${P.pace}`:null,pop,/直線|200m|ゴール|写真/.test(telop));
-    if(started)drawTicker(runners);
+    if(started)drawTicker(runners,S);
     const since=S.doneAt==null?-1:realT-S.doneAt;
     CM.run(runners,P,S,x,remain,started,realT,since);
     if(since<0.6)drawMinimap(P,runners);   // 掲示板を出したらミニマップは消す
