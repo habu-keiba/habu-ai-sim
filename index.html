@@ -127,6 +127,8 @@
       <option value="1.5">1.5倍速</option>
       <option value="2">2倍速</option>
     </select>
+    <button id="cmBtn" class="ghost-btn" title="レース中に、先頭の入れ替わりや直線の様子を文字で実況します（動画にも入ります）">💬 実況：オン</button>
+    <button id="sndBtn" class="ghost-btn" title="ファンファーレ・足音・歓声（ブラウザ内で合成。動画にも入ります）">🔇 音：オフ</button>
     <button id="recBtn">🎥 X投稿用の動画を作る</button>
     <button id="fileBtn" class="ghost-btn">CSVファイルを開く</button>
     <button id="exportBtn" class="ghost-btn" style="display:none;">📤 公開用データを書き出す</button>
@@ -273,7 +275,7 @@ const PACE_SPREAD={スロー:0.75,ミドル:1.0,ハイ:1.3};
 const LEN_M=2.4;             // 1馬身(m)
 const LANES=8;               // 内ラチ沿い(0)〜外(7)
 const LAT_RATE_RUN=0.014,LAT_RATE_STRAIGHT=0.03;    // 横移動の上限（レーン / 走った1m）
-const PRE_ROLL=0.9;          // ゲートで止まっている秒数
+let PRE_ROLL=0.9;          // ゲートで止まっている秒数
 
 // 横から見た画面のレイアウト（基準解像度 820x461。実際のサイズへは等倍で拡大縮小）
 const REF_W=820,REF_H=461;
@@ -784,7 +786,20 @@ function drawHorse(o){
   ctx.beginPath();ctx.moveTo(21,-47);ctx.lineTo(22,-53);ctx.lineTo(24.5,-47.5);ctx.fill();
   ctx.strokeStyle=L.mane;ctx.lineWidth=2.6;ctx.lineCap='round';
   ctx.beginPath();ctx.moveTo(7,-33);ctx.quadraticCurveTo(14,-43,21,-48);ctx.stroke();
-  ctx.fillStyle='#0b0b0b';ctx.beginPath();ctx.arc(28.5,-44,1.1,0,Math.PI*2);ctx.fill();
+  // きりっとした顔：小さめの目、前に向かって下がる眉。追うほど眉が下がり、鼻の穴が広がり、口を引き結ぶ
+  {const blink=((performance.now()/1000+h.number*0.73)%3.6)<0.12,ey=-44.4,ex=27.6,fr=0.35+0.65*Math.min(1,drive*1.3);   // fr: きりっと度
+   ctx.lineCap='round';
+   if(blink){ctx.strokeStyle='#120b07';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(ex-1.8,ey);ctx.lineTo(ex+1.8,ey+0.3);ctx.stroke();}
+   else{
+     ctx.fillStyle='#120b07';ctx.beginPath();ctx.ellipse(ex,ey,1.9,1.55,0.25,0,Math.PI*2);ctx.fill();
+     ctx.strokeStyle='rgba(255,246,235,.55)';ctx.lineWidth=0.5;ctx.stroke();            // 暗い毛色でも目が見えるように、うすい縁
+     ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(ex+0.6,ey-0.5,0.5,0,Math.PI*2);ctx.fill();
+   }
+   ctx.strokeStyle='rgba(18,11,7,.9)';ctx.lineWidth=0.9+0.5*fr;                           // 眉（鼻側が低い）
+   ctx.beginPath();ctx.moveTo(ex-2.4,ey-2.5-0.4*fr);ctx.lineTo(ex+2.5,ey-1.7+1.5*fr);ctx.stroke();
+   ctx.fillStyle='rgba(20,10,6,.8)';ctx.beginPath();ctx.ellipse(33.7,-37.5,0.65+0.5*fr,0.5+0.55*fr,0.6,0,Math.PI*2);ctx.fill();   // 鼻の穴
+   ctx.strokeStyle='rgba(20,10,6,.6)';ctx.lineWidth=0.8;ctx.beginPath();ctx.moveTo(30.4,-35.6);ctx.lineTo(34.2,-36.4+0.3*fr);ctx.stroke();   // 口元（引き結ぶ）
+  }
 
   LEGS.filter(g=>!g.far).forEach(drawLeg);
 
@@ -1006,13 +1021,13 @@ function drawTelopBase(text,sub,pop=0,hot=false){
   }
 }
 function drawWatermark(){scaled(REF_W-12,REF_H-6,uiScale(),drawWatermarkBase);}
-function drawProvisionalTag(){
+function drawProvisionalTag(y0=REF_H-58){
   if(!race||!race.provisional)return;
   const t='※ 枠順未確定・仮の馬番';
   ctx.font="bold 12px Noto Sans JP,sans-serif";ctx.textAlign='left';ctx.textBaseline='alphabetic';
   const w=ctx.measureText(t).width+16;
-  ctx.fillStyle='rgba(215,38,61,.85)';ctx.fillRect(12,REF_H-58,w,20);
-  ctx.fillStyle='#fff';ctx.fillText(t,20,REF_H-44);
+  ctx.fillStyle='rgba(215,38,61,.85)';ctx.fillRect(12,y0,w,20);
+  ctx.fillStyle='#fff';ctx.fillText(t,20,y0+14);
 }
 function drawWatermarkBase(){
   ctx.textAlign='right';ctx.textBaseline='alphabetic';
@@ -1021,18 +1036,38 @@ function drawWatermarkBase(){
   ctx.fillStyle='rgba(14,22,38,.72)';ctx.fillText(t1,REF_W-12,REF_H-24);
   ctx.font="bold 10px Noto Sans JP,sans-serif";ctx.fillStyle='rgba(14,22,38,.6)';ctx.fillText(t2,REF_W-12,REF_H-9);
 }
-function drawTicker(runners){scaled(10,REF_H-8,uiScale(),()=>drawTickerBase(runners));}
+let FIELD_SPAN=40;
+function drawTicker(runners){scaled(10,REF_H-8,Math.min(uiScale(),1.15),()=>drawTickerBase(runners));}   // スマホでも、画面を覆いすぎない大きさに抑える
+/* 全頭の位置バー：いつも3段。右が先頭、左が最後方。馬の走るレーン（外ラチまで）の下に収まる高さにして、馬とかぶらない */
 function drawTickerBase(runners){
-  const n=Math.min(6,runners.length),r=11,y=REF_H-22;
-  ctx.fillStyle='rgba(14,22,38,.78)';ctx.fillRect(10,y-r-7,48+n*(r*2+5),r*2+14);
-  ctx.fillStyle='rgba(243,237,224,.9)';ctx.font='bold 11px Noto Sans JP,sans-serif';ctx.textAlign='left';ctx.textBaseline='middle';
-  ctx.fillText('先頭',17,y);
-  for(let i=0;i<n;i++){
-    const h=runners[i].h,c=capOf(h),cx=52+i*(r*2+5)+r;
-    ctx.beginPath();ctx.fillStyle=c.fill;ctx.arc(cx,y,r,0,Math.PI*2);ctx.fill();
-    ctx.lineWidth=1.5;ctx.strokeStyle='rgba(0,0,0,.45)';ctx.stroke();
-    ctx.fillStyle=c.text;ctx.font='bold 10px Noto Sans JP,sans-serif';ctx.textAlign='center';ctx.fillText(h.number,cx,y+1);
+  const n=runners.length;if(!n)return;
+  const r=8,ROWS=3,labW=96,padR=10,bottom=REF_H-8,Wd=Math.min(REF_W-200,560);
+  const lead=runners[0].m,last=runners[n-1].m;
+  FIELD_SPAN+=(Math.max(36,lead-last+4)-FIELD_SPAN)*0.08;
+  const span=FIELD_SPAN,inner=Wd-labW-padR-2*r,rightward=runDir()>0;
+  const rowX=[[],[],[]],pos=runners.map(o=>{
+    const fr=Math.max(0,1-(lead-o.m)/span),x=10+labW+r+inner*(rightward?fr:1-fr);   // 画面の進行方向に合わせる（左へ走る向きなら、先頭は左）
+    let best=0,bd=-1;
+    for(let k=0;k<ROWS;k++){   // 重ならない段のうち、いちばん上の段へ。全部の段が混んでいれば、いちばん空いている段へ
+      const md=rowX[k].reduce((m,px)=>Math.min(m,Math.abs(px-x)),99);
+      if(md>=2*r+1){best=k;break;}
+      if(md>bd){bd=md;best=k;}
+    }
+    rowX[best].push(x);return {o,x,row:best};
+  });
+  const Hh=ROWS*(2*r+2)+8,y0=bottom-Hh;
+  ctx.fillStyle='rgba(14,22,38,.82)';ctx.fillRect(10,y0,Wd,Hh);
+  ctx.textBaseline='middle';ctx.textAlign='left';
+  ctx.font='bold 10.5px Noto Sans JP,sans-serif';ctx.fillStyle='rgba(243,237,224,.95)';ctx.fillText('全頭の位置',17,y0+Hh*0.3);
+  ctx.font='bold 9.5px Noto Sans JP,sans-serif';ctx.fillStyle='rgba(243,237,224,.7)';
+  ctx.fillText('最後方まで '+Math.round((lead-last)/LEN_M)+'馬身',17,y0+Hh*0.62);
+  for(let i=pos.length-1;i>=0;i--){
+    const {o,x,row}=pos[i],c=capOf(o.h),cy=y0+4+r+row*(2*r+2);
+    ctx.beginPath();ctx.fillStyle=c.fill;ctx.arc(x,cy,r,0,Math.PI*2);ctx.fill();
+    ctx.lineWidth=i===0?2:1.2;ctx.strokeStyle=i===0?'#ffb31a':'rgba(0,0,0,.5)';ctx.stroke();
+    ctx.fillStyle=c.text;ctx.font='bold 9.5px Noto Sans JP,sans-serif';ctx.textAlign='center';ctx.fillText(o.h.number,x,cy+0.6);
   }
+  drawProvisionalTag(y0-22);
 }
 function drawMinimap(P,runners){scaled(REF_W-10,10,Math.min(uiScale(),1.35),()=>drawMinimapBase(P,runners));}
 function drawMinimapBase(P,runners){
@@ -1106,6 +1141,249 @@ function marginLabel(gap){
 }
 
 /* ============================================================
+   実況テロップ：走っている最中の各馬の位置・順位・残り距離から、その場で文を作る。
+   着順（世界線）を前もって知らなくても動く。スタート・コーナー・直線・残り200m・ゴールは、距離で決まるので、どの世界線でも必ず出る。
+   先頭の入れ替わり、内／外から伸びる、粘る、抜け出す、並ぶ、捉えるか、逃げ切り、などは、その世界線の展開があるときだけ出る。
+   言い回しは、競馬実況で一般的に使われる語（ハナを切る、向こう正面、まくる、粘る、抜け出す、叩き合い、差し切る など）を使い、同じ場面でも数通りからランダムに選ぶ
+   ============================================================ */
+const CM=(()=>{
+  let on=true;try{on=localStorage.getItem('habuCm')!=='0';}catch(e){}
+  const nm=o=>{const h=o.h||o;return h.number+'番'+String(h.name||'').replace(/\*/g,'');};
+  const mg=g=>{const t=marginLabel(g);return t==='ハナ'||t==='アタマ'||t==='クビ'?t+'差':t==='大差'?'大差':t+'馬身';};
+  const pick=a=>a[Math.floor(Math.random()*a.length)];
+  const fresh=()=>({cur:null,q:[],fired:{},leader:null,leaderName:'',first:null,pend:null,pendAt:0,hist:[],histAt:-9,pulled:{},lastLC:-9,lastSurge:-9,goalAt:null,y:50,x4leader:null,gapPrev:null,gapPrevAt:-9});
+  function push(c,key,pri,text,hold,realT,drops){
+    if(key){if(c.fired[key])return;c.fired[key]=1;}
+    if(drops)c.q=c.q.filter(e=>!drops.includes(e.key));
+    c.q.push({key,pri,text,hold:hold||2.6,t0:realT});
+  }
+  function split2(text,ctx2,fs,availW){   // 画面が狭くて1行に入らないときは、読点のあたりで2行にする
+    ctx2.font=`bold ${fs}px 'Noto Sans JP',sans-serif`;
+    let best=null;const mid=text.length/2;
+    for(let i=1;i<text.length;i++){if('、　！'.includes(text[i-1])){if(best==null||Math.abs(i-mid)<Math.abs(best-mid))best=i;}}
+    if(best==null)best=Math.ceil(mid);
+    const l=[text.slice(0,best).trim(),text.slice(best).trim()];
+    return ctx2.measureText(l[0]).width<=availW&&ctx2.measureText(l[1]).width<=availW?l:null;
+  }
+  function drawBar(text,a,age,y){
+    scaled(12,12,Math.min(uiScale(),1.4),()=>{
+      const s=Math.min(uiScale(),1.4),mm=150*Math.min(uiScale(),1.35)+22,availW=(REF_W-12-mm)/s-54;   // 右上のミニマップにかからない幅
+      ctx.save();ctx.globalAlpha=a;
+      let fs=14,lines=[text];
+      ctx.font=`bold ${fs}px 'Noto Sans JP',sans-serif`;
+      if(ctx.measureText(text).width>availW){
+        lines=null;
+        for(fs=13;fs>=10;fs--){
+          ctx.font=`bold ${fs}px 'Noto Sans JP',sans-serif`;
+          if(ctx.measureText(text).width<=availW){lines=[text];break;}
+          lines=split2(text,ctx,fs,availW);if(lines)break;
+        }
+        if(!lines){fs=10;lines=split2(text,ctx,10,1e9);}
+      }
+      ctx.font=`bold ${fs}px 'Noto Sans JP',sans-serif`;
+      const tw=Math.max(...lines.map(l=>ctx.measureText(l).width)),x0=12-(1-Math.min(1,age/0.18))*16,h=lines.length>1?fs*2.4+8:26;
+      ctx.fillStyle='rgba(14,22,38,.84)';ctx.fillRect(x0,y,tw+58,h);
+      ctx.fillStyle='#d7263d';ctx.fillRect(x0,y,38,h);
+      ctx.textBaseline='middle';ctx.textAlign='center';ctx.fillStyle='#fff';ctx.font="bold 11.5px 'Noto Sans JP',sans-serif";ctx.fillText('実況',x0+19,y+h/2+0.5);
+      ctx.textAlign='left';ctx.fillStyle='#f3ede0';ctx.font=`bold ${fs}px 'Noto Sans JP',sans-serif`;
+      lines.forEach((l,i)=>ctx.fillText(l,x0+46,y+(lines.length>1?4+fs*1.2*(i+0.5):h/2)+0.5));
+      ctx.restore();
+    });
+  }
+  const api={
+    get on(){return on;},
+    setOn(v){on=!!v;try{localStorage.setItem('habuCm',v?'1':'0');}catch(e){}},
+    run(runners,P,S,x,remain,started,realT,since){
+      if(!started)return;
+      const c=S.cm||(S.cm=fresh()),n=runners.length;if(!n)return;
+      const lead=runners[0],gapL=i=>i<n?(lead.m-runners[i].m)/LEN_M:0,fo=P.finishOrder;
+      const A=nm(lead),B=n>1?nm(runners[1]):'',C=n>2?nm(runners[2]):'',last=runners[n-1];
+      const fixed=(key,pri,text,hold,drops)=>push(c,key,pri,text,hold,realT,drops);
+      const spread=(lead.m-last.m)/LEN_M;
+      // ---------- 距離で決まる実況（どの世界線でも出る）----------
+      if(x>=25){c.first=c.first??lead.h.number;fixed('start',1,pick([`まず${A}が前に出ます`,`${A}、好スタート！`,`各馬一斉にスタート！先頭は${A}`,`スタートしました！${A}が行く気を見せます`]),2.4);}
+      if(x>=150&&n>3&&spread>10)fixed('slow',1,`${nm(last)}は最後方からの競馬になりそう`,2.2);
+      if(x>=Math.min(0.2*P.D,450)&&n>1){
+        const g=gapL(1);
+        fixed('early',1,g>3?pick([`${A}が単独先頭、2番手に${B}`,`${A}がハナを切って単騎逃げ！`,`${A}、楽に先手を取りました`]):g<0.8?pick([`${A}と${B}が先頭を争う`,`${A}と${B}、ハナを巡って先行争い`]):pick([`${A}が先頭、${B}が続く`,`${A}がハナ、${B}が2番手でぴたりとマーク`]),2.6);
+      }
+      if(P.D>=1400&&x>=0.36*P.D&&x<P.x4-300&&(race.pace==='ハイ'||race.pace==='スロー'||race.pace==='ミドル')){
+        fixed('pace',1,race.pace==='ハイ'?pick(['前半のペースは速め。先行勢には厳しい流れ','息の入らない流れ。後ろの馬に展開が向きそう']):race.pace==='スロー'?pick(['ペースは落ち着いた。前の馬は楽に走れています','隊列はゆったり。直線の瞬発力勝負になりそう']):pick(['淡々とした流れで進みます','ほぼ平均的なペースで流れています']),2.4);
+      }
+      if(P.D>=1400&&x>=0.55*P.D&&x<P.x4-150){
+        fixed('mid',1,pick([`向こう正面。先頭は${A}、隊列は${spread>14?'縦長':spread<6?'ひとかたまり':'やや縦長'}`,`向こう正面に入って、先頭は${A}。最後方は${nm(last)}`]),2.6);
+      }
+      if(remain<=800&&x<P.x4-60&&n>2)fixed('r800',2,pick([`残り800m、3コーナーから4コーナーへ。先頭は${A}、${B}、${C}`,`残り800m、ここから各馬が動き出します`,`3コーナーを回って、${A}が先頭、${B}が2番手`]),2.4);
+      if(x>=P.x4&&remain>0&&n>1){
+        if(c.x4leader==null)c.x4leader=lead.h.number;
+        fixed('x4',3,pick([`さあ直線！先頭は${A}、${B}が続く`,`4コーナーを回って直線！先頭は${A}`,`直線の攻防。先頭は${A}、${B}が追う`]),2.6);
+      }
+      if(remain<=400&&remain>0&&n>1)fixed('r400',3,gapL(1)<1?pick([`残り400m、${A}に${B}が並びかける`,`残り400を切って、${A}と${B}の争い`]):pick([`残り400m、${A}がリード（${Math.round(gapL(1))}馬身）`,`${A}先頭、後続を引き離しにかかる`]),2.4);
+      if(remain<=300&&remain>0&&n>1)fixed('r300',2,pick(['残り300m、各馬のムチが飛ぶ！','残り300m、ここからが勝負！','各馬、懸命に追っている！']),2.0);
+      if(remain<=200&&remain>0&&n>1){
+        fixed('r200',4,n>=3&&gapL(2)<1.5?pick([`残り200m！${A}、${B}、${C}が横一線`,`残り200m！上位3頭が並んで、横一線の叩き合い`]):pick([`残り200m！${A}が先頭、${B}が追う`,`残り200mを切った！${A}か、${B}か`]),2.4,['r400','x4','lc','sg','r300','mv']);
+      }
+      if(remain<=100&&remain>5&&n>1)fixed('r100',4,gapL(1)<1?`残り100m！${A}が先頭、${B}が必死に食い下がる`:pick([`残り100m！${A}、そのまま押し切れるか`,`残り100m、${A}が堂々と先頭！`]),1.8,['r200','nuke','nebaru','nara']);
+      if(remain<=100&&c.l100==null)c.l100=lead.h.number;
+      if(remain<=30&&c.l30==null)c.l30=lead.h.number;   // ゴール前30mでの先頭（そこから逆転した馬には、差し切りの文にする）
+      if(remain<=0&&c.goalAt==null){
+        c.goalAt=realT;const f0=fo[0],f1=fo[1],g1=f1?P.plan[f1.number].gap:9,N0=nm(f0);
+        let t;
+        if(P.photo&&f1)t=`${N0}と${nm(f1)}が並んでゴール！写真判定！`;
+        else{
+          if((c.l30!=null&&f0.number!==c.l30)||(c.l100!=null&&f0.number!==c.l100))t=`${N0}、ゴール前で差し切って1着！`;
+          else if(c.first===f0.number&&c.l30===f0.number&&c.l100===f0.number&&g1>=1)t=pick([`${N0}、逃げ切って1着！`,`${N0}、先頭を譲らずゴールイン！`]);
+          else if(g1>=3)t=pick([`${N0}、後続を突き放して圧勝！`,`${N0}、強い！楽々と1着でゴール！`]);
+          else if(g1>=1)t=pick([`${N0}、1着でゴール！`,`${N0}、見事に押し切ってゴールイン！`]);
+          else t=pick([`${N0}、競り勝って1着！`,`${N0}、${nm(f1)}をわずかに抑えてゴール！`]);
+          if(f1&&fo.length>=2)t+=`　2着${nm(f1)}（${mg(g1)}）`;
+        }
+        fixed('goal',5,t,3.0,['r400','x4','r200','r100','lc','sg','mv','nuke','nebaru','nara','catch','escape']);
+      }
+      // ---------- 展開で決まる実況（その世界線に、その場面があるときだけ）----------
+      if(c.leader==null&&x>=60){c.leader=lead.h.number;c.leaderName=A;}
+      else if(c.leader!=null&&remain>3&&n>1){
+        const id=lead.h.number;
+        if(id===c.leader)c.pend=null;
+        else if(c.pend!==id){c.pend=id;c.pendAt=realT;}
+        else if(realT-c.pendAt>(remain<40?0.2:0.35)&&gapL(1)>(remain<40?0.15:0.3)){
+          const prev=c.leaderName;c.leader=id;c.leaderName=A;c.pend=null;
+          if(realT-c.lastLC>2.2){c.lastLC=realT;push(c,null,2,pick([`${A}が先頭に立った！`,`${A}が替わって先頭！`,prev?`${A}、${prev.replace(/^\d+番/,'')}をかわして先頭！`:`${A}が前へ！`]),2.4,realT);c.q[c.q.length-1].key='lc';}
+        }
+      }
+      if(c.gapPrevAt<0||realT-c.gapPrevAt>=1.0){c.gapPrevAt=realT;c.gapPrevV=c.gapPrev;c.gapPrev=n>1?gapL(1):null;}
+      if(remain>20&&remain<=350&&n>1){
+        if(gapL(1)>2.5&&!c.fired.nuke)fixed('nuke',2,pick([`${A}、抜け出した！`,`${A}が後続を引き離す！`]),2.2);
+        if(remain<=250&&remain>40&&c.leader===c.x4leader&&gapL(1)<1.5&&c.fired.x4&&!c.fired.nebaru)fixed('nebaru',2,pick([`${A}、粘る粘る！`,`${A}、まだ先頭！粘っている！`]),2.2);
+        if(remain<=300&&gapL(1)<0.25&&!c.fired.nara)fixed('nara',2,`${A}と${B}、並んだ！`,2.2);
+        if(remain<=300&&c.first===lead.h.number&&c.leader===lead.h.number&&gapL(1)>1.5&&!c.fired.escape)fixed('escape',2,`${A}、逃げ切れるか！`,2.2);
+      }
+      if(remain>20&&remain<=130&&n>1&&gapL(1)<0.8&&c.gapPrevV!=null&&gapL(1)<c.gapPrevV-0.2)fixed('catch',2,`${B}、${nm(lead).replace(/^\d+番/,'')}を捉えるか！`,2.0);
+      if(remain>20&&remain<=150&&n>1&&gapL(1)>5)fixed('solo',2,`${A}、独走態勢！後続は離れた`,2.2);
+      if(realT-c.histAt>=0.15){
+        c.histAt=realT;const r={};runners.forEach((o,i)=>r[o.h.number]=i);c.hist.push({t:realT,r});if(c.hist.length>10)c.hist.shift();
+        const inMove=x>=0.55*P.D&&x<P.x4-20;   // 向こう正面から4コーナー：まくり
+        if(inMove&&c.hist.length>=9&&realT-c.lastSurge>3){
+          const old=c.hist[0].r;
+          for(let i=1;i<Math.min(6,n);i++){
+            const o=runners[i],id=o.h.number;
+            if(!c.pulled[id]&&old[id]-i>=3){c.pulled[id]=1;c.lastSurge=realT;push(c,null,2,pick([`${nm(o)}が外からポジションを上げる`,`${nm(o)}、まくってきた！`,`後方から${nm(o)}が動き出した`]),2.4,realT);c.q[c.q.length-1].key='mv';break;}
+          }
+        }
+        if(x>=P.x4-20&&remain>30&&c.hist.length>=9&&realT-c.lastSurge>3){
+          const old=c.hist[0].r;
+          for(let i=1;i<Math.min(5,n);i++){
+            const o=runners[i],id=o.h.number;
+            if(!c.pulled[id]&&old[id]-i>=(remain<150?2:3)){
+              c.pulled[id]=1;c.lastSurge=realT;
+              const lat=o.lat,from=old[id];
+              const t=lat>=6.2&&from>=6?`大外から${nm(o)}が飛んでくる！`:lat>=5?`外から${nm(o)}が一気に！`:lat<=2.5?`内から${nm(o)}が伸びてくる！`:pick([`後方から${nm(o)}が猛追！`,`${nm(o)}、ぐんぐん伸びてくる！`]);
+              push(c,null,2,t,2.4,realT);c.q[c.q.length-1].key='sg';break;
+            }
+          }
+        }
+      }
+      // ---------- 表示の順番決め：一度出した文は最低でも hold 秒そのまま。重要な文（直線・残り200m・ゴール）は、割り込める ----------
+      c.q=c.q.filter(e=>realT-e.t0<(e.pri>=3?5:2.6));
+      const cur=c.cur;
+      if(c.q.length){
+        c.q.sort((a,b)=>b.pri-a.pri||a.t0-b.t0);
+        const top=c.q[0];
+        if(!cur||realT-cur.at>=cur.hold||(top.pri>cur.pri&&realT-cur.at>=1.0)){
+          c.q.shift();c.cur={...top,at:realT};
+          try{(window.__cmLog=window.__cmLog||[]).push({x:Math.round(x),realT:+realT.toFixed(2),text:top.text});}catch(e){}
+        }
+      }
+      if(c.cur){
+        const age=realT-c.cur.at;let a=Math.min(1,age/0.18);
+        if(age>c.cur.hold&&!c.q.length){a=Math.max(0,1-(age-c.cur.hold)/0.5);if(a<=0)c.cur=null;}
+        if(c.cur&&on&&since<0.6){   // 掲示板（着順）が出たら、実況は消す（かぶるため）
+          const ty=x<250?74:50;c.y+=(ty-c.y)*0.25;   // 上の小さな説明（コース名など）が出ている間は、その下に出す
+          drawBar(c.cur.text,a,age,c.y);
+        }
+      }
+    }
+  };
+  return api;
+})();
+
+
+/* ============================================================
+   音（任意・既定はオフ）：ファンファーレ・足音・歓声。外部の音源は使わず、ブラウザ内で合成する。旋律は、このために作ったオリジナル
+   ============================================================ */
+const SND=(()=>{
+  let ac=null,master=null,crowdG=null,recDest=null,noiseBuf=null,wantOn=false;
+  try{wantOn=localStorage.getItem('habuSnd')==='1';}catch(e){}
+  const NOTE={G4:392,B4:493.88,C5:523.25,D5:587.33,E5:659.25,G5:783.99};
+  function brass(f,t,d,v){
+    [1,0.794,0.667].forEach((k,i)=>{   // 主旋律に、3度下・5度下を重ねて厚みを出す
+      [-7,7].forEach(dt=>{
+        const o=ac.createOscillator(),g=ac.createGain(),lp=ac.createBiquadFilter();
+        o.type='sawtooth';o.frequency.value=f*k;o.detune.value=dt;
+        lp.type='lowpass';lp.frequency.setValueAtTime(f*1.2,t);lp.frequency.linearRampToValueAtTime(f*4.2,t+0.07);lp.frequency.linearRampToValueAtTime(f*2.6,t+d);
+        const vv=v*(i===0?1:0.55);
+        g.gain.setValueAtTime(0.0001,t);g.gain.linearRampToValueAtTime(vv,t+0.035);g.gain.setValueAtTime(vv*0.85,t+Math.max(0.05,d-0.08));g.gain.linearRampToValueAtTime(0.0001,t+d+0.06);
+        o.connect(lp);lp.connect(g);g.connect(master);o.start(t);o.stop(t+d+0.1);
+      });
+    });
+  }
+  function timpani(t,v){
+    const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.setValueAtTime(95,t);o.frequency.exponentialRampToValueAtTime(58,t+0.18);
+    g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(0.0008,t+0.32);o.connect(g);g.connect(master);o.start(t);o.stop(t+0.35);
+  }
+  function hoof(v){
+    const t=ac.currentTime,s=ac.createBufferSource(),bp=ac.createBiquadFilter(),g=ac.createGain();
+    s.buffer=noiseBuf;bp.type='bandpass';bp.frequency.value=700+Math.random()*700;bp.Q.value=1.1;
+    g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(0.0008,t+0.06);
+    s.connect(bp);bp.connect(g);g.connect(master);s.start(t,Math.random()*0.8,0.08);
+    const o=ac.createOscillator(),g2=ac.createGain();o.type='sine';o.frequency.setValueAtTime(150+Math.random()*30,t);o.frequency.exponentialRampToValueAtTime(65,t+0.07);
+    g2.gain.setValueAtTime(v*1.1,t);g2.gain.exponentialRampToValueAtTime(0.0008,t+0.09);o.connect(g2);g2.connect(master);o.start(t);o.stop(t+0.1);
+  }
+  const api={
+    get on(){return wantOn&&!!(window.AudioContext||window.webkitAudioContext);},
+    setOn(v){wantOn=!!v;try{localStorage.setItem('habuSnd',v?'1':'0');}catch(e){}if(v)api.ensure();else api.stop();},
+    ensure(){
+      if(ac){if(ac.state==='suspended')ac.resume();return;}
+      const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+      ac=new AC();master=ac.createGain();master.gain.value=0.5;master.connect(ac.destination);
+      recDest=ac.createMediaStreamDestination();master.connect(recDest);
+      noiseBuf=ac.createBuffer(1,ac.sampleRate,ac.sampleRate);const d=noiseBuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+      const cs=ac.createBufferSource(),bp=ac.createBiquadFilter(),lp=ac.createBiquadFilter();cs.buffer=noiseBuf;cs.loop=true;
+      bp.type='bandpass';bp.frequency.value=650;bp.Q.value=0.35;lp.type='lowpass';lp.frequency.value=2200;
+      crowdG=ac.createGain();crowdG.gain.value=0;cs.connect(bp);bp.connect(lp);lp.connect(crowdG);crowdG.connect(master);cs.start();
+    },
+    recStream(){return recDest&&recDest.stream;},
+    begin(){   // 発走の前：ティンパニのロールとファンファーレ（約5秒）
+      if(!api.on)return;api.ensure();if(!ac)return;
+      const t=ac.currentTime+0.05;
+      for(let i=0;i<7;i++)timpani(t+i*0.12,0.18+i*0.03);
+      [['G4',0,.22],['G4',.28,.22],['G4',.56,.22],['C5',.84,1.0],['B4',2.0,.25],['C5',2.3,.25],['D5',2.6,.25],['E5',2.9,1.0],['D5',4.05,.3],['E5',4.4,.3],['G5',4.75,.9]]
+        .forEach(([n,s,d])=>brass(NOTE[n],t+s,d,0.07));
+      crowdG.gain.setTargetAtTime(0.012,ac.currentTime,0.5);
+    },
+    tick(runners,S,i){
+      if(!api.on||!ac)return;
+      const now=ac.currentTime;
+      crowdG.gain.setTargetAtTime(!i.started?0.012:i.done?0.05:0.025+0.1*i.sProg,now,0.35);   // 道中は小さく、直線で大きく
+      if(!i.started)return;
+      S.hp=S.hp||{};const n=runners.length,idx=[...new Set([0,Math.floor((n-1)*0.33),Math.floor((n-1)*0.66),n-1])];
+      let hits=0;
+      idx.forEach((k,j)=>{
+        const o=runners[k],id=o.h.number,prev=S.hp[id];S.hp[id]=o.cycle;if(prev==null)return;
+        [0,0.2,0.5].forEach(p=>{if(hits<6&&Math.floor(o.cycle-p)>Math.floor(prev-p)){hits++;hoof((j===0?0.15:0.09)*(i.done?0.4:1));}});
+      });
+    },
+    goal(){   // 1着の入線：歓声のピークと、短いファンファーレ
+      if(!api.on||!ac)return;const t=ac.currentTime;
+      crowdG.gain.setValueAtTime(0.2,t);
+      [['C5',0,.2],['E5',.2,.2],['G5',.4,.9]].forEach(([n,s,d])=>brass(NOTE[n],t+s,d,0.07));
+    },
+    stop(){if(ac&&crowdG)crowdG.gain.setTargetAtTime(0,ac.currentTime,0.5);}
+  };
+  return api;
+})();
+
+/* ============================================================
    レース再生
    ============================================================ */
 function runRace(opts={}){
@@ -1117,7 +1395,7 @@ function runRace(opts={}){
 
   const P=planRace(),N=P.N,dir=runDir();
   const S={lat:{},target:{},cycle:{},hz:{},phase:-1,prevD:{},gain:{},spawn:{},particles:[],telop:'',telopAt:0,flashAt:-9,doneAt:null};
-  P.photo=P.finishOrder.length>1&&P.plan[P.finishOrder[1].number].gap<0.15;   // ハナ・アタマ差は写真判定の演出
+  P.photo=P.finishOrder.length>1&&P.plan[P.finishOrder[1].number].gap<0.07;   // ハナ・アタマ差は写真判定の演出
   const xStop=P.D+P.plan[P.finishOrder[Math.min(4,P.N-1)].number].dFinish*LEN_M+0.4;   // 5着馬が入線した地点
   horses.forEach(h=>{
     S.lat[h.number]=S.target[h.number]=gateLat(h,N);
@@ -1126,6 +1404,7 @@ function runRace(opts={}){
   });
   const cam={off:-3,zoom:0.9};
   const speed=parseFloat($('speedSelect').value)||1;
+  PRE_ROLL=SND.on?5.0*speed:0.9;SND.begin();
   let lastTs=null,elapsed=0,prevX=0,realT=0;
 
   function tick(now){
@@ -1138,7 +1417,7 @@ function runRace(opts={}){
     elapsed+=sdt;realT+=rdt;
     const rt=elapsed-PRE_ROLL,started=rt>0;
     const x=!started?0:Math.min(xStop,xAtTime(P,rt)),dx=Math.max(0,x-prevX);
-    if(prevX<P.D&&x>=P.D)S.flashAt=realT;           // 1着馬の入線でフラッシュ
+    if(prevX<P.D&&x>=P.D){S.flashAt=realT;SND.goal();}           // 1着馬の入線でフラッシュ
     if(S.doneAt==null&&x>=xStop)S.doneAt=realT;     // 5着馬の入線で停止
     prevX=x;
     const inStr=started&&x>=P.x4-60,sProg=inStr?clamp((x-P.x4)/(P.D-P.x4),0,1):0,remain=P.D-x;
@@ -1159,6 +1438,7 @@ function runRace(opts={}){
       return {h,m:x-d*LEN_M,lat:S.lat[n],cycle:S.cycle[n],idle:!started,drive,whip:drive>0.7&&remain>0&&remain<400};
     });
 
+    SND.tick(runners,S,{started,inStr,sProg,done:S.doneAt!=null});
     // 芝の飛び散り
     if(inStr&&dx>0){
       runners.forEach(o=>{
@@ -1199,15 +1479,16 @@ function runRace(opts={}){
     drawTelop(telop,x<250?`${course().label} ${surfName(race)}${P.D}m　馬場：${race.baba||'良'}　想定ペース：${P.pace}`:null,pop,/直線|200m|ゴール|写真/.test(telop));
     if(started)drawTicker(runners);
     const since=S.doneAt==null?-1:realT-S.doneAt;
+    CM.run(runners,P,S,x,remain,started,realT,since);
     if(since<0.6)drawMinimap(P,runners);   // 掲示板を出したらミニマップは消す
     drawWatermark();
-    scaled(12,REF_H-58,uiScale(),drawProvisionalTag);
+    if(!started)scaled(12,REF_H-58,uiScale(),drawProvisionalTag);
     const fl=1-(realT-S.flashAt)/0.3;   // ゴールの瞬間のフラッシュ（実時間で0.3秒）
     if(fl>0){ctx.fillStyle=`rgba(255,255,255,${0.55*fl})`;ctx.fillRect(0,0,REF_W,REF_H);}
 
     if(since>=0.6&&uiScale()<=1.2)drawBoardOverlay(P,dir);   // スマホの画面幅では映像内の掲示板は出さない（下の掲示板で見る）
     if(since<Math.max(1.2,hold))requestAnimationFrame(tick);
-    else{finishRace(P);if(opts.onDone)opts.onDone();}
+    else{SND.stop();finishRace(P);if(opts.onDone)opts.onDone();}
   }
   requestAnimationFrame(tick);
 }
@@ -1220,7 +1501,7 @@ function setControlsDisabled(v){['runBtn','recBtn','fileBtn','exportBtn','raceSe
    ============================================================ */
 function recorderType(){
   if(typeof MediaRecorder==='undefined'||!canvas.captureStream)return null;
-  return ['video/mp4;codecs=avc1.42E01F','video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm']
+  return ['video/mp4;codecs=avc1.42E01F,mp4a.40.2','video/mp4;codecs=avc1.42E01F','video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm']
     .find(t=>MediaRecorder.isTypeSupported(t))||null;
 }
 function postText(){
@@ -1234,7 +1515,9 @@ function recordRace(){
   // 録画中は画面サイズに関係なく1280x720で描く
   recording={type,chunks:[]};
   W=REF_W;H=REF_H;DPR=1280/REF_W;canvas.width=1280;canvas.height=720;
-  const rec=new MediaRecorder(canvas.captureStream(60),{mimeType:type,videoBitsPerSecond:5000000});
+  const stream=canvas.captureStream(60);
+  if(SND.on){SND.ensure();const as=SND.recStream();if(as)as.getAudioTracks().forEach(tr=>stream.addTrack(tr));}   // 音がオンなら、動画にも音を入れる
+  const rec=new MediaRecorder(stream,{mimeType:type,videoBitsPerSecond:5000000});
   rec.ondataavailable=e=>{if(e.data&&e.data.size)recording.chunks.push(e.data);};
   rec.onstop=async()=>{
     const blob=new Blob(recording.chunks,{type:type.split(';')[0]});
@@ -1563,6 +1846,12 @@ function showRaces(races){
    コントロール
    ============================================================ */
 $('runBtn').addEventListener('click',()=>runRace());
+function sndLabel(){$('sndBtn').textContent=SND.on?'🔊 音：オン':'🔇 音：オフ';}
+$('sndBtn').addEventListener('click',()=>{SND.setOn(!SND.on);sndLabel();});
+sndLabel();
+function cmLabel(){$('cmBtn').textContent=CM.on?'💬 実況：オン':'💬 実況：オフ';}
+$('cmBtn').addEventListener('click',()=>{CM.setOn(!CM.on);cmLabel();});
+cmLabel();
 $('worldNo').addEventListener('input',()=>{
   const v=parseInt($('worldNo').value,10),n=race&&race.orders?race.orders.length:0;
   worldPick=(v>=1&&v<=n)?v:null;
