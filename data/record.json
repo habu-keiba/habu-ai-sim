@@ -3703,8 +3703,58 @@
           "hash": "1ce567f61ce291af4a75dd5db0a2422508889d49a3eeb1867773621961b8f489",
           "evMin": 1.2,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "10",
+              "raceName": "比叡Ｓ･3勝",
+              "cls": "3勝",
+              "dist": "芝2400",
+              "postTime": "15:00",
+              "number": 2,
+              "name": "サトノパトリオット",
+              "winProb": 0.2742,
+              "ev": 2.023,
+              "oddsAtPredict": 9,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "12",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝2000",
+              "postTime": "16:20",
+              "number": 3,
+              "name": "シャドウマスター",
+              "winProb": 0.20809999999999998,
+              "ev": 1.399,
+              "oddsAtPredict": 8.2,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "福島",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "15:55",
+              "number": 13,
+              "name": "グロリアスマーチ",
+              "winProb": 0.2184,
+              "ev": 1.433,
+              "oddsAtPredict": 8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-21 18:28:15 JST"
         },
         {
           "v": 2,
@@ -3713,8 +3763,74 @@
           "hash": "ae3729db0676d4e56651a1f90a49b7648b997a7390c9b16f099274934fee6618",
           "evMin": 1.2,
           "pickCount": 4,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "10",
+              "raceName": "比叡Ｓ･3勝",
+              "cls": "3勝",
+              "dist": "芝2400",
+              "postTime": "15:00",
+              "number": 2,
+              "name": "サトノパトリオット",
+              "winProb": 0.2742,
+              "ev": 2.156,
+              "oddsAtPredict": 10.6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "12",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝2000",
+              "postTime": "16:20",
+              "number": 3,
+              "name": "シャドウマスター",
+              "winProb": 0.20809999999999998,
+              "ev": 1.399,
+              "oddsAtPredict": 8.2,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "福島",
+              "race": "11",
+              "raceName": "福島記念ＨG3",
+              "cls": "G3",
+              "dist": "芝2000",
+              "postTime": "15:20",
+              "number": 1,
+              "name": "カラマティアノス",
+              "winProb": 0.1772,
+              "ev": 1.206,
+              "oddsAtPredict": 8.3,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "福島",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "15:55",
+              "number": 13,
+              "name": "グロリアスマーチ",
+              "winProb": 0.2184,
+              "ev": 1.433,
+              "oddsAtPredict": 8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-21 18:28:15 JST"
         },
         {
           "v": 3,
@@ -3723,8 +3839,74 @@
           "hash": "c96dcf6ffa8fbfcface6644c6031e742d8f204e163a788545c90d7d884f7c08c",
           "evMin": 1.2,
           "pickCount": 4,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "10",
+              "raceName": "比叡Ｓ･3勝",
+              "cls": "3勝",
+              "dist": "芝2400",
+              "postTime": "15:00",
+              "number": 2,
+              "name": "サトノパトリオット",
+              "winProb": 0.2742,
+              "ev": 2.075,
+              "oddsAtPredict": 10.2,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "12",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝2000",
+              "postTime": "16:20",
+              "number": 3,
+              "name": "シャドウマスター",
+              "winProb": 0.20809999999999998,
+              "ev": 1.502,
+              "oddsAtPredict": 8.8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "福島",
+              "race": "11",
+              "raceName": "福島記念ＨG3",
+              "cls": "G3",
+              "dist": "芝2000",
+              "postTime": "15:20",
+              "number": 1,
+              "name": "カラマティアノス",
+              "winProb": 0.1772,
+              "ev": 1.206,
+              "oddsAtPredict": 8.3,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "福島",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "15:55",
+              "number": 13,
+              "name": "グロリアスマーチ",
+              "winProb": 0.2184,
+              "ev": 1.415,
+              "oddsAtPredict": 7.9,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-21 18:28:15 JST"
         },
         {
           "v": 4,
@@ -3733,8 +3915,58 @@
           "hash": "0f9c1c107ca74b6e8a0af03d046c2cea33efe12e103d1526a5c995320337cc5b",
           "evMin": 1.2,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "10",
+              "raceName": "比叡Ｓ･3勝",
+              "cls": "3勝",
+              "dist": "芝2400",
+              "postTime": "15:00",
+              "number": 2,
+              "name": "サトノパトリオット",
+              "winProb": 0.2742,
+              "ev": 2.095,
+              "oddsAtPredict": 10.3,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "12",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝2000",
+              "postTime": "16:20",
+              "number": 3,
+              "name": "シャドウマスター",
+              "winProb": 0.20809999999999998,
+              "ev": 1.502,
+              "oddsAtPredict": 8.8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "福島",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "15:55",
+              "number": 13,
+              "name": "グロリアスマーチ",
+              "winProb": 0.2184,
+              "ev": 1.397,
+              "oddsAtPredict": 7.8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-21 18:28:15 JST"
         },
         {
           "v": 5,
@@ -3743,8 +3975,74 @@
           "hash": "478239f0183165d14f201968547184197daf898f59907dfa9a5038b6463e185f",
           "evMin": 1.2,
           "pickCount": 4,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "10",
+              "raceName": "比叡Ｓ･3勝",
+              "cls": "3勝",
+              "dist": "芝2400",
+              "postTime": "15:00",
+              "number": 2,
+              "name": "サトノパトリオット",
+              "winProb": 0.2742,
+              "ev": 2.034,
+              "oddsAtPredict": 10,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "12",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝2000",
+              "postTime": "16:20",
+              "number": 3,
+              "name": "シャドウマスター",
+              "winProb": 0.20809999999999998,
+              "ev": 1.638,
+              "oddsAtPredict": 9.6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "福島",
+              "race": "7",
+              "raceName": "未勝利*",
+              "cls": "未勝利",
+              "dist": "芝1800",
+              "postTime": "13:10",
+              "number": 16,
+              "name": "ジャストゴーイング",
+              "winProb": 0.1446,
+              "ev": 1.277,
+              "oddsAtPredict": 11.9,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "福島",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "15:55",
+              "number": 13,
+              "name": "グロリアスマーチ",
+              "winProb": 0.2184,
+              "ev": 1.343,
+              "oddsAtPredict": 7.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-21 18:28:15 JST"
         },
         {
           "v": 6,
@@ -3753,8 +4051,74 @@
           "hash": "589c19c513dc385f12da3ad6287d23d3c382fe5c2765c4ded1c4e450e7429e38",
           "evMin": 1.2,
           "pickCount": 4,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "10",
+              "raceName": "比叡Ｓ･3勝",
+              "cls": "3勝",
+              "dist": "芝2400",
+              "postTime": "15:00",
+              "number": 2,
+              "name": "サトノパトリオット",
+              "winProb": 0.2742,
+              "ev": 2.203,
+              "oddsAtPredict": 9.8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "12",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝2000",
+              "postTime": "16:20",
+              "number": 3,
+              "name": "シャドウマスター",
+              "winProb": 0.20809999999999998,
+              "ev": 1.655,
+              "oddsAtPredict": 9.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "福島",
+              "race": "7",
+              "raceName": "未勝利*",
+              "cls": "未勝利",
+              "dist": "芝1800",
+              "postTime": "13:10",
+              "number": 16,
+              "name": "ジャストゴーイング",
+              "winProb": 0.1446,
+              "ev": 1.427,
+              "oddsAtPredict": 13.3,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "福島",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "15:55",
+              "number": 13,
+              "name": "グロリアスマーチ",
+              "winProb": 0.2184,
+              "ev": 1.218,
+              "oddsAtPredict": 6.8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-21 18:28:15 JST"
         },
         {
           "v": 7,
@@ -3763,8 +4127,42 @@
           "hash": "746d3222ae97804ecfce18848c9d6588f3ba7ca842b8985e21a21b6c9265a1a0",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "10",
+              "raceName": "比叡Ｓ･3勝",
+              "cls": "3勝",
+              "dist": "芝2400",
+              "postTime": "15:00",
+              "number": 2,
+              "name": "サトノパトリオット",
+              "winProb": 0.2742,
+              "ev": 2.136,
+              "oddsAtPredict": 9.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "12",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝2000",
+              "postTime": "16:20",
+              "number": 3,
+              "name": "シャドウマスター",
+              "winProb": 0.20809999999999998,
+              "ev": 1.655,
+              "oddsAtPredict": 9.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-21 18:28:15 JST"
         },
         {
           "v": 8,
@@ -3773,8 +4171,42 @@
           "hash": "507332fa3aa87cea7b5470db649ef5a891f88be1c4259e37df1afd2bc4834c26",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "10",
+              "raceName": "比叡Ｓ･3勝",
+              "cls": "3勝",
+              "dist": "芝2400",
+              "postTime": "15:00",
+              "number": 2,
+              "name": "サトノパトリオット",
+              "winProb": 0.23260000000000003,
+              "ev": 1.621,
+              "oddsAtPredict": 8.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "12",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝2000",
+              "postTime": "16:20",
+              "number": 3,
+              "name": "シャドウマスター",
+              "winProb": 0.20809999999999998,
+              "ev": 1.655,
+              "oddsAtPredict": 9.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-21 18:28:15 JST"
         },
         {
           "v": 9,
@@ -3783,8 +4215,42 @@
           "hash": "3898411cd7f4c692741ed7017f1d7881f387764a3663f4a21917f2da2ac75dd5",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "10",
+              "raceName": "比叡Ｓ･3勝",
+              "cls": "3勝",
+              "dist": "芝2400",
+              "postTime": "15:00",
+              "number": 2,
+              "name": "サトノパトリオット",
+              "winProb": 0.23260000000000003,
+              "ev": 1.526,
+              "oddsAtPredict": 8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "12",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝2000",
+              "postTime": "16:20",
+              "number": 3,
+              "name": "シャドウマスター",
+              "winProb": 0.20809999999999998,
+              "ev": 1.655,
+              "oddsAtPredict": 9.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-21 18:28:15 JST"
         },
         {
           "v": 10,
@@ -3793,8 +4259,42 @@
           "hash": "5214a52ea4f657f21c35f86da4f4b5f0be22d44b6896ad822e72a6e3ae6a5c94",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "10",
+              "raceName": "比叡Ｓ･3勝",
+              "cls": "3勝",
+              "dist": "芝2400",
+              "postTime": "15:00",
+              "number": 2,
+              "name": "サトノパトリオット",
+              "winProb": 0.23260000000000003,
+              "ev": 1.259,
+              "oddsAtPredict": 6.6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "12",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝2000",
+              "postTime": "16:20",
+              "number": 3,
+              "name": "シャドウマスター",
+              "winProb": 0.20809999999999998,
+              "ev": 1.672,
+              "oddsAtPredict": 9.8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-21 18:28:15 JST"
         },
         {
           "v": 11,
@@ -3803,8 +4303,42 @@
           "hash": "34adfe4057435eeb5a2a9ccd258bd7740f910e08001d18a6527dc94a48858059",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "10",
+              "raceName": "比叡Ｓ･3勝",
+              "cls": "3勝",
+              "dist": "芝2400",
+              "postTime": "15:00",
+              "number": 2,
+              "name": "サトノパトリオット",
+              "winProb": 0.23260000000000003,
+              "ev": 1.468,
+              "oddsAtPredict": 7.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "12",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝2000",
+              "postTime": "16:20",
+              "number": 3,
+              "name": "シャドウマスター",
+              "winProb": 0.2335,
+              "ev": 1.608,
+              "oddsAtPredict": 8.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-21 18:28:15 JST"
         },
         {
           "v": 12,
@@ -3813,8 +4347,42 @@
           "hash": "d93fd3cd85442bb01f307f9ba5f6c5dab0b29b282a24bc567de79e7962c7b354",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "10",
+              "raceName": "比叡Ｓ･3勝",
+              "cls": "3勝",
+              "dist": "芝2400",
+              "postTime": "15:00",
+              "number": 2,
+              "name": "サトノパトリオット",
+              "winProb": 0.23260000000000003,
+              "ev": 1.468,
+              "oddsAtPredict": 7.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "12",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝2000",
+              "postTime": "16:20",
+              "number": 3,
+              "name": "シャドウマスター",
+              "winProb": 0.2335,
+              "ev": 1.685,
+              "oddsAtPredict": 8.8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-21 18:28:15 JST"
         },
         {
           "v": 13,
@@ -3823,16 +4391,162 @@
           "hash": "e0e138cfe59363a3942af55810f643c5d045958ed48432e466471f84bd11edc7",
           "evMin": 1.2,
           "pickCount": 1,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.21",
+              "place": "京都",
+              "race": "10",
+              "raceName": "比叡Ｓ･3勝",
+              "cls": "3勝",
+              "dist": "芝2400",
+              "postTime": "15:00",
+              "number": 2,
+              "name": "サトノパトリオット",
+              "winProb": 0.23260000000000003,
+              "ev": 1.468,
+              "oddsAtPredict": 7.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-21 18:28:15 JST"
         }
       ],
-      "result": null
+      "result": {
+        "all": {
+          "bets": 3,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 300,
+          "ret": 0,
+          "roi": 0
+        },
+        "adv": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAll": {
+          "bets": 3,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 300,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAdv": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "skipped": 0,
+        "added": 0,
+        "unknown": 0
+      },
+      "official": {
+        "picks": [
+          {
+            "date": "2026.11.21",
+            "place": "京都",
+            "race": "10",
+            "raceName": "比叡Ｓ･3勝",
+            "cls": "3勝",
+            "dist": "芝2400",
+            "postTime": "15:00",
+            "number": 2,
+            "name": "サトノパトリオット",
+            "winProb": 0.23260000000000003,
+            "ev": 1.526,
+            "oddsAtPredict": 8,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 9,
+            "finish": 6,
+            "payout": 0
+          },
+          {
+            "date": "2026.11.21",
+            "place": "京都",
+            "race": "12",
+            "raceName": "２勝ｸﾗｽ",
+            "cls": "2勝",
+            "dist": "芝2000",
+            "postTime": "16:20",
+            "number": 3,
+            "name": "シャドウマスター",
+            "winProb": 0.2335,
+            "ev": 1.685,
+            "oddsAtPredict": 8.8,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 12,
+            "finish": 9,
+            "payout": 0
+          },
+          {
+            "date": "2026.11.21",
+            "place": "福島",
+            "race": "7",
+            "raceName": "未勝利*",
+            "cls": "未勝利",
+            "dist": "芝1800",
+            "postTime": "13:10",
+            "number": 16,
+            "name": "ジャストゴーイング",
+            "winProb": 0.1446,
+            "ev": 1.427,
+            "oddsAtPredict": 13.3,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 6,
+            "finish": 8,
+            "payout": 0
+          }
+        ],
+        "unknownPostTime": 0
+      }
     }
   ],
   "summary": {
     "all": {
-      "days": 15,
+      "days": 16,
+      "bets": 47,
+      "hits": 7,
+      "top3": 19,
+      "stake": 4700,
+      "ret": 3450,
+      "hitRate": 0.14893617021276595,
+      "top3Rate": 0.40425531914893614,
+      "roi": 0.7340425531914894
+    },
+    "adv": {
+      "days": 14,
+      "bets": 27,
+      "hits": 6,
+      "top3": 13,
+      "stake": 2700,
+      "ret": 2900,
+      "hitRate": 0.2222222222222222,
+      "top3Rate": 0.48148148148148145,
+      "roi": 1.0740740740740742
+    },
+    "myAll": {
+      "days": 16,
       "bets": 44,
       "hits": 7,
       "top3": 19,
@@ -3842,45 +4556,23 @@
       "top3Rate": 0.4318181818181818,
       "roi": 0.7840909090909091
     },
-    "adv": {
-      "days": 13,
-      "bets": 25,
-      "hits": 6,
-      "top3": 13,
-      "stake": 2500,
-      "ret": 2900,
-      "hitRate": 0.24,
-      "top3Rate": 0.52,
-      "roi": 1.16
-    },
-    "myAll": {
-      "days": 15,
-      "bets": 41,
-      "hits": 7,
-      "top3": 19,
-      "stake": 4100,
-      "ret": 3450,
-      "hitRate": 0.17073170731707318,
-      "top3Rate": 0.4634146341463415,
-      "roi": 0.8414634146341463
-    },
     "myAdv": {
-      "days": 13,
-      "bets": 24,
+      "days": 14,
+      "bets": 26,
       "hits": 6,
       "top3": 13,
-      "stake": 2400,
+      "stake": 2600,
       "ret": 2900,
-      "hitRate": 0.25,
-      "top3Rate": 0.5416666666666666,
-      "roi": 1.2083333333333333
+      "hitRate": 0.23076923076923078,
+      "top3Rate": 0.5,
+      "roi": 1.1153846153846154
     },
     "skipped": 3,
     "added": 0,
     "evMin": 1.2,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-11-15 21:57:16 JST"
+    "updatedAt": "2026-11-21 18:28:15 JST"
   },
   "worldlog": [
     {
