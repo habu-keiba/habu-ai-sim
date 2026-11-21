@@ -4712,6 +4712,40 @@
       "postRace": false,
       "datHash": "0f6ae9de5f97c45b86e257c20cd78f03a0a6e65f9bb03a6958829eab31d35c68",
       "datFile": "data/worlds/2026-11-15_0f6ae9de.dat"
+    },
+    {
+      "date": "2026-11-21",
+      "place": "福島",
+      "race": 11,
+      "raceName": "福島記念Ｈ",
+      "grade": "G3",
+      "dist": 2000,
+      "top3": [
+        {
+          "number": 13,
+          "name": "マリアイリダータ",
+          "waku": 7
+        },
+        {
+          "number": 3,
+          "name": "ゼンダンハヤブサ",
+          "waku": 2
+        },
+        {
+          "number": 1,
+          "name": "カラマティアノス",
+          "waku": 1
+        }
+      ],
+      "worlds": [
+        203
+      ],
+      "worldCount": 1000,
+      "payout3t": 49810,
+      "createdAt": "2026-11-20T08:12:24.804Z",
+      "postRace": false,
+      "datHash": "404962d3f4d42b48f505d45c7b3c65549c7f4f872279de744680d7464dd894be",
+      "datFile": "data/worlds/2026-11-21_404962d3.dat"
     }
   ],
   "excluded": [
