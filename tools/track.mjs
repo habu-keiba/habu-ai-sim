@@ -258,7 +258,7 @@ function selectOfficialPicks(day, postTimes = new Map()) {
     let adopted;
     if (post === null) { adopted = versions.find((v) => v.v === lastV); }   // 発走時刻が不明：その日の最後の版
     else {
-      const before = versions.filter((v) => v.committedMin == null || v.committedMin < post);   // 発走後に出した版は数えない
+      const before = versions.filter((v) => v.late || v.committedMin == null || v.committedMin < post);   // late=発走後記録（自動更新の遅れなど。版に明記して数える）   // 発走後に出した版は数えない
       adopted = before.length ? before.reduce((a, b) => (b.v > a.v ? b : a)) : null;
     }
     if (!adopted) continue;
@@ -550,7 +550,7 @@ function cmdWorldlogPayout(csvPath) {
  * 予測CSVのSHA-256も残す（あとで、ファイルが書き換えられていないか確かめられる）。
  */
 function cmdLate(predCsv, resCsv, rest) {
-  if (!predCsv || !resCsv) throw new Error('使い方: node tools/track.mjs late "<予測CSV>" "<結果CSV>" [--habu 京都11R,東京10R] [--reason 理由] [--basis 説明]');
+  if (!predCsv || !resCsv) throw new Error('使い方: node tools/track.mjs late "<予測CSV>" "<結果CSV>" --habu 京都11R,東京10R [--reason 理由] [--basis 説明]');
   const opt = (k) => { const i = rest.indexOf(k); return i >= 0 ? rest[i + 1] : ''; };
   const norm = (x) => toHalf(x).replace(/\s|R/g, '');
   const habuList = opt('--habu').split(',').map(norm).filter(Boolean);   // 羽生が実際に買ったレース（AIの買い目から見送った分は含めない。AI以外の買い足しも含む）
@@ -558,45 +558,40 @@ function cmdLate(predCsv, resCsv, rest) {
   const predRows = readCsv(predCsv);
   const { picks } = extractPicks(predRows);
   if (!picks.length) throw new Error('予測CSVに、買い目（AI1位・EV下限以上）がありません');
-  const rows = readCsv(resCsv);
-  const col = (r, ...names) => { for (const n of names) if (r[n] !== undefined && r[n] !== '') return r[n]; return ''; };
-  const table = new Map();
-  for (const r of rows) {
-    let date = String(col(r, '日付', '日付(yyyy.mm.dd)')).replace(/\./g, '-');
-    if (!date) { const id = String(col(r, 'レースID(新)', 'レースID')); if (/^\d{8}/.test(id)) date = id.slice(0, 4) + '-' + id.slice(4, 6) + '-' + id.slice(6, 8); }
-    table.set([date, col(r, '場所'), num(col(r, 'Ｒ', 'R')), num(col(r, '馬番', '馬番号'))].join('|'), {
-      finish: num(col(r, '確定着順', '着順', '着')), payout: num(col(r, '単勝払戻', '単勝配当', '払戻', '単勝')), finalOdds: num(col(r, '単勝オッズ', '単オッズ')),
-    });
-  }
-  const date = String(picks[0].date).replace(/\./g, '-');
   const key = (q) => q.place + num(q.race);
-  const out = picks.map((p) => ({ ...p, date, source: 'AI', habu: habuList.includes(key(p)) }));
-  // AIの買い目に無いレースを羽生が買った場合は「買い足し」。予測CSVで、そのレースの推奨印（☆など）が付いた馬のうち、EVが最も高い馬を採る
+  // AIの買い目のうち、羽生が買わなかった点は「見送り」。AIの買い目に無いレースを買った分は「買い足し」（予測CSVで、そのレースの推奨印が付いた馬のうちEVが最大の馬）
+  for (const p of picks) if (!habuList.includes(key(p))) p.skip = '羽生の判断で見送り';
   for (const h of habuList) {
-    if (out.some((q) => key(q) === h)) continue;
+    if (picks.some((q) => key(q) === h)) continue;
     const cand = predRows.filter((r) => (r['場所'] || '') + num(r['Ｒ'] || r['R']) === h && /推奨/.test(r['推奨買い目'] || '')).sort((a, b) => num(b['期待値(EV)']) - num(a['期待値(EV)']));
     if (!cand.length) throw new Error('--habu のレースが、予測CSVの推奨に見つかりません: ' + h);
     const r = cand[0];
-    out.push({
-      date, place: r['場所'], race: r['Ｒ'] || r['R'], raceName: r['レース名'], cls: r['クラス名'] || '', dist: r['距離'] || '', postTime: r['発走時刻'] || null,
+    picks.push({
+      date: r['日付'], place: r['場所'], race: r['Ｒ'] || r['R'], raceName: r['レース名'], cls: r['クラス名'] || '', dist: r['距離'] || '', postTime: r['発走時刻'] || null,
       number: num(r['馬番']), name: (r['馬名'] || '').replace(/^[*$]+/, '').trim(), winProb: pct(r['予測勝率']), ev: num(r['期待値(EV)']), oddsAtPredict: num(r['単勝オッズ']),
-      aiRank: num(r['AI勝率順位']), mark: r['推奨買い目'] || '', source: '羽生の買い足し', habu: true,
+      aiRank: num(r['AI勝率順位']), mark: r['推奨買い目'] || '', added: '羽生の判断で買い足し（' + (r['推奨買い目'] || '').replace(/^.*?\[|\].*$/g, '') + '）',
     });
   }
-  for (const q of out) {
-    const r = table.get([date, q.place, num(q.race), q.number].join('|'));
-    if (r && r.finish !== null) { q.finish = r.finish; const pay = r.payout !== null ? r.payout : r.finalOdds !== null ? r.finalOdds * STAKE : null; q.payout = r.finish === 1 ? pay : 0; } else { q.finish = null; }
-  }
+  picks.sort((a, b) => String(a.place).localeCompare(String(b.place), 'ja') || (a.race - b.race) || (b.ev - a.ev));
+  const date = picks[0].date, k = date.replace(/\./g, '-');
+  const now = jstDate();
+  const body = JSON.stringify({ date, evMin: EV_MIN, picks });
+  const hash = sha256(body);
   const rec = loadRecord();
-  rec.late = (rec.late || []).filter((e) => e.date !== date);
-  rec.late.push({ date, reason, basis: opt('--basis') || '', recordedAt: jstStamp(), predSha256: sha256(fs.readFileSync(predCsv, 'utf8')), picks: out });
-  rec.late.sort((a, b) => a.date.localeCompare(b.date));
+  delete rec.late;
+  let day = rec.days.find((d) => d.date === k);
+  if (!day) { day = { date: k, versions: [], result: null }; rec.days.push(day); rec.days.sort((a, b) => a.date.localeCompare(b.date)); }
+  if (day.versions.length) throw new Error(k + ' には、すでに記録があります。発走後記録は、記録の無い日にだけ使えます');
+  fs.mkdirSync(PRIVATE_DIR, { recursive: true });
+  fs.writeFileSync(path.join(PRIVATE_DIR, k + '_v1.json'), body);
+  day.versions.push({
+    v: 1, committedAt: jstStamp(), committedMin: now.getUTCHours() * 60 + now.getUTCMinutes(), hash, evMin: EV_MIN, pickCount: picks.length,
+    late: true, lateReason: reason, lateBasis: opt('--basis') || '', predSha256: sha256(fs.readFileSync(predCsv, 'utf8')),
+    revealed: true, revealedAt: jstStamp(), picks: JSON.parse(body).picks,
+  });
   saveRecord(rec);
-  const a = tally(out.filter((q) => q.source === 'AI')), h = tally(out.filter((q) => q.habu));
-  console.log('発走後記録を保存しました: ' + date + '（記録時刻 ' + jstStamp() + '）');
-  for (const q of out) console.log('  ' + (q.source === 'AI' ? 'AI ' : '買足') + (q.habu ? ' 買った ' : ' 見送り') + ' ' + q.place + q.race + 'R ' + q.number + '番 ' + q.name + ' ' + q.finish + '着 払戻' + (q.payout ?? '-'));
-  if (a) console.log('  AIのみ ' + a.bets + '点 的中' + a.hits + ' 回収率' + (a.roi * 100).toFixed(1) + '%');
-  if (h) console.log('  AI＋羽生の判断 ' + h.bets + '点 的中' + h.hits + ' 回収率' + (h.roi * 100).toFixed(1) + '%');
+  console.log('発走後記録を保存しました: ' + k + '（記録時刻 ' + jstStamp() + '。発走後記録と明記して、成績に数えます）');
+  cmdResults(resCsv);
 }
 
 const [cmd, arg, ...rest] = process.argv.slice(2);
