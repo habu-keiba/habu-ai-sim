@@ -4746,6 +4746,38 @@
       "postRace": false,
       "datHash": "404962d3f4d42b48f505d45c7b3c65549c7f4f872279de744680d7464dd894be",
       "datFile": "data/worlds/2026-11-21_404962d3.dat"
+    },
+    {
+      "date": "2026-11-22",
+      "place": "京都",
+      "race": 11,
+      "raceName": "マイルチ",
+      "grade": "G1",
+      "dist": 1600,
+      "top3": [
+        {
+          "number": 1,
+          "name": "エルデナリ",
+          "waku": 1
+        },
+        {
+          "number": 2,
+          "name": "エンブロイダリー",
+          "waku": 1
+        },
+        {
+          "number": 14,
+          "name": "スターアニス",
+          "waku": 7
+        }
+      ],
+      "worlds": [],
+      "worldCount": 1000,
+      "payout3t": 24610,
+      "createdAt": "2026-11-20T08:12:24.804Z",
+      "postRace": false,
+      "datHash": "404962d3f4d42b48f505d45c7b3c65549c7f4f872279de744680d7464dd894be",
+      "datFile": "data/worlds/2026-11-22_404962d3.dat"
     }
   ],
   "excluded": [
