@@ -543,6 +543,62 @@ function cmdWorldlogPayout(csvPath) {
   console.log(`3連単配当を ${filled}件 埋めました`);
 }
 
+/**
+ * 発走後に記録した分（自動更新の遅れなどで、レース前に記録できなかった予測）。
+ *   node tools/track.mjs late "<予測CSV>" "<結果CSV>" --habu 京都11R,東京10R --reason "理由" --basis "予測ファイルの説明"
+ * 公開の成績（days）には入れない。rec.late に、記録した時刻（今）つきで別に残す。
+ * 予測CSVのSHA-256も残す（あとで、ファイルが書き換えられていないか確かめられる）。
+ */
+function cmdLate(predCsv, resCsv, rest) {
+  if (!predCsv || !resCsv) throw new Error('使い方: node tools/track.mjs late "<予測CSV>" "<結果CSV>" [--habu 京都11R,東京10R] [--reason 理由] [--basis 説明]');
+  const opt = (k) => { const i = rest.indexOf(k); return i >= 0 ? rest[i + 1] : ''; };
+  const norm = (x) => toHalf(x).replace(/\s|R/g, '');
+  const habuList = opt('--habu').split(',').map(norm).filter(Boolean);   // 羽生が実際に買ったレース（AIの買い目から見送った分は含めない。AI以外の買い足しも含む）
+  const reason = opt('--reason') || '自動更新の遅れ';
+  const predRows = readCsv(predCsv);
+  const { picks } = extractPicks(predRows);
+  if (!picks.length) throw new Error('予測CSVに、買い目（AI1位・EV下限以上）がありません');
+  const rows = readCsv(resCsv);
+  const col = (r, ...names) => { for (const n of names) if (r[n] !== undefined && r[n] !== '') return r[n]; return ''; };
+  const table = new Map();
+  for (const r of rows) {
+    let date = String(col(r, '日付', '日付(yyyy.mm.dd)')).replace(/\./g, '-');
+    if (!date) { const id = String(col(r, 'レースID(新)', 'レースID')); if (/^\d{8}/.test(id)) date = id.slice(0, 4) + '-' + id.slice(4, 6) + '-' + id.slice(6, 8); }
+    table.set([date, col(r, '場所'), num(col(r, 'Ｒ', 'R')), num(col(r, '馬番', '馬番号'))].join('|'), {
+      finish: num(col(r, '確定着順', '着順', '着')), payout: num(col(r, '単勝払戻', '単勝配当', '払戻', '単勝')), finalOdds: num(col(r, '単勝オッズ', '単オッズ')),
+    });
+  }
+  const date = String(picks[0].date).replace(/\./g, '-');
+  const key = (q) => q.place + num(q.race);
+  const out = picks.map((p) => ({ ...p, date, source: 'AI', habu: habuList.includes(key(p)) }));
+  // AIの買い目に無いレースを羽生が買った場合は「買い足し」。予測CSVで、そのレースの推奨印（☆など）が付いた馬のうち、EVが最も高い馬を採る
+  for (const h of habuList) {
+    if (out.some((q) => key(q) === h)) continue;
+    const cand = predRows.filter((r) => (r['場所'] || '') + num(r['Ｒ'] || r['R']) === h && /推奨/.test(r['推奨買い目'] || '')).sort((a, b) => num(b['期待値(EV)']) - num(a['期待値(EV)']));
+    if (!cand.length) throw new Error('--habu のレースが、予測CSVの推奨に見つかりません: ' + h);
+    const r = cand[0];
+    out.push({
+      date, place: r['場所'], race: r['Ｒ'] || r['R'], raceName: r['レース名'], cls: r['クラス名'] || '', dist: r['距離'] || '', postTime: r['発走時刻'] || null,
+      number: num(r['馬番']), name: (r['馬名'] || '').replace(/^[*$]+/, '').trim(), winProb: pct(r['予測勝率']), ev: num(r['期待値(EV)']), oddsAtPredict: num(r['単勝オッズ']),
+      aiRank: num(r['AI勝率順位']), mark: r['推奨買い目'] || '', source: '羽生の買い足し', habu: true,
+    });
+  }
+  for (const q of out) {
+    const r = table.get([date, q.place, num(q.race), q.number].join('|'));
+    if (r && r.finish !== null) { q.finish = r.finish; const pay = r.payout !== null ? r.payout : r.finalOdds !== null ? r.finalOdds * STAKE : null; q.payout = r.finish === 1 ? pay : 0; } else { q.finish = null; }
+  }
+  const rec = loadRecord();
+  rec.late = (rec.late || []).filter((e) => e.date !== date);
+  rec.late.push({ date, reason, basis: opt('--basis') || '', recordedAt: jstStamp(), predSha256: sha256(fs.readFileSync(predCsv, 'utf8')), picks: out });
+  rec.late.sort((a, b) => a.date.localeCompare(b.date));
+  saveRecord(rec);
+  const a = tally(out.filter((q) => q.source === 'AI')), h = tally(out.filter((q) => q.habu));
+  console.log('発走後記録を保存しました: ' + date + '（記録時刻 ' + jstStamp() + '）');
+  for (const q of out) console.log('  ' + (q.source === 'AI' ? 'AI ' : '買足') + (q.habu ? ' 買った ' : ' 見送り') + ' ' + q.place + q.race + 'R ' + q.number + '番 ' + q.name + ' ' + q.finish + '着 払戻' + (q.payout ?? '-'));
+  if (a) console.log('  AIのみ ' + a.bets + '点 的中' + a.hits + ' 回収率' + (a.roi * 100).toFixed(1) + '%');
+  if (h) console.log('  AI＋羽生の判断 ' + h.bets + '点 的中' + h.hits + ' 回収率' + (h.roi * 100).toFixed(1) + '%');
+}
+
 const [cmd, arg, ...rest] = process.argv.slice(2);
 try {
   if (cmd === 'commit') cmdCommit(arg, rest);
@@ -553,6 +609,7 @@ try {
   else if (cmd === 'verify') cmdVerify();
   else if (cmd === 'worldlog') cmdWorldlog(arg, rest);
   else if (cmd === 'worldlog-payout') cmdWorldlogPayout(arg);
+  else if (cmd === 'late') cmdLate(arg, rest[0], rest.slice(1));
   else {
     console.log('使い方:');
     console.log('  node tools/track.mjs commit "<予測CSV>" [--skip 中山5R[-7][:理由]]');
@@ -565,6 +622,8 @@ try {
     console.log('  node tools/track.mjs verify                指紋の照合');
     console.log('  node tools/track.mjs worldlog "<結果CSV>" [--dat <datファイル>] [--name "<表示名>"]');
     console.log('                                            重賞：実際の1〜3着が世界線の中にあったかを記録');
+    console.log('  node tools/track.mjs late "<予測CSV>" "<結果CSV>" [--habu 京都11R,...] [--reason 理由]   発走後に記録した分を、別枠で残す');
+    console.log('  node tools/track.mjs late "<予測CSV>" "<結果CSV>" [--habu 京都11R,...] [--reason 理由]   発走後に記録した分を、別枠で残す');
     console.log('  node tools/track.mjs worldlog-payout "<全データCSV>"   世界線ログの3連単配当を埋める');
   }
 } catch (e) {

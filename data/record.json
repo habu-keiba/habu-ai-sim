@@ -4787,5 +4787,96 @@
       "race": "9",
       "reason": "自動実行の手順漏れのため対象外"
     }
+  ],
+  "late": [
+    {
+      "date": "2026-11-22",
+      "reason": "自動更新の遅れ",
+      "basis": "11/21 22:18に出力した、翌日（11/22）分の予測ファイル",
+      "recordedAt": "2026-11-22 21:17:22 JST",
+      "predSha256": "812571a14f8f84a790170e801b977d1639758ee202e5073f0990c9e076fed970",
+      "picks": [
+        {
+          "date": "2026-11-22",
+          "place": "京都",
+          "race": "5",
+          "raceName": "新馬",
+          "cls": "新馬",
+          "dist": "芝1800",
+          "postTime": "12:25",
+          "number": 3,
+          "name": "ゼンノレガリア",
+          "winProb": 0.2076,
+          "ev": 4.27,
+          "oddsAtPredict": 25.3,
+          "aiRank": 1,
+          "mark": "★推奨 [AI1位 EV1.2超]",
+          "source": "AI",
+          "habu": false,
+          "finish": 10,
+          "payout": 0
+        },
+        {
+          "date": "2026-11-22",
+          "place": "東京",
+          "race": "10",
+          "raceName": "秋色ＳＨ･3勝",
+          "cls": "3勝",
+          "dist": "芝1600",
+          "postTime": "14:45",
+          "number": 14,
+          "name": "デンプシー",
+          "winProb": 0.2104,
+          "ev": 4.003,
+          "oddsAtPredict": 23.4,
+          "aiRank": 1,
+          "mark": "★推奨 [AI1位 EV1.2超]",
+          "source": "AI",
+          "habu": true,
+          "finish": 1,
+          "payout": 800
+        },
+        {
+          "date": "2026-11-22",
+          "place": "東京",
+          "race": "12",
+          "raceName": "２勝ｸﾗｽ",
+          "cls": "2勝",
+          "dist": "芝1400",
+          "postTime": "16:05",
+          "number": 9,
+          "name": "スペルーチェ",
+          "winProb": 0.3064,
+          "ev": 1.708,
+          "oddsAtPredict": 6.8,
+          "aiRank": 1,
+          "mark": "★推奨 [AI1位 EV1.2超]",
+          "source": "AI",
+          "habu": true,
+          "finish": 4,
+          "payout": 0
+        },
+        {
+          "date": "2026-11-22",
+          "place": "京都",
+          "race": "11",
+          "raceName": "マイルチG1",
+          "cls": "G1",
+          "dist": "芝1600",
+          "postTime": "15:40",
+          "number": 17,
+          "name": "アンパドゥ",
+          "winProb": 0.11710000000000001,
+          "ev": 1.999,
+          "oddsAtPredict": 21,
+          "aiRank": 2,
+          "mark": "☆推奨 [AI2位 EV1.2超]",
+          "source": "羽生の買い足し",
+          "habu": true,
+          "finish": 17,
+          "payout": 0
+        }
+      ]
+    }
   ]
 }

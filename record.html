@@ -134,6 +134,11 @@
     <p class="verify" id="updated"></p>
   </div>
 
+  <div class="panel" id="latePanel" style="display:none;">
+    <p class="panel-title" style="font-size:15px;font-weight:700;color:var(--cream);">発走後に記録した分（自動更新の遅れ）</p>
+    <div id="lateBody"></div>
+  </div>
+
   <div class="panel">
     <p class="panel-title">実際に買った馬</p>
     <p class="how">
@@ -237,6 +242,42 @@ function renderStats(r){
   }
   $('stats').innerHTML=html;
   $('updated').textContent='買い目: AI勝率'+(s.aiRank||1)+'位かつ期待値'+(s.evMin||1.3)+'以上の単勝を1点'+(s.stakePerBet||100)+'円 ／ 最終更新: '+(s.updatedAt||'');
+}
+
+function lateTally(ps){
+  const d=ps.filter(p=>p.finish!=null);
+  if(!d.length)return null;
+  const hits=d.filter(p=>p.finish===1),top3=d.filter(p=>p.finish<=3);
+  const stake=d.length*STAKE_PER_BET,ret=hits.reduce((a,p)=>a+(p.payout||0),0);
+  return {days:1,bets:d.length,hits:hits.length,hitRate:hits.length/d.length,top3:top3.length,top3Rate:top3.length/d.length,stake:stake,ret:ret,roi:ret/stake};
+}
+function addTally(a,b){
+  if(!b)return a;if(!a)return b;
+  const bets=a.bets+b.bets,hits=a.hits+b.hits,top3=(a.top3||0)+(b.top3||0),stake=a.stake+b.stake,ret=a.ret+b.ret;
+  return {days:(a.days||0)+(b.days||0),bets:bets,hits:hits,hitRate:hits/bets,top3:top3,top3Rate:top3/bets,stake:stake,ret:ret,roi:ret/stake};
+}
+function renderLate(r){
+  const L=r.late;
+  const box=$('latePanel');
+  if(!L||!L.length){box.style.display='none';return;}
+  box.style.display='block';
+  const s=r.summary||{};
+  const all=L.reduce((a,e)=>a.concat(e.picks),[]);
+  const ai=lateTally(all.filter(p=>p.source==='AI')),mine=lateTally(all.filter(p=>p.habu));
+  const card=(t,note,x)=>statCards(x,t,note,true);
+  let html='<p class="how" style="font-size:12px;">自動の記録が動かなかった日の予測を、<b>発走後に記録</b>した分です。レース前に記録した成績（上の通算成績）には含めていません。記録した時刻は、各日の下に書いています。予測ファイルは、前夜に出力されたものです（ファイルのSHA-256を付けています）。</p>';
+  html+=card('発走後記録のみ｜AIのみ','記録した日の、AI買い目（AI勝率1位・EV'+(s.evMin||1.2)+'以上）の単勝',ai);
+  html+='<div style="height:8px"></div>'+card('発走後記録のみ｜AI＋羽生の判断','羽生が実際に買った点（見送りを除き、買い足しを加える）',mine);
+  html+='<div style="height:14px"></div><p class="panel-title" style="margin:0 0 4px">事前の記録に合算した場合（参考）</p><p class="how" style="font-size:12px;margin:0 0 8px">上の通算成績（全クラス）に、発走後記録を足した数字です。</p>';
+  html+=card('合算｜AIのみ｜全クラス','事前記録＋発走後記録',addTally(s.all,ai));
+  html+='<div style="height:8px"></div>'+card('合算｜AI＋羽生の判断｜全クラス','事前記録＋発走後記録',addTally(s.myAll||s.all,mine));
+  L.forEach(e=>{
+    const rows=e.picks.map(p=>'<tr><td>'+p.place+p.race+'R</td><td>'+p.number+'番 '+(p.name||'')+'</td><td>'+(p.source==='AI'?'AI':'羽生の買い足し')+'</td><td>'+(p.habu?'買った':'見送り')+'</td><td>'+(p.oddsAtPredict!=null?p.oddsAtPredict+'倍':'—')+'</td><td>'+(p.ev!=null?p.ev.toFixed(2):'—')+'</td><td>'+(p.finish!=null?p.finish+'着':'—')+'</td><td>'+(p.payout!=null?yen(p.payout):'—')+'</td></tr>').join('');
+    html+='<details style="margin-top:12px"><summary>▼ '+e.date+' の記録を見る（'+e.picks.length+'点）</summary>'
+      +'<p class="how" style="font-size:12px;margin:8px 0;">理由: '+e.reason+(e.basis?'<br>'+e.basis:'')+'<br>記録した時刻: '+e.recordedAt+'（発走後）<br>予測ファイルSHA-256: <span style="word-break:break-all">'+e.predSha256+'</span></p>'
+      +'<div style="overflow-x:auto"><table style="border-collapse:collapse;font-size:12px;width:100%"><tr style="color:var(--cream-dim);text-align:left"><th>レース</th><th>馬</th><th>区分</th><th>羽生</th><th>予測時オッズ</th><th>EV</th><th>着順</th><th>払戻</th></tr>'+rows+'</table></div></details>';
+  });
+  $('lateBody').innerHTML=html;
 }
 
 function renderDays(r){
@@ -394,7 +435,7 @@ async function verifyAll(){
 
 fetch('data/record.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(r=>{
   if(!r){$('days').textContent='まだ記録がありません。';return;}
-  record=r;renderStats(r);renderDays(r);renderWorldlog(r);
+  record=r;renderStats(r);renderLate(r);renderDays(r);renderWorldlog(r);
 }).catch(()=>{$('days').textContent='記録を読み込めませんでした。';});
 $('verifyBtn').addEventListener('click',verifyAll);
 </script>
