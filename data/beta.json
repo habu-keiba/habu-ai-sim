@@ -251,13 +251,18 @@
      "no": 1,
      "recordedAt": "2026-11-22 09:45:27 JST",
      "hash": "f8a8b1282fb86762dd7472e8d59d6b1cddc1465ca1be74829f44fc47a1730597"
+    },
+    {
+     "no": 2,
+     "recordedAt": "2026-11-22 10:00:27 JST",
+     "hash": "b5eeb8597cd3573f20ae3845db0b8013693f5e035c772bf43dd417f7affd0a51"
     }
    ],
    "result": {
     "bets": 0,
     "ret": 0,
     "void": 0,
-    "wait": 1
+    "wait": 2
    }
   }
  ],
@@ -268,5 +273,5 @@
   "ret": 7730.0,
   "roi": 1.9325
  },
- "updatedAt": "2026-11-22 09:45:27 JST"
+ "updatedAt": "2026-11-22 10:00:27 JST"
 }
