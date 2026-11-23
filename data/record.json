@@ -4746,8 +4746,42 @@
           "hash": "26e977f410dbc7facfb7deb9e0d5c64bb5f3eed48cb6a6bd979e11ae2e96182a",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:05",
+              "number": 12,
+              "name": "アドマイヤウルトラ",
+              "winProb": 0.18100000000000002,
+              "ev": 3.106,
+              "oddsAtPredict": 21.1,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.23",
+              "place": "福島",
+              "race": "8",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "13:35",
+              "number": 9,
+              "name": "マイティキングダム",
+              "winProb": 0.2437,
+              "ev": 1.738,
+              "oddsAtPredict": 8.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-23 17:43:27 JST"
         },
         {
           "v": 2,
@@ -4756,8 +4790,58 @@
           "hash": "cd78d1e21f012333b91992c9464fe7b3e24106c989d774fe68f27d68172aa419",
           "evMin": 1.2,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "5",
+              "raceName": "新馬・牝",
+              "cls": "新馬",
+              "dist": "芝1600",
+              "postTime": "12:20",
+              "number": 12,
+              "name": "ウィンザーグレース",
+              "winProb": 0.2787,
+              "ev": 1.257,
+              "oddsAtPredict": 5.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:05",
+              "number": 12,
+              "name": "アドマイヤウルトラ",
+              "winProb": 0.18100000000000002,
+              "ev": 2.485,
+              "oddsAtPredict": 18.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.23",
+              "place": "福島",
+              "race": "8",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "13:35",
+              "number": 9,
+              "name": "マイティキングダム",
+              "winProb": 0.2437,
+              "ev": 1.838,
+              "oddsAtPredict": 9.2,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-23 17:43:27 JST"
         },
         {
           "v": 3,
@@ -4766,8 +4850,58 @@
           "hash": "f6315b7d977bca9c968db83385e190baf2d44f1def7b1a35ff80059ae11a15aa",
           "evMin": 1.2,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "5",
+              "raceName": "新馬・牝",
+              "cls": "新馬",
+              "dist": "芝1600",
+              "postTime": "12:20",
+              "number": 12,
+              "name": "ウィンザーグレース",
+              "winProb": 0.2787,
+              "ev": 1.257,
+              "oddsAtPredict": 5.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:05",
+              "number": 12,
+              "name": "アドマイヤウルトラ",
+              "winProb": 0.18100000000000002,
+              "ev": 2.431,
+              "oddsAtPredict": 18.1,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.23",
+              "place": "福島",
+              "race": "8",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "13:35",
+              "number": 9,
+              "name": "マイティキングダム",
+              "winProb": 0.2437,
+              "ev": 1.678,
+              "oddsAtPredict": 8.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-23 17:43:27 JST"
         },
         {
           "v": 4,
@@ -4776,8 +4910,58 @@
           "hash": "7ff40f84182db0dcffabdbbfe59e92b41365b174b2c5c8f9f6b8d9b1bd589833",
           "evMin": 1.2,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "5",
+              "raceName": "新馬・牝",
+              "cls": "新馬",
+              "dist": "芝1600",
+              "postTime": "12:20",
+              "number": 12,
+              "name": "ウィンザーグレース",
+              "winProb": 0.2787,
+              "ev": 1.234,
+              "oddsAtPredict": 5.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:05",
+              "number": 12,
+              "name": "アドマイヤウルトラ",
+              "winProb": 0.18100000000000002,
+              "ev": 2.324,
+              "oddsAtPredict": 17.3,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.23",
+              "place": "福島",
+              "race": "8",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "13:35",
+              "number": 9,
+              "name": "マイティキングダム",
+              "winProb": 0.2437,
+              "ev": 1.698,
+              "oddsAtPredict": 8.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-23 17:43:27 JST"
         },
         {
           "v": 5,
@@ -4786,8 +4970,42 @@
           "hash": "083cd20800a912b765828c34de06f18e179b03cba6a9a16610ff28c15bf0dcbc",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:05",
+              "number": 12,
+              "name": "アドマイヤウルトラ",
+              "winProb": 0.18100000000000002,
+              "ev": 2.27,
+              "oddsAtPredict": 16.9,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.23",
+              "place": "福島",
+              "race": "8",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "13:35",
+              "number": 9,
+              "name": "マイティキングダム",
+              "winProb": 0.2437,
+              "ev": 1.698,
+              "oddsAtPredict": 8.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-23 17:43:27 JST"
         },
         {
           "v": 6,
@@ -4796,8 +5014,42 @@
           "hash": "717c3069646b6286f906170a97f71c053cdb07127193fe713fe43f5e73b460af",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:05",
+              "number": 12,
+              "name": "アドマイヤウルトラ",
+              "winProb": 0.18100000000000002,
+              "ev": 2.136,
+              "oddsAtPredict": 15.9,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.23",
+              "place": "福島",
+              "race": "8",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "13:35",
+              "number": 9,
+              "name": "マイティキングダム",
+              "winProb": 0.2437,
+              "ev": 1.698,
+              "oddsAtPredict": 8.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-23 17:43:27 JST"
         },
         {
           "v": 7,
@@ -4806,8 +5058,42 @@
           "hash": "973eec3aa426cfaddba24a192254744effc158fc8d13b0e5c17f5729a854323a",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:05",
+              "number": 12,
+              "name": "アドマイヤウルトラ",
+              "winProb": 0.18100000000000002,
+              "ev": 2.123,
+              "oddsAtPredict": 15.8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.23",
+              "place": "福島",
+              "race": "8",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "13:35",
+              "number": 9,
+              "name": "マイティキングダム",
+              "winProb": 0.2437,
+              "ev": 1.658,
+              "oddsAtPredict": 8.3,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-23 17:43:27 JST"
         },
         {
           "v": 8,
@@ -4816,8 +5102,42 @@
           "hash": "925514d5a0b6b88528531a5353676333abb0dcde4ffa83e262f47087ecfbc3b1",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:05",
+              "number": 12,
+              "name": "アドマイヤウルトラ",
+              "winProb": 0.18100000000000002,
+              "ev": 2.243,
+              "oddsAtPredict": 16.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.23",
+              "place": "福島",
+              "race": "8",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "13:35",
+              "number": 9,
+              "name": "マイティキングダム",
+              "winProb": 0.2437,
+              "ev": 1.638,
+              "oddsAtPredict": 8.2,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-23 17:43:27 JST"
         },
         {
           "v": 9,
@@ -4826,8 +5146,42 @@
           "hash": "49838022883fef37fa705801d7de8e8e664a10b091aadaf25b29514106105bbb",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:05",
+              "number": 12,
+              "name": "アドマイヤウルトラ",
+              "winProb": 0.18100000000000002,
+              "ev": 2.203,
+              "oddsAtPredict": 16.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.23",
+              "place": "福島",
+              "race": "8",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1200",
+              "postTime": "13:35",
+              "number": 9,
+              "name": "マイティキングダム",
+              "winProb": 0.2457,
+              "ev": 1.471,
+              "oddsAtPredict": 7.3,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-23 17:43:27 JST"
         },
         {
           "v": 10,
@@ -4836,8 +5190,26 @@
           "hash": "b674ee584d9c0f958568f14b5baea0fb0627a386f1e4996bef756189e32938cc",
           "evMin": 1.2,
           "pickCount": 1,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:05",
+              "number": 12,
+              "name": "アドマイヤウルトラ",
+              "winProb": 0.18100000000000002,
+              "ev": 2.149,
+              "oddsAtPredict": 16,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-23 17:43:27 JST"
         },
         {
           "v": 11,
@@ -4846,8 +5218,26 @@
           "hash": "312f6738f28b09f558a79ed6d7ead9d49be175742c4ef4b34805abeea43f6cae",
           "evMin": 1.2,
           "pickCount": 1,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:05",
+              "number": 12,
+              "name": "アドマイヤウルトラ",
+              "winProb": 0.18100000000000002,
+              "ev": 2.123,
+              "oddsAtPredict": 15.8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-23 17:43:27 JST"
         },
         {
           "v": 12,
@@ -4856,8 +5246,26 @@
           "hash": "e880db7f3249e44f86ca370bb41069f2979a361b770a2f45fd24d3412093d28a",
           "evMin": 1.2,
           "pickCount": 1,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:05",
+              "number": 12,
+              "name": "アドマイヤウルトラ",
+              "winProb": 0.18100000000000002,
+              "ev": 1.988,
+              "oddsAtPredict": 14.8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-23 17:43:27 JST"
         },
         {
           "v": 13,
@@ -4866,8 +5274,26 @@
           "hash": "1a8e8f2f3cea204e710f09be96bedfd58df5fe862f580de8464412847a620ad1",
           "evMin": 1.2,
           "pickCount": 1,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:05",
+              "number": 12,
+              "name": "アドマイヤウルトラ",
+              "winProb": 0.1865,
+              "ev": 1.854,
+              "oddsAtPredict": 13.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-23 17:43:27 JST"
         },
         {
           "v": 14,
@@ -4876,8 +5302,26 @@
           "hash": "abae74165905fe2d13b1dc25ed85d33877d1a6af599e0a9e3591c7fe9fe07382",
           "evMin": 1.2,
           "pickCount": 1,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:05",
+              "number": 12,
+              "name": "アドマイヤウルトラ",
+              "winProb": 0.1865,
+              "ev": 1.48,
+              "oddsAtPredict": 10.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-23 17:43:27 JST"
         },
         {
           "v": 15,
@@ -4886,64 +5330,169 @@
           "hash": "e87b0fcaf9cb412680ead3e392f4677c5dfbb13f8f1e0bf41d1ca8b8a95d8941",
           "evMin": 1.2,
           "pickCount": 1,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.23",
+              "place": "東京",
+              "race": "12",
+              "raceName": "１勝ｸﾗｽ",
+              "cls": "1勝",
+              "dist": "芝1600",
+              "postTime": "16:05",
+              "number": 12,
+              "name": "アドマイヤウルトラ",
+              "winProb": 0.1865,
+              "ev": 1.992,
+              "oddsAtPredict": 14.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-23 17:43:27 JST"
         }
       ],
-      "result": null
+      "result": {
+        "all": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "adv": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAll": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAdv": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 0,
+          "top3Rate": 0,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "skipped": 0,
+        "added": 0,
+        "unknown": 0
+      },
+      "official": {
+        "picks": [
+          {
+            "date": "2026.11.23",
+            "place": "東京",
+            "race": "12",
+            "raceName": "１勝ｸﾗｽ",
+            "cls": "1勝",
+            "dist": "芝1600",
+            "postTime": "16:05",
+            "number": 12,
+            "name": "アドマイヤウルトラ",
+            "winProb": 0.1865,
+            "ev": 1.854,
+            "oddsAtPredict": 13.4,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 13,
+            "finish": 4,
+            "payout": 0
+          },
+          {
+            "date": "2026.11.23",
+            "place": "福島",
+            "race": "8",
+            "raceName": "１勝ｸﾗｽ",
+            "cls": "1勝",
+            "dist": "芝1200",
+            "postTime": "13:35",
+            "number": 9,
+            "name": "マイティキングダム",
+            "winProb": 0.2457,
+            "ev": 1.471,
+            "oddsAtPredict": 7.3,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 9,
+            "finish": 5,
+            "payout": 0
+          }
+        ],
+        "unknownPostTime": 0
+      }
     }
   ],
   "summary": {
     "all": {
-      "days": 17,
-      "bets": 50,
+      "days": 18,
+      "bets": 52,
       "hits": 8,
       "top3": 20,
-      "stake": 5000,
+      "stake": 5200,
       "ret": 4250,
-      "hitRate": 0.16,
-      "top3Rate": 0.4,
-      "roi": 0.85
+      "hitRate": 0.15384615384615385,
+      "top3Rate": 0.38461538461538464,
+      "roi": 0.8173076923076923
     },
     "adv": {
-      "days": 15,
-      "bets": 29,
+      "days": 16,
+      "bets": 31,
       "hits": 7,
       "top3": 14,
-      "stake": 2900,
+      "stake": 3100,
       "ret": 3700,
-      "hitRate": 0.2413793103448276,
-      "top3Rate": 0.4827586206896552,
-      "roi": 1.2758620689655173
+      "hitRate": 0.22580645161290322,
+      "top3Rate": 0.45161290322580644,
+      "roi": 1.1935483870967742
     },
     "myAll": {
-      "days": 17,
-      "bets": 47,
+      "days": 18,
+      "bets": 49,
       "hits": 8,
       "top3": 20,
-      "stake": 4700,
+      "stake": 4900,
       "ret": 4250,
-      "hitRate": 0.1702127659574468,
-      "top3Rate": 0.425531914893617,
-      "roi": 0.9042553191489362
+      "hitRate": 0.16326530612244897,
+      "top3Rate": 0.40816326530612246,
+      "roi": 0.8673469387755102
     },
     "myAdv": {
-      "days": 15,
-      "bets": 29,
+      "days": 16,
+      "bets": 31,
       "hits": 7,
       "top3": 14,
-      "stake": 2900,
+      "stake": 3100,
       "ret": 3700,
-      "hitRate": 0.2413793103448276,
-      "top3Rate": 0.4827586206896552,
-      "roi": 1.2758620689655173
+      "hitRate": 0.22580645161290322,
+      "top3Rate": 0.45161290322580644,
+      "roi": 1.1935483870967742
     },
     "skipped": 4,
     "added": 1,
     "evMin": 1.2,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-11-22 21:19:08 JST"
+    "updatedAt": "2026-11-23 17:43:27 JST"
   },
   "worldlog": [
     {
