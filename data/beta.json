@@ -319,6 +319,24 @@
     "void": 0,
     "wait": 0
    }
+  },
+  {
+   "date": "2026-11-23",
+   "settled": false,
+   "revealed": false,
+   "entries": [
+    {
+     "no": 1,
+     "recordedAt": "2026-11-23 09:40:26 JST",
+     "hash": "9949c05eb752e32ea1e1131f985d779a93ed0445712265cc5ce27c85a7a0478e"
+    }
+   ],
+   "result": {
+    "bets": 0,
+    "ret": 0,
+    "void": 0,
+    "wait": 1
+   }
   }
  ],
  "summary": {
@@ -328,5 +346,5 @@
   "ret": 9700.0,
   "roi": 1.830188679245283
  },
- "updatedAt": "2026-11-22 17:20:52 JST"
+ "updatedAt": "2026-11-23 09:40:26 JST"
 }
