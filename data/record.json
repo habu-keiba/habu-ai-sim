@@ -5451,8 +5451,74 @@
           "hash": "9b69824e5b734c7a8c08e58ebbf4117d2b1f8b3437ca395adbeb63357caeb794",
           "evMin": 1.2,
           "pickCount": 4,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.28",
+              "place": "京都",
+              "race": "5",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "dist": "芝1600",
+              "postTime": "12:25",
+              "number": 3,
+              "name": "エイカイコールマン",
+              "winProb": 0.3271,
+              "ev": 1.222,
+              "oddsAtPredict": 4.6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "3",
+              "raceName": "未勝利・牝*",
+              "cls": "未勝利",
+              "dist": "芝1800",
+              "postTime": "10:50",
+              "number": 9,
+              "name": "ドナリー",
+              "winProb": 0.2697,
+              "ev": 1.769,
+              "oddsAtPredict": 8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超・単騎逃げ]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "8",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝1600",
+              "postTime": "13:40",
+              "number": 15,
+              "name": "フィールドノート",
+              "winProb": 0.3666,
+              "ev": 1.563,
+              "oddsAtPredict": 5.2,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "11",
+              "raceName": "キャピタ(L)",
+              "cls": "OP",
+              "dist": "芝1600",
+              "postTime": "15:25",
+              "number": 11,
+              "name": "ディアナザール",
+              "winProb": 0.2162,
+              "ev": 1.542,
+              "oddsAtPredict": 8.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-28 17:44:20 JST"
         },
         {
           "v": 2,
@@ -5461,8 +5527,58 @@
           "hash": "9d002b636d4e0dfcac6f0c3b64baddbe579f93fccd166b95eef7b7692a99e788",
           "evMin": 1.2,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "3",
+              "raceName": "未勝利・牝*",
+              "cls": "未勝利",
+              "dist": "芝1800",
+              "postTime": "10:50",
+              "number": 9,
+              "name": "ドナリー",
+              "winProb": 0.2697,
+              "ev": 1.658,
+              "oddsAtPredict": 7.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超・単騎逃げ]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "8",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝1600",
+              "postTime": "13:40",
+              "number": 15,
+              "name": "フィールドノート",
+              "winProb": 0.3666,
+              "ev": 1.563,
+              "oddsAtPredict": 5.2,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "11",
+              "raceName": "キャピタ(L)",
+              "cls": "OP",
+              "dist": "芝1600",
+              "postTime": "15:25",
+              "number": 11,
+              "name": "ディアナザール",
+              "winProb": 0.2162,
+              "ev": 1.578,
+              "oddsAtPredict": 8.9,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-28 17:44:20 JST"
         },
         {
           "v": 3,
@@ -5471,8 +5587,58 @@
           "hash": "59e7eedf21ed6e19b0e5309afbd26c7a1102ea3b5dad4d222ac16ab628eb8f04",
           "evMin": 1.2,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "3",
+              "raceName": "未勝利・牝*",
+              "cls": "未勝利",
+              "dist": "芝1800",
+              "postTime": "10:50",
+              "number": 9,
+              "name": "ドナリー",
+              "winProb": 0.2336,
+              "ev": 1.437,
+              "oddsAtPredict": 7.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超・単騎逃げ]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "8",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝1600",
+              "postTime": "13:40",
+              "number": 15,
+              "name": "フィールドノート",
+              "winProb": 0.3666,
+              "ev": 1.563,
+              "oddsAtPredict": 5.2,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "11",
+              "raceName": "キャピタ(L)",
+              "cls": "OP",
+              "dist": "芝1600",
+              "postTime": "15:25",
+              "number": 11,
+              "name": "ディアナザール",
+              "winProb": 0.2162,
+              "ev": 1.507,
+              "oddsAtPredict": 8.5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-28 17:44:20 JST"
         },
         {
           "v": 4,
@@ -5481,8 +5647,58 @@
           "hash": "f4b5eeab20d2b97b295c66d40365ee050948457f299483d9e6831485c31d7682",
           "evMin": 1.2,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "3",
+              "raceName": "未勝利・牝*",
+              "cls": "未勝利",
+              "dist": "芝1800",
+              "postTime": "10:50",
+              "number": 9,
+              "name": "ドナリー",
+              "winProb": 0.2336,
+              "ev": 1.303,
+              "oddsAtPredict": 6.8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超・単騎逃げ]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "8",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝1600",
+              "postTime": "13:40",
+              "number": 15,
+              "name": "フィールドノート",
+              "winProb": 0.3666,
+              "ev": 1.623,
+              "oddsAtPredict": 5.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "11",
+              "raceName": "キャピタ(L)",
+              "cls": "OP",
+              "dist": "芝1600",
+              "postTime": "15:25",
+              "number": 11,
+              "name": "ディアナザール",
+              "winProb": 0.2162,
+              "ev": 1.525,
+              "oddsAtPredict": 8.6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-28 17:44:20 JST"
         },
         {
           "v": 5,
@@ -5491,8 +5707,42 @@
           "hash": "542d1f76f5bc8829eceb8507b1561e73b780cf46eab6feddd1a6e28544cf601c",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "8",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝1600",
+              "postTime": "13:40",
+              "number": 15,
+              "name": "フィールドノート",
+              "winProb": 0.3666,
+              "ev": 1.804,
+              "oddsAtPredict": 6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "11",
+              "raceName": "キャピタ(L)",
+              "cls": "OP",
+              "dist": "芝1600",
+              "postTime": "15:25",
+              "number": 11,
+              "name": "ディアナザール",
+              "winProb": 0.2162,
+              "ev": 1.489,
+              "oddsAtPredict": 8.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-28 17:44:20 JST"
         },
         {
           "v": 6,
@@ -5501,8 +5751,58 @@
           "hash": "4902ca61008eba72162842176513112ba9c4389763a27691e0164d65634bdf4d",
           "evMin": 1.2,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "5",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "dist": "芝1400",
+              "postTime": "12:10",
+              "number": 1,
+              "name": "ドライブライン",
+              "winProb": 0.20420000000000002,
+              "ev": 1.272,
+              "oddsAtPredict": 7.6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "8",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝1600",
+              "postTime": "13:40",
+              "number": 15,
+              "name": "フィールドノート",
+              "winProb": 0.3666,
+              "ev": 1.864,
+              "oddsAtPredict": 6.2,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "11",
+              "raceName": "キャピタ(L)",
+              "cls": "OP",
+              "dist": "芝1600",
+              "postTime": "15:25",
+              "number": 11,
+              "name": "ディアナザール",
+              "winProb": 0.2162,
+              "ev": 1.542,
+              "oddsAtPredict": 8.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-28 17:44:20 JST"
         },
         {
           "v": 7,
@@ -5511,8 +5811,58 @@
           "hash": "b5f8c402fb809d1e1d17768ffd0be8253c7c466a72bb8bfe99d58b8d4c51300e",
           "evMin": 1.2,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "5",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "dist": "芝1400",
+              "postTime": "12:10",
+              "number": 1,
+              "name": "ドライブライン",
+              "winProb": 0.20420000000000002,
+              "ev": 1.272,
+              "oddsAtPredict": 7.6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "8",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝1600",
+              "postTime": "13:40",
+              "number": 15,
+              "name": "フィールドノート",
+              "winProb": 0.3666,
+              "ev": 1.804,
+              "oddsAtPredict": 6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "11",
+              "raceName": "キャピタ(L)",
+              "cls": "OP",
+              "dist": "芝1600",
+              "postTime": "15:25",
+              "number": 11,
+              "name": "ディアナザール",
+              "winProb": 0.2162,
+              "ev": 1.56,
+              "oddsAtPredict": 8.8,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-28 17:44:20 JST"
         },
         {
           "v": 8,
@@ -5521,8 +5871,58 @@
           "hash": "bb3d4bddb23cec1aff6811c7249ea3a0ece92322b473f09eff9234af9d85f2af",
           "evMin": 1.2,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "5",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "dist": "芝1400",
+              "postTime": "12:10",
+              "number": 1,
+              "name": "ドライブライン",
+              "winProb": 0.20420000000000002,
+              "ev": 1.624,
+              "oddsAtPredict": 9.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "8",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝1600",
+              "postTime": "13:40",
+              "number": 15,
+              "name": "フィールドノート",
+              "winProb": 0.3666,
+              "ev": 1.804,
+              "oddsAtPredict": 6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "11",
+              "raceName": "キャピタ(L)",
+              "cls": "OP",
+              "dist": "芝1600",
+              "postTime": "15:25",
+              "number": 11,
+              "name": "ディアナザール",
+              "winProb": 0.2162,
+              "ev": 1.525,
+              "oddsAtPredict": 8.6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-28 17:44:20 JST"
         },
         {
           "v": 9,
@@ -5531,8 +5931,58 @@
           "hash": "4732fa4679e56d147c652370bd30d5108b9f16e9ec3cf85cbe685e9934662d7a",
           "evMin": 1.2,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "5",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "dist": "芝1400",
+              "postTime": "12:10",
+              "number": 1,
+              "name": "ドライブライン",
+              "winProb": 0.20420000000000002,
+              "ev": 1.624,
+              "oddsAtPredict": 9.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "8",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝1600",
+              "postTime": "13:40",
+              "number": 15,
+              "name": "フィールドノート",
+              "winProb": 0.3443,
+              "ev": 1.666,
+              "oddsAtPredict": 5.9,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "11",
+              "raceName": "キャピタ(L)",
+              "cls": "OP",
+              "dist": "芝1600",
+              "postTime": "15:25",
+              "number": 11,
+              "name": "ディアナザール",
+              "winProb": 0.2162,
+              "ev": 1.525,
+              "oddsAtPredict": 8.6,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-28 17:44:20 JST"
         },
         {
           "v": 10,
@@ -5541,8 +5991,58 @@
           "hash": "90b527072578842f724e61a50c7ad2bb1dab7329738365aa49e2155156d0163f",
           "evMin": 1.2,
           "pickCount": 3,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "5",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "dist": "芝1400",
+              "postTime": "12:10",
+              "number": 1,
+              "name": "ドライブライン",
+              "winProb": 0.20420000000000002,
+              "ev": 1.624,
+              "oddsAtPredict": 9.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "8",
+              "raceName": "２勝ｸﾗｽ",
+              "cls": "2勝",
+              "dist": "芝1600",
+              "postTime": "13:40",
+              "number": 15,
+              "name": "フィールドノート",
+              "winProb": 0.3443,
+              "ev": 1.412,
+              "oddsAtPredict": 5,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "11",
+              "raceName": "キャピタ(L)",
+              "cls": "OP",
+              "dist": "芝1600",
+              "postTime": "15:25",
+              "number": 11,
+              "name": "ディアナザール",
+              "winProb": 0.2162,
+              "ev": 1.489,
+              "oddsAtPredict": 8.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-28 17:44:20 JST"
         },
         {
           "v": 11,
@@ -5551,8 +6051,42 @@
           "hash": "5f4ab552dd6d5a7aa6c05791fa6de501bca9489f9e4ccae8da3b3685a90e8451",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "5",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "dist": "芝1400",
+              "postTime": "12:10",
+              "number": 1,
+              "name": "ドライブライン",
+              "winProb": 0.20420000000000002,
+              "ev": 1.624,
+              "oddsAtPredict": 9.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "11",
+              "raceName": "キャピタ(L)",
+              "cls": "OP",
+              "dist": "芝1600",
+              "postTime": "15:25",
+              "number": 11,
+              "name": "ディアナザール",
+              "winProb": 0.2162,
+              "ev": 1.471,
+              "oddsAtPredict": 8.3,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-28 17:44:20 JST"
         },
         {
           "v": 12,
@@ -5561,8 +6095,42 @@
           "hash": "0d8ee12c8ce1bf6b93e399a2826d5b1dd0faa21bb1e29aa0f8bad17e2ceda83d",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "5",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "dist": "芝1400",
+              "postTime": "12:10",
+              "number": 1,
+              "name": "ドライブライン",
+              "winProb": 0.20420000000000002,
+              "ev": 1.624,
+              "oddsAtPredict": 9.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "11",
+              "raceName": "キャピタ(L)",
+              "cls": "OP",
+              "dist": "芝1600",
+              "postTime": "15:25",
+              "number": 11,
+              "name": "ディアナザール",
+              "winProb": 0.244,
+              "ev": 1.681,
+              "oddsAtPredict": 8.4,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-28 17:44:20 JST"
         },
         {
           "v": 13,
@@ -5571,8 +6139,42 @@
           "hash": "4a71db4847ac8989e14236b676defe74855e2dd2e33a0df643ef52a2db9b3993",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "5",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "dist": "芝1400",
+              "postTime": "12:10",
+              "number": 1,
+              "name": "ドライブライン",
+              "winProb": 0.20420000000000002,
+              "ev": 1.624,
+              "oddsAtPredict": 9.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "11",
+              "raceName": "キャピタ(L)",
+              "cls": "OP",
+              "dist": "芝1600",
+              "postTime": "15:25",
+              "number": 11,
+              "name": "ディアナザール",
+              "winProb": 0.244,
+              "ev": 1.661,
+              "oddsAtPredict": 8.3,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-28 17:44:20 JST"
         },
         {
           "v": 14,
@@ -5581,64 +6183,223 @@
           "hash": "a9fa1959184095d77b3b0ec010ffe051e3c29afb40e16d73939a83b2edf57f73",
           "evMin": 1.2,
           "pickCount": 2,
-          "revealed": false,
-          "picks": null
+          "revealed": true,
+          "picks": [
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "5",
+              "raceName": "新馬",
+              "cls": "新馬",
+              "dist": "芝1400",
+              "postTime": "12:10",
+              "number": 1,
+              "name": "ドライブライン",
+              "winProb": 0.20420000000000002,
+              "ev": 1.624,
+              "oddsAtPredict": 9.7,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            },
+            {
+              "date": "2026.11.28",
+              "place": "東京",
+              "race": "11",
+              "raceName": "キャピタ(L)",
+              "cls": "OP",
+              "dist": "芝1600",
+              "postTime": "15:25",
+              "number": 11,
+              "name": "ディアナザール",
+              "winProb": 0.244,
+              "ev": 1.421,
+              "oddsAtPredict": 7.1,
+              "aiRank": 1,
+              "mark": "★推奨 [AI1位 EV1.2超]"
+            }
+          ],
+          "revealedAt": "2026-11-28 17:44:20 JST"
         }
       ],
-      "result": null
+      "result": {
+        "all": {
+          "bets": 4,
+          "hits": 1,
+          "hitRate": 0.25,
+          "top3": 2,
+          "top3Rate": 0.5,
+          "stake": 400,
+          "ret": 580,
+          "roi": 1.45
+        },
+        "adv": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 1,
+          "top3Rate": 0.5,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "myAll": {
+          "bets": 4,
+          "hits": 1,
+          "hitRate": 0.25,
+          "top3": 2,
+          "top3Rate": 0.5,
+          "stake": 400,
+          "ret": 580,
+          "roi": 1.45
+        },
+        "myAdv": {
+          "bets": 2,
+          "hits": 0,
+          "hitRate": 0,
+          "top3": 1,
+          "top3Rate": 0.5,
+          "stake": 200,
+          "ret": 0,
+          "roi": 0
+        },
+        "skipped": 0,
+        "added": 0,
+        "unknown": 0
+      },
+      "official": {
+        "picks": [
+          {
+            "date": "2026.11.28",
+            "place": "東京",
+            "race": "3",
+            "raceName": "未勝利・牝*",
+            "cls": "未勝利",
+            "dist": "芝1800",
+            "postTime": "10:50",
+            "number": 9,
+            "name": "ドナリー",
+            "winProb": 0.2336,
+            "ev": 1.303,
+            "oddsAtPredict": 6.8,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超・単騎逃げ]",
+            "fromVersion": 4,
+            "finish": 1,
+            "payout": 580
+          },
+          {
+            "date": "2026.11.28",
+            "place": "東京",
+            "race": "8",
+            "raceName": "２勝ｸﾗｽ",
+            "cls": "2勝",
+            "dist": "芝1600",
+            "postTime": "13:40",
+            "number": 15,
+            "name": "フィールドノート",
+            "winProb": 0.3443,
+            "ev": 1.412,
+            "oddsAtPredict": 5,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 10,
+            "finish": 2,
+            "payout": 0
+          },
+          {
+            "date": "2026.11.28",
+            "place": "東京",
+            "race": "11",
+            "raceName": "キャピタ(L)",
+            "cls": "OP",
+            "dist": "芝1600",
+            "postTime": "15:25",
+            "number": 11,
+            "name": "ディアナザール",
+            "winProb": 0.244,
+            "ev": 1.661,
+            "oddsAtPredict": 8.3,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 13,
+            "finish": 8,
+            "payout": 0
+          },
+          {
+            "date": "2026.11.28",
+            "place": "東京",
+            "race": "5",
+            "raceName": "新馬",
+            "cls": "新馬",
+            "dist": "芝1400",
+            "postTime": "12:10",
+            "number": 1,
+            "name": "ドライブライン",
+            "winProb": 0.20420000000000002,
+            "ev": 1.272,
+            "oddsAtPredict": 7.6,
+            "aiRank": 1,
+            "mark": "★推奨 [AI1位 EV1.2超]",
+            "fromVersion": 7,
+            "finish": 6,
+            "payout": 0
+          }
+        ],
+        "unknownPostTime": 0
+      }
     }
   ],
   "summary": {
     "all": {
-      "days": 18,
-      "bets": 52,
-      "hits": 8,
-      "top3": 20,
-      "stake": 5200,
-      "ret": 4250,
-      "hitRate": 0.15384615384615385,
-      "top3Rate": 0.38461538461538464,
-      "roi": 0.8173076923076923
+      "days": 19,
+      "bets": 56,
+      "hits": 9,
+      "top3": 22,
+      "stake": 5600,
+      "ret": 4830,
+      "hitRate": 0.16071428571428573,
+      "top3Rate": 0.39285714285714285,
+      "roi": 0.8625
     },
     "adv": {
-      "days": 16,
-      "bets": 31,
+      "days": 17,
+      "bets": 33,
       "hits": 7,
-      "top3": 14,
-      "stake": 3100,
+      "top3": 15,
+      "stake": 3300,
       "ret": 3700,
-      "hitRate": 0.22580645161290322,
-      "top3Rate": 0.45161290322580644,
-      "roi": 1.1935483870967742
+      "hitRate": 0.21212121212121213,
+      "top3Rate": 0.45454545454545453,
+      "roi": 1.121212121212121
     },
     "myAll": {
-      "days": 18,
-      "bets": 49,
-      "hits": 8,
-      "top3": 20,
-      "stake": 4900,
-      "ret": 4250,
-      "hitRate": 0.16326530612244897,
-      "top3Rate": 0.40816326530612246,
-      "roi": 0.8673469387755102
+      "days": 19,
+      "bets": 53,
+      "hits": 9,
+      "top3": 22,
+      "stake": 5300,
+      "ret": 4830,
+      "hitRate": 0.16981132075471697,
+      "top3Rate": 0.41509433962264153,
+      "roi": 0.9113207547169812
     },
     "myAdv": {
-      "days": 16,
-      "bets": 31,
+      "days": 17,
+      "bets": 33,
       "hits": 7,
-      "top3": 14,
-      "stake": 3100,
+      "top3": 15,
+      "stake": 3300,
       "ret": 3700,
-      "hitRate": 0.22580645161290322,
-      "top3Rate": 0.45161290322580644,
-      "roi": 1.1935483870967742
+      "hitRate": 0.21212121212121213,
+      "top3Rate": 0.45454545454545453,
+      "roi": 1.121212121212121
     },
     "skipped": 4,
     "added": 1,
     "evMin": 1.2,
     "aiRank": 1,
     "stakePerBet": 100,
-    "updatedAt": "2026-11-23 17:43:27 JST"
+    "updatedAt": "2026-11-28 17:44:20 JST"
   },
   "worldlog": [
     {
@@ -5844,6 +6605,42 @@
       "postRace": false,
       "datHash": "404962d3f4d42b48f505d45c7b3c65549c7f4f872279de744680d7464dd894be",
       "datFile": "data/worlds/2026-11-22_404962d3.dat"
+    },
+    {
+      "date": "2026-11-28",
+      "place": "京都",
+      "race": 11,
+      "raceName": "京都２歳",
+      "grade": "G3",
+      "dist": 2000,
+      "top3": [
+        {
+          "number": 6,
+          "name": "ゴールデンプロミス",
+          "waku": 6
+        },
+        {
+          "number": 8,
+          "name": "ノヴァヴェローチェ",
+          "waku": 7
+        },
+        {
+          "number": 3,
+          "name": "ショウナンバトレニ",
+          "waku": 3
+        }
+      ],
+      "worlds": [
+        739,
+        851,
+        965
+      ],
+      "worldCount": 1000,
+      "payout3t": 11930,
+      "createdAt": "2026-11-27T06:19:43.178Z",
+      "postRace": false,
+      "datHash": "473f82006549fbed26b2396d3520691e724b5bbee4a8ce915cfc34830f441c57",
+      "datFile": "data/worlds/2026-11-28_473f8200.dat"
     }
   ],
   "excluded": [
