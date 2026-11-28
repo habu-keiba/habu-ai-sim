@@ -395,7 +395,7 @@
   },
   {
    "date": "2026-11-28",
-   "settled": false,
+   "settled": true,
    "revealed": false,
    "entries": [
     {
@@ -450,19 +450,19 @@
     }
    ],
    "result": {
-    "bets": 0,
+    "bets": 10,
     "ret": 0,
     "void": 0,
-    "wait": 10
+    "wait": 0
    }
   }
  ],
  "summary": {
-  "days": 5,
-  "bets": 65,
-  "stake": 6500,
+  "days": 6,
+  "bets": 75,
+  "stake": 7500,
   "ret": 11290.0,
-  "roi": 1.736923076923077
+  "roi": 1.5053333333333334
  },
- "updatedAt": "2026-11-28 16:09:20 JST"
+ "updatedAt": "2026-11-28 17:44:26 JST"
 }
